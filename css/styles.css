@@ -1,0 +1,146 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: Georgia;
+}
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    background: #fff;
+}
+
+#game-container {
+    background: #f0f0f0;
+    border: 1px solid #88b;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 800px;
+    height: 600px;
+    margin: -300px 0 0 -400px ;
+    -moz-box-shadow: 0 0 5px silver;
+    overflow: hidden;
+}
+
+#game-container #overlay {
+    position: absolute;
+    background: #000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: .5;
+}
+
+#game-container .dialog {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 300px;
+    height: 200px;
+    margin: 20% 0 0 -150px;
+    background: #ccc;
+    border: 1px solid white;
+    opacity: .7;
+    -moz-box-shadow: 0 0 5px silver;
+    -moz-border-radius: 3px;
+}
+
+#game-container .dialog .action {
+    display: block;
+    padding: 3px 5px;
+    margin: 30px;
+    border: 1px solid #ccc;
+    background: #fff;
+    -moz-border-radius: 3px;
+    cursor: pointer;
+}
+#game-container .dialog .action:hover {
+    background: #eee;
+}
+
+#game-container.fullscreen {
+    border: none;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    -moz-box-shadow: none;
+}
+
+
+/* //options screen */
+#game-container.options fieldset {
+    margin: 30px;
+    padding: 10px;
+    background: #fff;
+    border: 1px solid #666;
+    -moz-border-radius: 5px;
+    position: relative;
+}
+
+#game-container.options fieldset legend {
+    margin: 0 0 0 20px;
+    padding: 3px 10px;
+    border: 1px solid #666;
+    -moz-border-radius: 5px;
+    background: #fff;
+    border-bottom: none;
+}
+
+#game-container.options fieldset .actions {
+    background: gray;
+    margin: 10px -10px -10px -10px;
+    padding: 10px;
+    text-align: right;
+}
+
+#game-container.options fieldset .actions a {
+    text-align: center;
+    display: inline-block;
+    background: #eee;
+    color: #444;
+    border: 1px solid transparent;
+    padding: 3px 5px;
+    width: 80px;
+    font-size: 11px;
+    font-weight: bold;
+    -moz-border-radius: 3px;
+    cursor: pointer;
+}
+
+#game-container.options fieldset .actions a:hover {
+    background: #ddd;
+    color: #222;
+    cursor: pointer;
+}
+
+/* options screen// */
+
+#menu {
+    list-style: none;
+    margin: 20% auto 0;
+    width: auto;
+    text-align: center;
+}
+
+#menu li {
+    font-size: 26px;
+    display: block;
+    width: 30%;
+    margin: 15px auto;
+    padding: 5px;
+    background: #fff;
+    font-weight: bold;
+    text-align: center;
+    -moz-border-radius: 10px 5px;
+    border: 2px groove #555;
+}
+
+#menu li:hover {
+    cursor: pointer;
+}
