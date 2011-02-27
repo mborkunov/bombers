@@ -9,13 +9,12 @@ var Worker = Class.create({
         this.loop();
     },
     loop: function() {
-        this.lastcall = new Date().getTime();
+        this.lastcall = date();
         try {
             this.action(this.delay);
         } catch (e) {
-            console.log(e);
         }
-        this.delay = Math.abs(this.defaultDelay - (new Date().getTime() - this.lastcall));
+        this.delay = Math.abs(this.defaultDelay - (date() - this.lastcall));
         setTimeout(this.loop.bind(this), this.delay);
     }
 });

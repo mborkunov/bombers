@@ -5,7 +5,7 @@ var Game = Class.create({
     state: null,
     initialize: function() {
         Game.instance = this;
-        this.setScreen(new Start());
+        this.setScreen(Intro);
         this.graphics = new Graphics();
         this.state = new State();
     },
@@ -14,6 +14,7 @@ var Game = Class.create({
         this.state.start();
     },
     setScreen: function(screen) {
+        var screen = new screen();
         if (this.screen !== null) {
             this.dispatchScreen();
         }
@@ -21,7 +22,7 @@ var Game = Class.create({
             if (event.indexOf("key") === 0) {
                 document.observe(event, screen.listeners[event], false);
             } else {
-                this.container.observe(event, screen.listeners[event].bind(screen));
+                this.container.observe(event, screen.listeners[event]);
             }
         }
         this.container.removeClassName(this.screen ? this.screen.name.toLowerCase() : null).addClassName(screen.name.toLowerCase());

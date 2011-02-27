@@ -3,30 +3,74 @@ var Options = Class.create(Screen, {
      name: "Options",
      menu: null,
      rendered: false,
+     modes: $A([
+      {x: 320, y: 240},
+      {x: 640, y: 480},
+      {x: 800, y: 600},
+      {x: 1024, y: 768},
+      {value: "fullscreen", text: "Fullscreen"}
+     ]),
+     themes: $A([
+       {name: "Default", id: "default"},
+       {name: "Dark", id: "dark"},
+       {name: "Snow", id: "snow"}
+     ]),
      init: function() {
-         this.listeners = {
+        this.listeners = {
             mousemove: function(e) {
             },
             keydown: function(e) {
+              if (e.keyCode == Event.KEY_ESC) {
+                Game.instance.setScreen(Start);
+              }
             }.bind(this),
             keyup: function(e) {
                 if (e.keyCode == 27) {
-                    Game.instance.setScreen(new Start());
+                    Game.instance.setScreen(Start);
                 }
             }.bind(this)
-        }
+        };
+        
+        var fieldset = new Element("fieldset");
+        var legends = $A([
+          new Element("legend", {active:""}).update("General Settings"),
+          new Element("legend").update("Controls"),
+          new Element("legend").update("Players")
+        ]);
+        legends.each(function(legend) {
+          legend.observe("click", function(e) {
+            legends.each(function(item) {item.removeAttribute("active")});
+            e.element().setAttribute("active", "");
+            
+            // todo: switch options layout
+          });
+          fieldset.appendChild(legend);
+        })
 
-         var fieldset = new Element("fieldset").appendChild(new Element("legend").update("General Settings")).parentNode;
+        fieldset.appendChild(new Element("div").addClassName("clear"));
+
          var select = new Element("select", {id: "options-screenmode"});
+         
+         var width = this.container.getWidth();
+         var height = this.container.getHeight();
+         var fullScreenElement;
 
-         var options = $A([
-            new Element("option", {x: 320, y: 200}).update("320x200"),
-             new Element("option", {x: 640, y: 480}).update("640x480"),
-             new Element("option", {x: 800, y: 600}).update("800x600"),
-             new Element("option", {x: 1024, y: 768}).update("1024x768"),
-             new Element("option", {value: "fullscreen"}).update("fullscreen")
-         ]);
+         var options = this.modes.map(function(option) {
+           var text = option.text || (option.x + "x" + option.y);
+           if (typeof option.value == 'undefined') {
+             return new Element("option", {x: option.x, y: option.y}).update(text);
+           } else {
+             return fullScreenElement = new Element("option", {value: option.value, selected: "selected"}).update(text)
+           }
+         })
 
+         options.each(function(item) {
+           if (parseInt(item.getAttribute("x")) == width && parseInt(item.getAttribute("y")) == height) {
+             fullScreenElement.removeAttribute("selected");
+             item.setAttribute("selected", "selected");
+           }
+         });
+         
          options.each(function(select, item) {
               select.appendChild(item);
          }.bind(this, select));
@@ -51,20 +95,45 @@ var Options = Class.create(Screen, {
              }
          }.bind(this));
 
+         var themeSelectElement = new Element("select", {id: 'options-theme'});
+         var themeElements = this.themes.map(function(theme) {
+           return new Element("option", {value: theme.id}).update(theme.name);
+         });
+         themeElements.each(function(themeElement) {
+           var themeLink = $("theme");
+          if (themeLink && themeLink.getAttribute("name") == themeElement.value) {
+             themeElement.setAttribute("selected", "selected");
+           }
+           themeSelectElement.appendChild(themeElement);
+         });
+         
+         themeSelectElement.on("change", function(e) {
+           var theme = e.element().value;
+           var themeLink = $("theme");
+           if (!themeLink) {
+             themeLink = new Element("link", {id: "theme", rel: "stylesheet", type: "text/css", name: theme});
+             document.head.appendChild(themeLink);
+           }
+           themeLink.setAttribute("href", "css/themes/" + theme +".css?" + Math.random());
+         });
+         
+         fieldset.appendChild(new Element("br"));
+         fieldset.appendChild(new Element("label", {"for": "options-theme"}).update("Theme"));
+         fieldset.appendChild(themeSelectElement);
+
+         fieldset.appendChild(new Element("br"));
          fieldset.appendChild(new Element("label", {"for": "options-sounds"}).update("Sounds"));
          fieldset.appendChild(new Element("input", {id: "options-sounds", type: "checkbox"}));
 
          var actionsElement = new Element("div").addClassName("actions");
          actionsElement.appendChild(new Element("a").update("Back").observe("click", function() {
-             Game.instance.setScreen(new Start());
+             Game.instance.setScreen(Start);
          }.bind(this)));
          actionsElement.appendChild(new Element("div").addClassName("clear"));
          fieldset.appendChild(actionsElement);
-
      },
-     dispatch: function() {
-         this.container.update();
-         this.rendered = false;
+     dispatch: function($super) {
+         $super();
      },
      update: function() {
      },
@@ -74,11 +143,4 @@ var Options = Class.create(Screen, {
             //this.menu.render(this.container);
         }
      },
-     listeners: {
-         mousemove: function(e) {
-         },
-         keydown: function(e) {
-             console.log(e);
-         }
-     }
 });

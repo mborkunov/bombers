@@ -10,6 +10,7 @@ document.observe("dom:loaded", function() {
          "js/game.js",
          "js/util/menu.js",
          "js/game/screen.js",
+         "js/game/intro.js",
          "js/game/battle.js",
          "js/game/start.js",
          "js/game/options.js",

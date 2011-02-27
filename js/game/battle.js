@@ -40,15 +40,15 @@ var Battle = Class.create(Screen, {
     update: function() {
         if (this.paused) return;
 
-        if (this.keys.indexOf(KeyEvent.DOM_VK_UP) != -1) {
+        if (this.keys.indexOf(Event.KEY_UP) != -1) {
             this.y--;
-        } else if (this.keys.indexOf(KeyEvent.DOM_VK_DOWN) != -1) {
+        } else if (this.keys.indexOf(Event.KEY_DOWN) != -1) {
             this.y++;
         }
 
-        if (this.keys.indexOf(KeyEvent.DOM_VK_LEFT) != -1) {
+        if (this.keys.indexOf(Event.KEY_LEFT) != -1) {
             this.x--;
-        } else if (this.keys.indexOf(KeyEvent.DOM_VK_RIGHT) != -1) {
+        } else if (this.keys.indexOf(Event.KEY_RIGHT) != -1) {
             this.x++;
         }
 
@@ -107,7 +107,7 @@ var Battle = Class.create(Screen, {
             this.overlay = new Element("div", {id: "overlay"});
             this.dialog = new Element("div").addClassName("dialog");
             this.dialog.appendChild(new Element("a").addClassName("action").update("Return to main menu").observe("click", function() {
-                Game.instance.setScreen(new Start());
+                Game.instance.setScreen(Start);
             }));
             this.dialog.appendChild(new Element("a").addClassName("action").update("Cancel").observe("click", function() {
                 this.paused = false;
@@ -129,4 +129,17 @@ var Battle = Class.create(Screen, {
        }
 
     }
+});
+
+
+var OptionGroup = Class.create({
+  container: null,
+  name: null,
+  initialize: function(name) {
+    this.name = name;
+    this.container = new Element("div");
+  },
+  render: function() {
+    return this.container
+  }
 });

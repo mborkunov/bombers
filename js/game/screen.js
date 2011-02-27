@@ -18,6 +18,9 @@ var Screen = Class.create({
      render: function() {
      },
      dispatch: function() {
+       this.container.update();
+       this.rendered = false;
+       this.listeners = {};
      }
 });
 

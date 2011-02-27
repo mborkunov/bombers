@@ -3,14 +3,23 @@ var Exit = Class.create(Screen, {
     name: "Exit",
     rendered: false,
     init: function() {
-        this.rendered = false;
-        this.menu = new Menu()
-            .addItem(new MenuItem("Yes", function() {
-                window.close();
-            }))
-                .addItem(new MenuItem("No", function() {
-                this.game.setScreen(new Start());
-            }.bind(this)));
+      this.listeners = {
+          mousemove: function(e) {
+          },
+          keydown: function(e) {
+            if (e.keyCode == Event.KEY_ESC) {
+              Game.instance.setScreen(Start);
+            }
+          }
+      };
+      this.rendered = false;
+      this.menu = new Menu()
+          .addItem(new MenuItem("Yes", function() {
+            window.close();
+          }))
+          .addItem(new MenuItem("No", function() {
+              this.game.setScreen(Start);
+          }.bind(this)));
     },
     update: function() {
     },
@@ -20,12 +29,7 @@ var Exit = Class.create(Screen, {
             this.menu.render(this.container);
         }
     },
-    listeners: {
-        mousemove: function(e) {
-        },
-        keydown: function(e) {
-        }
-    },
+    listeners: {},
     dispatch: function() {
        this.menu.dispatch();
        this.rendered = false;
