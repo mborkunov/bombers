@@ -1,5 +1,5 @@
 var Worker = Class.create({
-    defaultDelay: 20,
+    defaultDelay: 30,
     lastcall: null,
     delay: null,
     initialize: function() {

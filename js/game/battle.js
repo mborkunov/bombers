@@ -10,9 +10,11 @@ var Battle = Class.create(Screen, {
     battleField: null,
     overlay: null,
     dialog: null,
+    skake: null,
     init: function() {
         this.x = 0;
         this.y = 0;
+        this.shake = 0;
         this.area = {
             x: 16, y: 10
         };
@@ -36,9 +38,22 @@ var Battle = Class.create(Screen, {
                 }
             }.bind(this)
         }
+        
+        Map.load("Ghostbear", function(map) {
+          this.map = map;
+        }.bind(this));
     },
-    update: function() {
+    update: function(delay) {
         if (this.paused) return;
+        if (this.keys.indexOf(Event.KEY_HOME) != -1) {
+          if (typeof (this.timeout) != 'undefined') {
+            clearTimeout(this.timeout);
+          };
+          this.shake = 1;
+          this.timeout = setTimeout(function() {
+            this.shake = -1;
+          }.bind(this), 100);
+        }
 
         if (this.keys.indexOf(Event.KEY_UP) != -1) {
             this.y--;
@@ -74,34 +89,42 @@ var Battle = Class.create(Screen, {
         if (!change && Math.random() > 0.50) {
             this.changeDirection();
         }
+        
+        this.map.update(delay, this.shake);
     },
     changeDirection: function() {
         //this.position = Math.round(Math.random()*3);
     },
     render: function(time) {
         if (!this.rendered) {
+            if (this.map == null) {
+              return;
+            }
+
             this.rendered = true;
 
             var x = this.area.x, y = this.area.y;
             var width = Math.round(this.container.getWidth() / x);
             var height = Math.round(this.container.getHeight() / y);
 
-            this.battleField = new Element("div");
-            for (var i = 0; i < y; i++) {
+            this.battleField = new Element("div").setStyle({position: "relative"}).addClassName("field");
+            
+            this.map.render(this.battleField);
+            /*for (var i = 0; i < y; i++) {
                 for (var j = 0; j < x; j++) {
                     this.battleField.appendChild(new Element("div", {id: j + "x" + i}).setStyle({float: "left", width: width + "px", height: height + "px", background: "green"}).update(i + "x" + j));
                 }
                 this.battleField.appendChild(new Element("br"));
-            }
+            }*/
             this.container.appendChild(this.battleField);
         } else {
-            if (this.prev != null) {
+            /*if (this.prev != null) {
                 this.prev.setStyle({background: "green"});;
             }
             var obj = $(this.x + "x" + this.y);
             if (obj !== null) {
                 this.prev = obj.setStyle({background: "red"});
-            }
+            }*/
         }
         if (this.paused && !this.overlay) {
             this.overlay = new Element("div", {id: "overlay"});
@@ -125,7 +148,7 @@ var Battle = Class.create(Screen, {
        this.container.removeChild(this.battleField);
        if (this.overlay) {
            this.container.removeChild(this.dialog);
-           this.container.removeChild(this.overlay);
+           this.container.removeChild(this.overlay);  
        }
 
     }

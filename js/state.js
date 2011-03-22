@@ -1,6 +1,6 @@
 var State = Class.create(Worker, {
-    action: function(){
-        Game.instance.getScreen().update();
+    action: function(delay) {
+        Game.instance.getScreen().update(delay);
     }
 });
 
