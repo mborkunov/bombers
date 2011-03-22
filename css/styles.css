@@ -192,3 +192,8 @@ div.clear {
 #menu li:hover {
     cursor: pointer;
 }
+
+
+#game-container.battle {
+  background: #000;
+}
