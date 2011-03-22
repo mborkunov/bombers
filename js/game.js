@@ -13,6 +13,14 @@ var Game = Class.create({
         this.graphics.start();
         this.state.start();
     },
+    setTheme: function(theme) {
+       var themeLink = $("theme");
+       if (!themeLink) {
+          themeLink = new Element("link", {id: "theme", rel: "stylesheet", type: "text/css", name: theme});
+          document.head.appendChild(themeLink);
+       }
+       themeLink.setAttribute("href", "css/themes/" + theme +".css?" + Math.random());
+    },
     setScreen: function(screen) {
         var screen = new screen();
         if (this.screen !== null) {

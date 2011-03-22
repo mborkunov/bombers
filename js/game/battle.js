@@ -38,8 +38,17 @@ var Battle = Class.create(Screen, {
                 }
             }.bind(this)
         }
-        
-        Map.load("Ghostbear", function(map) {
+
+        var maps = ["Big_Standard","Blast_Matrix","Bloody_Ring","Boiling_Egg","Bomb_Attack",
+        "Broken_Heart","Crammed","Death_Corridor","Dilemma","FearCircle",
+        "FearCircle_Remix","FireWheels","Football","Four_Instance","Ghostbear",
+        "Hard_Work","Hole_Run","Huge_Standard","Juicy_Lucy","Kitchen","Meeting",
+        "MungoBane","Obstacle_Race","Overkill","Prison_Cells","Redirection",
+        "Sixty_Nine","Small_Standard","Snake_Race","Tiny_Standard","Whole_Mess"]
+
+        var id = Math.round(Math.random() * maps.length);
+
+        Map.load(maps[id], function(map) {
           this.map = map;
         }.bind(this));
     },
@@ -89,7 +98,7 @@ var Battle = Class.create(Screen, {
         if (!change && Math.random() > 0.50) {
             this.changeDirection();
         }
-        
+
         this.map.update(delay, this.shake);
     },
     changeDirection: function() {
@@ -108,7 +117,7 @@ var Battle = Class.create(Screen, {
             var height = Math.round(this.container.getHeight() / y);
 
             this.battleField = new Element("div").setStyle({position: "relative"}).addClassName("field");
-            
+
             this.map.render(this.battleField);
             /*for (var i = 0; i < y; i++) {
                 for (var j = 0; j < x; j++) {
@@ -117,6 +126,25 @@ var Battle = Class.create(Screen, {
                 this.battleField.appendChild(new Element("br"));
             }*/
             this.container.appendChild(this.battleField);
+
+            var themes = $A([
+                            {name: "Default", id: "default", color: 'silver'},
+               {name: "Dark", id: "dark", color: 'gray'},
+               {name: "Snow", id: "snow", color: 'snow'},
+               {name: "Green", id: "green", color: 'green'},
+               {name: "Strange", id: "strange", color: 'darkcyan'},
+               {name: "Stone", id: "stone", color: 'yellow'}
+            ]);
+            var themesElement = new Element("div").setStyle({position: 'absolute', top: 0, right: 0, zIndex: 10, height: '20px', width: (20 * themes.size()) + 'px'});
+            this.container.appendChild(themesElement);
+
+            themes.each(function(theme) {
+                var themeEl = new Element("div", {title: theme.name, theme: theme.id}).setStyle({float: 'left', background: theme.color, width: '20px', height: '20px'});
+                this.appendChild(themeEl);
+                themeEl.observe('mouseover', function(e) {
+                    Game.instance.setTheme(e.element().getAttribute('theme'));
+                });
+            }.bind(themesElement));
         } else {
             /*if (this.prev != null) {
                 this.prev.setStyle({background: "green"});;
@@ -148,7 +176,7 @@ var Battle = Class.create(Screen, {
        this.container.removeChild(this.battleField);
        if (this.overlay) {
            this.container.removeChild(this.dialog);
-           this.container.removeChild(this.overlay);  
+           this.container.removeChild(this.overlay);
        }
 
     }

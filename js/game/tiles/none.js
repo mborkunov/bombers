@@ -3,5 +3,9 @@ Tile.None = Class.create(Tile, {
     $super(x, y);
     this.name = 'none';
     this.type = 0;
+  },
+  render: function() {
+  },
+  update: function() {
   }
 });

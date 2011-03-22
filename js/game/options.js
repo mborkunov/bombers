@@ -13,7 +13,10 @@ var Options = Class.create(Screen, {
      themes: $A([
        {name: "Default", id: "default"},
        {name: "Dark", id: "dark"},
-       {name: "Snow", id: "snow"}
+       {name: "Snow", id: "snow"},
+       {name: "Green", id: "green"},
+       {name: "Strange", id: "strange"},
+       {name: "Stone", id: "stone"}
      ]),
      init: function() {
         this.listeners = {
@@ -30,7 +33,7 @@ var Options = Class.create(Screen, {
                 }
             }.bind(this)
         };
-        
+
         var fieldset = new Element("fieldset");
         var legends = $A([
           new Element("legend", {active:""}).update("General Settings"),
@@ -41,7 +44,7 @@ var Options = Class.create(Screen, {
           legend.observe("click", function(e) {
             legends.each(function(item) {item.removeAttribute("active")});
             e.element().setAttribute("active", "");
-            
+
             // todo: switch options layout
           });
           fieldset.appendChild(legend);
@@ -50,7 +53,7 @@ var Options = Class.create(Screen, {
         fieldset.appendChild(new Element("div").addClassName("clear"));
 
          var select = new Element("select", {id: "options-screenmode"});
-         
+
          var width = this.container.getWidth();
          var height = this.container.getHeight();
          var fullScreenElement;
@@ -70,7 +73,7 @@ var Options = Class.create(Screen, {
              item.setAttribute("selected", "selected");
            }
          });
-         
+
          options.each(function(select, item) {
               select.appendChild(item);
          }.bind(this, select));
@@ -106,17 +109,12 @@ var Options = Class.create(Screen, {
            }
            themeSelectElement.appendChild(themeElement);
          });
-         
+
          themeSelectElement.on("change", function(e) {
            var theme = e.element().value;
-           var themeLink = $("theme");
-           if (!themeLink) {
-             themeLink = new Element("link", {id: "theme", rel: "stylesheet", type: "text/css", name: theme});
-             document.head.appendChild(themeLink);
-           }
-           themeLink.setAttribute("href", "css/themes/" + theme +".css?" + Math.random());
+           Game.instance.setTheme(theme);
          });
-         
+
          fieldset.appendChild(new Element("br"));
          fieldset.appendChild(new Element("label", {"for": "options-theme"}).update("Theme"));
          fieldset.appendChild(themeSelectElement);
