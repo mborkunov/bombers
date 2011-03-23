@@ -11,7 +11,7 @@ document.observe("dom:loaded", function() {
          "js/util/menu.js",
          "js/game/screen.js",
          "js/game/intro.js",
-         "js/game/battle.js",
+         "js/game/arena.js",
          "js/game/start.js",
          "js/game/options.js",
          "js/game/exit.js",

@@ -7,7 +7,7 @@ var Start = Class.create(Screen, {
          var handler = function(item) {console.log(item.getName())};
          this.menu = new Menu()
               .addItem(new MenuItem("Start", function() {
-                  Game.instance.setScreen(Battle);
+                  Game.instance.setScreen(Arena);
               }))
               .addItem(new MenuItem("Options", function() {
                   Game.instance.setScreen(Options);

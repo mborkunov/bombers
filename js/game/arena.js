@@ -1,6 +1,6 @@
-var Battle = Class.create(Screen, {
+var Arena = Class.create(Screen, {
     menu: null,
-    name: "Battle",
+    name: "Arena",
     rendered: false,
     direction: null,
     x: null,
