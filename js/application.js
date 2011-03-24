@@ -7,6 +7,7 @@ document.observe("dom:loaded", function() {
          "js/worker.js",
          "js/state.js",
          "js/graphics.js",
+         "js/sound.js",
          "js/game.js",
          "js/util/menu.js",
          "js/game/screen.js",

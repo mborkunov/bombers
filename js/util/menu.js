@@ -30,6 +30,7 @@ var Menu = Class.create({
         this.items.each(function(list, item) {
             var li = new Element("li").update(item.getName());
             li.observe("mouseover", function() {
+                Sound.play('explode');
                 this.over = true;
                 if (typeof(this.working) === "undefined") {
                     this.working = false;
