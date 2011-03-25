@@ -1,6 +1,6 @@
 var Arena = Class.create(Screen, {
     menu: null,
-    name: "Arena",
+    name: 'Arena',
     rendered: false,
     direction: null,
     x: null,
@@ -39,12 +39,12 @@ var Arena = Class.create(Screen, {
             }.bind(this)
         }
 
-        var maps = ["Big_Standard","Blast_Matrix","Bloody_Ring","Boiling_Egg","Bomb_Attack",
-        "Broken_Heart","Crammed","Death_Corridor","Dilemma","FearCircle",
-        "FearCircle_Remix","FireWheels","Football","Four_Instance","Ghostbear",
-        "Hard_Work","Hole_Run","Huge_Standard","Juicy_Lucy","Kitchen","Meeting",
-        "MungoBane","Obstacle_Race","Overkill","Prison_Cells","Redirection",
-        "Sixty_Nine","Small_Standard","Snake_Race","Tiny_Standard","Whole_Mess"]
+        var maps = ['Big_Standard','Blast_Matrix','Bloody_Ring','Boiling_Egg','Bomb_Attack',
+        'Broken_Heart','Crammed','Death_Corridor','Dilemma','FearCircle',
+        'FearCircle_Remix','FireWheels','Football','Four_Instance','Ghostbear',
+        'Hard_Work','Hole_Run','Huge_Standard','Juicy_Lucy','Kitchen','Meeting',
+        'MungoBane','Obstacle_Race','Overkill','Prison_Cells','Redirection',
+        'Sixty_Nine','Small_Standard','Snake_Race','Tiny_Standard','Whole_Mess']
 
         var id = Math.round(Math.random() * maps.length);
 
@@ -116,30 +116,30 @@ var Arena = Class.create(Screen, {
             var width = Math.round(this.container.getWidth() / x);
             var height = Math.round(this.container.getHeight() / y);
 
-            this.battleField = new Element("div").setStyle({position: "relative"}).addClassName("field");
+            this.battleField = new Element('div').setStyle({position: 'relative'}).addClassName('field');
 
             this.map.render(this.battleField);
             /*for (var i = 0; i < y; i++) {
                 for (var j = 0; j < x; j++) {
-                    this.battleField.appendChild(new Element("div", {id: j + "x" + i}).setStyle({float: "left", width: width + "px", height: height + "px", background: "green"}).update(i + "x" + j));
+                    this.battleField.appendChild(new Element('div', {id: j + 'x' + i}).setStyle({float: 'left', width: width + 'px', height: height + 'px', background: 'green'}).update(i + 'x' + j));
                 }
-                this.battleField.appendChild(new Element("br"));
+                this.battleField.appendChild(new Element('br'));
             }*/
             this.container.appendChild(this.battleField);
 
             var themes = $A([
-                            {name: "Default", id: "default", color: 'silver'},
-               {name: "Dark", id: "dark", color: 'gray'},
-               {name: "Snow", id: "snow", color: 'snow'},
-               {name: "Green", id: "green", color: 'green'},
-               {name: "Strange", id: "strange", color: 'darkcyan'},
-               {name: "Stone", id: "stone", color: 'yellow'}
+                            {name: 'Default', id: 'default', color: 'silver'},
+               {name: 'Dark', id: 'dark', color: 'gray'},
+               {name: 'Snow', id: 'snow', color: 'snow'},
+               {name: 'Green', id: 'green', color: 'green'},
+               {name: 'Strange', id: 'strange', color: 'darkcyan'},
+               {name: 'Stone', id: 'stone', color: 'yellow'}
             ]);
-            var themesElement = new Element("div").setStyle({position: 'absolute', top: 0, right: 0, zIndex: 10, height: '20px', width: (20 * themes.size()) + 'px'});
+            var themesElement = new Element('div').setStyle({position: 'absolute', top: 0, right: 0, zIndex: 10, height: '20px', width: (20 * themes.size()) + 'px'});
             this.container.appendChild(themesElement);
 
             themes.each(function(theme) {
-                var themeEl = new Element("div", {title: theme.name, theme: theme.id}).setStyle({float: 'left', background: theme.color, width: '20px', height: '20px'});
+                var themeEl = new Element('div', {title: theme.name, theme: theme.id}).setStyle({float: 'left', background: theme.color, width: '20px', height: '20px'});
                 this.appendChild(themeEl);
                 themeEl.observe('mouseover', function(e) {
                     Game.instance.setTheme(e.element().getAttribute('theme'));
@@ -147,20 +147,20 @@ var Arena = Class.create(Screen, {
             }.bind(themesElement));
         } else {
             /*if (this.prev != null) {
-                this.prev.setStyle({background: "green"});;
+                this.prev.setStyle({background: 'green'});;
             }
-            var obj = $(this.x + "x" + this.y);
+            var obj = $(this.x + 'x' + this.y);
             if (obj !== null) {
-                this.prev = obj.setStyle({background: "red"});
+                this.prev = obj.setStyle({background: 'red'});
             }*/
         }
         if (this.paused && !this.overlay) {
-            this.overlay = new Element("div", {id: "overlay"});
-            this.dialog = new Element("div").addClassName("dialog");
-            this.dialog.appendChild(new Element("a").addClassName("action").update("Return to main menu").observe("click", function() {
-                Game.instance.setScreen(Start);
+            this.overlay = new Element('div', {id: 'overlay'});
+            this.dialog = new Element('div').addClassName('dialog');
+            this.dialog.appendChild(new Element('a').addClassName('action').update('Return to main menu').observe('click', function() {
+                Game.instance.setScreen(Menu);
             }));
-            this.dialog.appendChild(new Element("a").addClassName("action").update("Cancel").observe("click", function() {
+            this.dialog.appendChild(new Element('a').addClassName('action').update('Cancel').observe('click', function() {
                 this.paused = false;
             }.bind(this)));
             this.container.appendChild(this.overlay);
@@ -188,7 +188,7 @@ var OptionGroup = Class.create({
   name: null,
   initialize: function(name) {
     this.name = name;
-    this.container = new Element("div");
+    this.container = new Element('div');
   },
   render: function() {
     return this.container

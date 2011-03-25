@@ -1,9 +1,10 @@
 var Game = Class.create({
-    container: $("game-container"),
+    container: $('game-container'),
     screen: null,
     graphics: null,
     state: null,
     initialize: function() {
+        this.setTheme(localStorage.getItem('theme'));
         Game.instance = this;
         this.setScreen(Intro);
         this.graphics = new Graphics();
@@ -14,27 +15,29 @@ var Game = Class.create({
         this.state.start();
     },
     setTheme: function(theme) {
-       var themeLink = $("theme");
+       if (theme == null) return;
+       localStorage.setItem('theme', theme);
+       var themeLink = $('theme');
        if (!themeLink) {
-          themeLink = new Element("link", {id: "theme", rel: "stylesheet", type: "text/css", name: theme});
+          themeLink = new Element('link', {id: 'theme', rel: 'stylesheet', type: 'text/css', name: theme});
           document.head.appendChild(themeLink);
        }
-       themeLink.setAttribute("href", "css/themes/" + theme +".css?" + Math.random());
+       themeLink.setAttribute('href', 'css/themes/' + theme +'.css?' + Math.random());
     },
     setScreen: function(screen) {
-        var screen = new screen();
+        var _screen = new screen();
         if (this.screen !== null) {
             this.dispatchScreen();
         }
-        for (var event in screen.listeners) {
-            if (event.indexOf("key") === 0) {
-                document.observe(event, screen.listeners[event], false);
+        for (var event in _screen.listeners) {
+            if (event.indexOf('key') === 0) {
+                document.observe(event, _screen.listeners[event], false);
             } else {
-                this.container.observe(event, screen.listeners[event]);
+                this.container.observe(event, _screen.listeners[event]);
             }
         }
-        this.container.removeClassName(this.screen ? this.screen.name.toLowerCase() : null).addClassName(screen.name.toLowerCase());
-        this.screen = screen;
+        this.container.removeClassName(this.screen ? this.screen.name.toLowerCase() : null).addClassName(_screen.name.toLowerCase());
+        this.screen = _screen;
     },
     getScreen: function() {
         return this.screen;
@@ -45,7 +48,7 @@ var Game = Class.create({
     },
     dispatchListeners: function() {
         for (var event in this.screen.listeners) {
-            if (event.indexOf("key") === 0) {
+            if (event.indexOf('key') === 0) {
                 document.stopObserving(event, this.screen.listeners[event], false);
             } else {
                 this.container.stopObserving(event, this.screen.listeners[event]);

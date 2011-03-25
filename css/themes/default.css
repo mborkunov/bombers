@@ -1,3 +1,17 @@
+
+#game-container {
+    background-image: url('../../images/themes/default/title.png');
+}
+
+#game-container.intro {
+    background: #000;
+}
+
+#game-container.intro * {
+    color: #fff;
+}
+
+
 #game-container.arena {
   background: #000;
 }

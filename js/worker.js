@@ -12,8 +12,7 @@ var Worker = Class.create({
         this.lastcall = date();
         try {
             this.action(this.delay);
-        } catch (e) {
-        }
+        } catch (e) {}
         this.delay = Math.abs(this.defaultDelay - (date() - this.lastcall));
         setTimeout(this.loop.bind(this), this.delay);
     }

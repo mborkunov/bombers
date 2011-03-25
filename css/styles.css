@@ -9,7 +9,7 @@ html, body {
 }
 
 body {
-    background: #fff;
+    background: #222;
 }
 
 div.clear {
@@ -22,15 +22,16 @@ div.clear {
 
 #game-container {
     background: #f0f0f0;
-    border: 1px solid #88b;
+    border: 1px solid #666;
     position: absolute;
     top: 50%;
     left: 50%;
     width: 800px;
     height: 600px;
     margin: -300px 0 0 -400px ;
-    -moz-box-shadow: 0 0 5px silver;
-    -webkit-box-shadow: 0 0 10px silver;
+    box-shadow: 0 0 10px #444;
+    -moz-box-shadow: 0 0 10px #444;
+    -webkit-box-shadow: 0 0 10px #444;
     overflow: hidden;
 }
 

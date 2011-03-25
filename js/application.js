@@ -13,7 +13,7 @@ document.observe("dom:loaded", function() {
          "js/game/screen.js",
          "js/game/intro.js",
          "js/game/arena.js",
-         "js/game/start.js",
+         "js/game/menu.js",
          "js/game/options.js",
          "js/game/exit.js",
          "js/game/tiles/tile.js",

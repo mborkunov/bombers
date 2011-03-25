@@ -1,5 +1,5 @@
 var Editor = Class.create(Screen, {
-    name: "Editor",
+    name: 'Editor',
     rendered: false,
     listeners: null,
     init: function() {

@@ -8,6 +8,7 @@ var Tile = Class.create({
   type: -1,
   name: null,
   element: null,
+  next: null,
   getType: function() {
     return this.type;
   },
@@ -55,35 +56,35 @@ var Tile = Class.create({
         top += this.top;
         left += this.left;
     
-        this.element.setStyle({top: top + "px", left: left + "px"});
+        this.element.setStyle({top: top + 'px', left: left + 'px'});
       } else {
-        this.element.setStyle({top: this.top + "px", left: this.left + "px"});
+        this.element.setStyle({top: this.top + 'px', left: this.left + 'px'});
       }
     }
   },
   toString: function() {
-    return this.name + " {x: " + x + ", y: " + y + "}";
+    return this.name + ' {x: ' + x + ', y: ' + y + '}';
   },
   update: function(delay, shake) {
     this.shake(shake);
   },
   render: function(container) {
-    var id = "tile-" + this.name + "-" + this.x + "x" + this.y; 
+    var id = 'tile-' + this.name + '-' + this.x + 'x' + this.y;
     var className = 'tile-' + this.getName();
     this.left = this.y * 40;
     this.top = this.x * 40;
     
     var styles = {
-      position: "absolute",
-      left: this.left + "px",
-      top: this.top + "px",
-      width: "40px", height: "40px"
+      position: 'absolute',
+      left: this.left + 'px',
+      top: this.top + 'px',
+      width: '40px', height: '40px'
     };
-    this.element = new Element("div", {id: id}).addClassName("tile").addClassName(className).setStyle(styles);
+    this.element = new Element('div', {id: id}).addClassName('tile').addClassName(className).setStyle(styles);
     container.appendChild(this.element);
   }
 });
 
 Tile.prototype.toString = function() {
-    return this.name;// + " {x: " + x + ", y: " + y + "}";
+    return this.name;// + ' {x: ' + x + ', y: ' + y + '}';
   }; 

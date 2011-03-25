@@ -118,17 +118,17 @@ Map.Entry = Class.create({
 });
 
 Object.extend(Map, {
-  extension: ".map",
+  extension: '.map',
   load: function(name, callback) {
-    console.log("loading", "maps/" + name + this.extension);
-    new Ajax.Request("maps/" + name + ".map", {
+    console.log('loading', 'maps/' + name + this.extension);
+    new Ajax.Request('maps/' + name + '.map', {
       onSuccess: function(r) {
         var content = r.responseText;
         var map = Map.parse(name, content);
         if (callback) callback(map);
       },
       onFailure: function() {
-        throw new "cannot load map " + name;
+        throw new 'cannot load map ' + name;
       }
     });
     return new Map();
@@ -149,7 +149,7 @@ Object.extend(Map, {
       y = 0;
 
       for (var j = 0, len = line.length; j < len; j++, y++) {
-        if (typeof data[x] == "undefined") {
+        if (typeof data[x] == 'undefined') {
           data[x] = {};
         }
         data[x][y] = line.charAt(j);

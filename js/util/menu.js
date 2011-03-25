@@ -1,4 +1,4 @@
-var Menu = Class.create({
+var MenuTree = Class.create({
     items: null,
     list: null,
     initialize: function() {
@@ -15,7 +15,7 @@ var Menu = Class.create({
         this.items.clear();
     },
     getSelectedItem: function() {
-        this.items.filter(function(item) {
+        return this.items.filter(function(item) {
             return item.isSelected() ? item : null;
         })[0];
     },
@@ -30,7 +30,7 @@ var Menu = Class.create({
         this.items.each(function(list, item) {
             var li = new Element("li").update(item.getName());
             li.observe("mouseover", function() {
-                Sound.play('explode');
+                Sound.play('break');
                 this.over = true;
                 if (typeof(this.working) === "undefined") {
                     this.working = false;
@@ -93,6 +93,7 @@ var Menu = Class.create({
             }.bind(li));
 
             li.observe("click", function() {
+                Sound.play('clear');
                 this.actionHandler(this);
             }.bind(item));
             this.list.appendChild(li);
@@ -113,12 +114,15 @@ var MenuItem = Class.create({
     name: null,
     actionHandler: null,
     selected: false,
+    items: null,
     initialize: function(name, actionHandler) {
         this.name = name;
         this.actionHandler = actionHandler;
     },
     getName: function() {
         return this.name;
+    },
+    addItem: function(item) {
     },
     getActionHandler: function() {
         return this.actionHandler;

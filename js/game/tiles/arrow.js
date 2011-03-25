@@ -7,7 +7,7 @@ Tile.Arrow = Class.create(Tile, {
     this.direction = Tile.Arrow.getDirection(direction);
   },
   getName: function() {
-    return this.name.toLowerCase() + "-" + Tile.Arrow.getDirectionName(this.direction);
+    return this.name.toLowerCase() + '-' + Tile.Arrow.getDirectionName(this.direction);
   }
 });
 
@@ -34,16 +34,16 @@ Object.extend(Tile.Arrow, {
     var name;
     switch (direction) {
       case 0:
-        name = "north";
+        name = 'north';
         break;
       case 1:
-        name = "east";
+        name = 'east';
         break;
       case 2:
-        name = "south";
+        name = 'south';
         break;
       case 3:
-        name = "west";
+        name = 'west';
         break;      
     }
     return name;

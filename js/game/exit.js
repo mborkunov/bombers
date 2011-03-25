@@ -1,6 +1,6 @@
 var Exit = Class.create(Screen, {
     menu: null,
-    name: "Exit",
+    name: 'Exit',
     rendered: false,
     init: function() {
       this.listeners = {
@@ -8,17 +8,17 @@ var Exit = Class.create(Screen, {
           },
           keydown: function(e) {
             if (e.keyCode == Event.KEY_ESC) {
-              Game.instance.setScreen(Start);
+              Game.instance.setScreen(Menu);
             }
           }
       };
       this.rendered = false;
       this.menu = new Menu()
-          .addItem(new MenuItem("Yes", function() {
+          .addItem(new MenuItem('Yes', function() {
             window.close();
           }))
-          .addItem(new MenuItem("No", function() {
-              this.game.setScreen(Start);
+          .addItem(new MenuItem('No', function() {
+              this.game.setScreen(Menu);
           }.bind(this)));
     },
     update: function() {
