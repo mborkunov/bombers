@@ -25,10 +25,10 @@ var Game = Class.create({
        themeLink.setAttribute('href', 'css/themes/' + theme +'.css?' + Math.random());
     },
     setScreen: function(screen) {
-        var _screen = new screen();
         if (this.screen !== null) {
             this.dispatchScreen();
         }
+        var _screen = new screen();
         for (var event in _screen.listeners) {
             if (event.indexOf('key') === 0) {
                 document.observe(event, _screen.listeners[event], false);

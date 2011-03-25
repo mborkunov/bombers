@@ -13,13 +13,13 @@ var Menu = Class.create(Screen, {
                   Game.instance.setScreen(Options);
               }))
               .addItem(new MenuItem('Map Editor', function() {
-                  Game.instance.setScreen(null);
+                  Game.instance.setScreen(Editor);
               }))
               .addItem(new MenuItem('Show Credits', function() {
-                  Game.instance.setScreen(null);
+                  Game.instance.setScreen(Credits);
               }))
               .addItem(new MenuItem('Help Screen', function() {
-                  Game.instance.setScreen(null);
+                  Game.instance.setScreen(Help);
               }))
               .addItem(new MenuItem('Quit Game', function() {
                   Game.instance.setScreen(Exit);

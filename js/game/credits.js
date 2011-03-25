@@ -1,5 +1,7 @@
-var Editor = Class.create(Screen, {
-     name: 'Editor',
+var Credits = Class.create(Screen, {
+     counter: 0,
+     name: 'Credits',
+     menu: null,
      rendered: false,
      init: function() {
          this.listeners = {

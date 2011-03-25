@@ -5,13 +5,14 @@ if (typeof(console) === "undefined") {
 document.observe("dom:loaded", function() {
      var scripts = [
          "js/worker.js",
-         "js/state.js",
-         "js/graphics.js",
          "js/sound.js",
          "js/game.js",
          "js/util/menu.js",
          "js/game/screen.js",
          "js/game/intro.js",
+         "js/game/credits.js",
+         "js/game/editor.js",
+         "js/game/help.js",
          "js/game/arena.js",
          "js/game/menu.js",
          "js/game/options.js",
