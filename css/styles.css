@@ -21,7 +21,7 @@ div.clear {
 }
 
 #game-container {
-    background: #f0f0f0;
+    background: transparent;
     border: 1px solid #666;
     position: absolute;
     top: 50%;

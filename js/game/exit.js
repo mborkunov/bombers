@@ -13,7 +13,7 @@ var Exit = Class.create(Screen, {
           }
       };
       this.rendered = false;
-      this.menu = new Menu()
+      this.menu = new MenuTree()
           .addItem(new MenuItem('Yes', function() {
             window.close();
           }))

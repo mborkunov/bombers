@@ -17,7 +17,7 @@
 }
 
 .arena .tile {
-  background-color: #424242; 
+  background-color: #424242;
 }
 
 .arena .tile-none {
@@ -56,4 +56,20 @@
 
 .arena .tile-wall {
   background: url('../../images/themes/default/tiles.png') 120px 0;
+}
+
+#menu {
+    opacity: 0.7;
+    width: 30%;
+    padding: 0;
+}
+
+#menu li {
+  width: auto;
+  height: 30px;
+  background: #a87;
+  margin: 0 auto;
+  border: none;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
 }

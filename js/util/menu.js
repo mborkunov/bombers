@@ -43,8 +43,8 @@ var MenuTree = Class.create({
                     this.finished = false;
                     this.working = true;
                     new Effect.Morph(li, {
-                        duration: .5,
-                        style: 'background:#000; color: #fff',
+                        duration: .15,
+                        style: 'background: #000; color: #fff; font-size: 28px',
                         afterFinish: function() {
                             this.finished = true;
                             this.working = false;
@@ -52,8 +52,8 @@ var MenuTree = Class.create({
                                 this.working = true;
                                 this.finished = false;
                                 new Effect.Morph(li, {
-                                    duration: .5,
-                                    style: 'background:#fff; color: #000',
+                                    duration: .15,
+                                    style: 'background: #a87; color: #000; font-size: 24px',
                                     afterFinish: function() {
                                         this.finished = true;
                                         this.working = false;
@@ -69,9 +69,10 @@ var MenuTree = Class.create({
                 if (this.finished) {
                     this.finished = false;
                     this.working = true;
+                    var color = li.style.background;
                     new Effect.Morph(li, {
-                        duration: .5,
-                        style: 'background:#fff; color: #000',
+                        duration: .15,
+                        style: 'background: #a87; color: #000; font-size: 24px',
                         afterFinish: function() {
                             this.finished = true;
                             this.working = false;
@@ -79,8 +80,8 @@ var MenuTree = Class.create({
                                 this.working = true;
                                 this.finished = false;
                                 new Effect.Morph(li, {
-                                    duration: .5,
-                                    style: 'background:#000; color: #fff',
+                                    duration: .15,
+                                    style: 'background: #000; color: #fff;  font-size: 28px',
                                     afterFinish: function() {
                                         this.finished = true;
                                         this.working = false;
