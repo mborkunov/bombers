@@ -22,7 +22,7 @@ var Intro = Class.create(Screen, {
      },
      update: function() {
        if (this.opacity >= 1) {
-         Game.instance.setScreen(new Menu());
+         Game.instance.setScreen(Menu);
        }
        this.opacity += 0.015;
      },

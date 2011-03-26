@@ -15,6 +15,7 @@ var Exit = Class.create(Screen, {
       this.rendered = false;
       this.menu = new MenuTree()
           .addItem(new MenuItem('Yes', function() {
+            window.open('', '_self', '');
             window.close();
           }))
           .addItem(new MenuItem('No', function() {
