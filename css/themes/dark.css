@@ -1,6 +1,4 @@
-#game-container.arena {
-  background: #000;
-}
+@import "base.css";
 
 .arena .tile {
   background-color: #424242;
