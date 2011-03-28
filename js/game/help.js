@@ -8,7 +8,9 @@ var Help = Class.create(Screen, {
       click: function(e) {
       },
       keydown: function(e) {
-          Game.instance.setScreen(Menu);
+          if (!e.hasModifiers()) {
+            Game.instance.setScreen(Menu);
+          }
       }.bind(this)
     };
 
@@ -23,8 +25,10 @@ var Help = Class.create(Screen, {
     this.drawHelp('Drugs', [
       {name: 'Joint', text: 'Controller will be reversed'},
       {name: 'Viagra', text: 'Autofire, this can be very dangerous!'},
-      {name: 'Cocaine', text: 'Lets you move very fast!! (too fast)'},
+      {name: 'Cocaine', text: 'Lets you move very fast!! (too fast)'}
     ], 'drugs');
+
+    this.container.appendChild(new Element("span").update("Press any key"))
   },
   dispatch: function($super) {
     clearTimeout(this.timeout);
