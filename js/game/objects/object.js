@@ -6,8 +6,7 @@ var GameObject = Class.create({
   flying: null,
   falling: null,
   fallen: null,
-
-
+  element: null,
   speed: null,
   x: null,
   y: null,
@@ -16,6 +15,9 @@ var GameObject = Class.create({
 
   initialize: function() {
     
+  },
+  getElement: function() {
+    return this.element;
   },
   setDirection: function(direction) {
 
@@ -36,16 +38,16 @@ var GameObject = Class.create({
 
   },
   getSpeed: function() {
-
+    return this.speed;
   },
   setSpeed: function(speed) {
-
+    this.speed = speed;
   },
-  increaseSpeed: function(c) {
-
+  increaseSpeed: function(s) {
+    this.speed += s || 1;
   },
-  decreaseSpeed: function(c) {
-    
+  decreaseSpeed: function(s) {
+    this.speed -= s || 1;
   },
   fall: function(_continue) {
 
