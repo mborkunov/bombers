@@ -27,7 +27,6 @@ var Graphics = Class.create(Worker, {
   }
 });
 
-
 var State = Class.create(Worker, {
   initialize: function() {
     this.delay = 20;

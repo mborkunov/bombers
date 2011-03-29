@@ -55,7 +55,9 @@ var Arena = Class.create(Screen, {
       this.map = map;
     }.bind(this));
 
-    this.objects.push(new Bomber(new Controller.Keyboard()));
+    this.objects.push(new Bomber(new Controller.Keyboard('ARROWS'), "red"));
+    this.objects.push(new Bomber(new Controller.Keyboard('WASD'), "green"));
+    this.objects.push(new Bomber(new Controller.Keyboard('IJKL'), "blue"));
 
     this.prerender();
   },
@@ -72,8 +74,7 @@ var Arena = Class.create(Screen, {
 
 
     this.battleField = new Element('div').setStyle({position: 'relative'}).addClassName('field');
-
-    this.map.render(this.battleField);
+    this.map.prerender(this.battleField);
 
 
     this.container.appendChild(this.battleField);
@@ -113,7 +114,6 @@ var Arena = Class.create(Screen, {
       }.bind(this), 100);
     }
 
-
     this.objects.each(function(object) {
       object.controller.update(this.keys);
     }.bind(this));
@@ -124,11 +124,15 @@ var Arena = Class.create(Screen, {
     //this.position = Math.round(Math.random()*3);
   },
   render: function(time) {
-    this.prerender();
+    if (!this.paused) {
+      this.prerender();
 
-    this.objects.each(function(item) {
-      item.render(this.battleField);
-    }.bind(this));
+      this.map.render(this.battleField);
+
+      this.objects.each(function(item) {
+        item.render(this.battleField);
+      }.bind(this));
+    }
 
     if (this.paused && !this.overlay) {
       this.overlay = new Element('div', {id: 'overlay'});
@@ -157,18 +161,3 @@ var Arena = Class.create(Screen, {
 
   }
 });
-
-
-/*
-var OptionGroup = Class.create({
-  container: null,
-  name: null,
-  initialize: function(name) {
-    this.name = name;
-    this.container = new Element('div');
-  },
-  render: function() {
-    return this.container
-  }
-});
-*/
