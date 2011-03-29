@@ -41,6 +41,7 @@ var Intro = Class.create(Screen, {
           }
         }
       } else {
+        Sound.play('menu_back');
         this.timeout = setTimeout(function() {Game.instance.setScreen(Menu)}, 2500);
       }
     } else {

@@ -128,7 +128,7 @@ Object.extend(Map, {
         if (callback) callback(map);
       },
       onFailure: function() {
-        throw new 'cannot load map ' + name;
+        throw new String("cannot load map " + name);
       }
     });
     return new Map();

@@ -30,7 +30,7 @@ var Graphics = Class.create(Worker, {
 
 var State = Class.create(Worker, {
   initialize: function() {
-    this.delay = 50;
+    this.delay = 20;
   },
   action: function(delay) {
     Game.instance.getScreen().update(delay);
