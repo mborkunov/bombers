@@ -4,9 +4,17 @@ Tile.Wall = Class.create(Tile, {
     this.name = 'wall';
     this.passable = false;
     this.blocking = true;
-    this.next = new Tile.Ground();
   },
-  vanish: function() {
-    this.disappear = true;
+  prerender: function($super, container) {
+    this.container = container;
+    $super(container);
+    this.element.stopObserving("click", this.clickHandler);
+    this.element.on("click", function() {
+      this.destroy();
+    }.bind(this));
+  },
+  destroy: function($super) {
+    this.next = new Tile.Ground(this.x, this.y);
+    $super();
   }
 });

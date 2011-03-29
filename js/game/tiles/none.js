@@ -7,6 +7,8 @@ Tile.None = Class.create(Tile, {
   act: function(object) {
       object.fall();
   },
+  prerender: function() {
+  },
   render: function() {
   },
   update: function() {

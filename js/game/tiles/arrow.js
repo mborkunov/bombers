@@ -1,4 +1,4 @@
-Tile.Arrow = Class.create(Tile, {
+Tile.Arrow = Class.create(Tile.Ground, {
   
   direction: 0,
   initialize: function($super, x, y, direction) {

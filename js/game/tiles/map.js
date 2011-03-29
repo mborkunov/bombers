@@ -26,6 +26,9 @@ var Map = Class.create({
   update: function(delay, shake) {
     this.entry.update(delay, shake);
   },
+  prerender: function(container) {
+    this.entry.prerender(container);
+  },
   render: function(container) {
     this.entry.render(container);
   }
@@ -107,11 +110,22 @@ Map.Entry = Class.create({
   },
   update: function(delay, shake) {
     this.each(function(tile) {
+      if (tile.next != null) {
+        tile = tile.next;
+      }
       tile.update(delay, shake);
+    }.bind(this));
+  },
+  prerender: function(container) {
+    this.each(function(tile) {
+      tile.prerender(container);
     }.bind(this));
   },
   render: function(container) {
     this.each(function(tile) {
+      if (tile.next != null) {
+        tile = tile.next;
+      }
       tile.render(container);
     }.bind(this));
   }
