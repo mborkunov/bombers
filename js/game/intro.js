@@ -12,13 +12,15 @@ var Intro = Class.create(Screen, {
   init: function() {
     this.listeners = {
       click: function(e) {
+        if (this.timeout) clearTimeout(this.timeout);
         Game.instance.setScreen(Menu);
-      },
+      }.bind(this),
       keydown: function(e) {
         if (!e.hasModifiers()) {
+          if (this.timeout) clearTimeout(this.timeout);
           Game.instance.setScreen(Menu);
         }
-      }
+      }.bind(this)
     };
     Sound.play('winlevel');
 
