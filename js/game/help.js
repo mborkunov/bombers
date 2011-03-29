@@ -28,7 +28,9 @@ var Help = Class.create(Screen, {
       {name: 'Cocaine', text: 'Lets you move very fast!! (too fast)'}
     ], 'drugs');
 
-    this.container.appendChild(new Element("span").update("Press any key"))
+    var anyKey = new Element("span").update("Press any key").setStyle({cursor: 'pointer'});
+    anyKey.on('click', function() {Game.instance.setScreen(Menu)});
+    this.container.appendChild(anyKey);
   },
   dispatch: function($super) {
     clearTimeout(this.timeout);
