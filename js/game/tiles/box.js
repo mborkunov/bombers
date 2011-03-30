@@ -8,6 +8,7 @@ Tile.Box = Class.create(Tile, {
     $super(container);
     this.element.stopObserving("click", this.clickHandler);
     this.element.on("click", function() {
+      Sound.play("crunch");
       this.destroy();
     }.bind(this));
   },

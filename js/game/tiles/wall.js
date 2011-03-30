@@ -11,6 +11,7 @@ Tile.Wall = Class.create(Tile, {
     this.element.stopObserving("click", this.clickHandler);
     this.element.on("click", function() {
       this.destroy();
+      Sound.play("crunch");
     }.bind(this));
   },
   destroy: function($super) {
