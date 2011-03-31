@@ -7,13 +7,13 @@ Controller.Keyboard = Class.create(Controller, {
   },
   update: function(keys) {
     if (keys.indexOf(this.keys.left) != -1) {
-      this.bomber.move(2, 3);
+      this.bomber.move(.1, 3);
     } else if (keys.indexOf(this.keys.right) != -1) {
-      this.bomber.move(2, 1);
+      this.bomber.move(.1, 1);
     } else if (keys.indexOf(this.keys.up) != -1) {
-      this.bomber.move(2, 0);
+      this.bomber.move(.1, 0);
     } else if (keys.indexOf(this.keys.down) != -1) {
-      this.bomber.move(2, 2);
+      this.bomber.move(.1, 2);
     }
 
     if (keys.indexOf(this.keys.action) != -1) {

@@ -17,5 +17,9 @@ Tile.Wall = Class.create(Tile, {
   destroy: function($super) {
     this.next = new Tile.Ground(this.x, this.y);
     $super();
+  },
+  vanish: function() {
+    Sound.play('crunch');
+    this.destroy();
   }
 });

@@ -27,6 +27,7 @@ document.observe("dom:loaded", function() {
          "js/game/tiles/box.js",
          "js/game/tiles/map.js",
          "js/game/objects/object.js",
+         "js/game/objects/arbiter.js",
          "js/game/objects/bomber.js",
          "js/game/objects/bomb.js",
          "js/game/objects/corpse.js",

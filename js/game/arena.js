@@ -42,21 +42,24 @@ var Arena = Class.create(Screen, {
       }.bind(this)
     }
 
-    var maps = ['Big_Standard','Blast_Matrix','Bloody_Ring','Boiling_Egg','Bomb_Attack',
+    var maps = $A(['Big_Standard','Blast_Matrix','Bloody_Ring','Boiling_Egg','Bomb_Attack',
       'Broken_Heart','Crammed','Death_Corridor','Dilemma','FearCircle',
       'FearCircle_Remix','FireWheels','Football','Four_Instance','Ghostbear',
       'Hard_Work','Hole_Run','Huge_Standard','Juicy_Lucy','Kitchen','Meeting',
       'MungoBane','Obstacle_Race','Overkill','Prison_Cells','Redirection',
-      'Sixty_Nine','Small_Standard','Snake_Race','Tiny_Standard','Whole_Mess']
+      'Sixty_Nine','Small_Standard','Snake_Race','Tiny_Standard','Whole_Mess']);
 
-    var id = Math.round(Math.random() * maps.length);
+    var id = Math.floor(Math.random() * maps.length);
 
     Map.load(maps[id], function(map) {
       this.map = map;
     }.bind(this));
 
-    this.objects.push(new Bomber(new Controller.Keyboard('ARROWS'), "red"));
-    this.objects.push(new Bomber(new Controller.Keyboard('WASD'), "green"));
+
+    this.objects.push(this.arbiter = new Arbiter());
+
+    this.objects.push(new Bomber(new Controller.Keyboard('ARROWS'), "red", {x:1, y: 5}));
+    this.objects.push(new Bomber(new Controller.Keyboard('WASD'), "green", {x: 5, y: 2}));
     this.objects.push(new Bomber(new Controller.Keyboard('IJKL'), "blue"));
 
     this.prerender();
@@ -72,13 +75,17 @@ var Arena = Class.create(Screen, {
     var width = Math.round(this.container.getWidth() / x);
     var height = Math.round(this.container.getHeight() / y);
 
-
     this.battleField = new Element('div').setStyle({position: 'relative'}).addClassName('field');
     this.map.prerender(this.battleField);
-
-
     this.container.appendChild(this.battleField);
 
+    this.renderThemeSwitcher();
+
+    this.objects.each(function(item) {
+      item.render(this.battleField);
+    }.bind(this));
+  },
+  renderThemeSwitcher: function() {
     var themes = $A([
       {name: 'Default', id: 'default', color: 'silver'},
       {name: 'Dark', id: 'dark', color: 'gray'},
@@ -97,10 +104,6 @@ var Arena = Class.create(Screen, {
         Game.instance.setTheme(e.element().getAttribute('theme'));
       });
     }.bind(themesElement));
-
-    this.objects.each(function(item) {
-      item.render(this.battleField);
-    }.bind(this));
   },
   update: function(delay) {
     if (this.paused) return;
@@ -115,10 +118,20 @@ var Arena = Class.create(Screen, {
     }
 
     this.objects.each(function(object) {
-      object.controller.update(this.keys);
+      object.update();
+      if (typeof (object.controller) != 'undefined') {
+        object.controller.update(this.keys);
+      }
     }.bind(this));
 
    this.map.update(delay, this.shake);
+
+    if (!this.arbiter.isFlying()) {
+      var random = this.map.getRandomTile();
+      if (random) {
+        this.arbiter.flyTo(random);
+      }
+    }
   },
   changeDirection: function() {
     //this.position = Math.round(Math.random()*3);

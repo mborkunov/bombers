@@ -64,6 +64,7 @@ var Tile = Class.create({
       this.next.prerender(this.container);
     }
     this.element.hide();
+    this.destroyed = true;
   },
   shake: function(shake) {
     if (shake == 0) {
@@ -89,8 +90,8 @@ var Tile = Class.create({
   prerender: function(container) {
     var id = 'tile-' + this.name + '-' + this.x + 'x' + this.y;
     var className = 'tile-' + this.getName();
-    this.left = this.y * 40;
-    this.top = this.x * 40;
+    this.left = this.x * 40;
+    this.top = this.y * 40;
 
     var styles = {
       position: 'absolute',
@@ -101,8 +102,9 @@ var Tile = Class.create({
     this.element = new Element('div', {id: id}).addClassName('tile').addClassName(className).setStyle(styles);
     this.clickHandler = function() {
       this.vanish();
+      this.element.stopObserving("click", this.clickHandler);
     }.bind(this);
-    this.element.observe("click", this.clickHandler);
+    this.element.observe('click', this.clickHandler);
     container.appendChild(this.element);
   },
   render: function(container) {
@@ -114,8 +116,8 @@ var Tile = Class.create({
       this.element.style.left = left;
     }
 
-    if (this.vanishing !== null && this.vanishing >= 0) {
-      this.element.style["-webkit-transform"] = "scale(" + this.vanishing + ", " + this.vanishing +")";
+    if (this.isVanishing()) {
+      this.element.style['-webkit-transform'] = 'scale(' + this.vanishing + ', ' + this.vanishing +')';
       this.element.style.opacity = this.vanishing;
     }
   },

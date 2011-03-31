@@ -20,6 +20,9 @@ var Map = Class.create({
   addBomb: function() {
     
   },
+  getRandomTile: function() {
+    return this.entry.getRandomTile();
+  },
   getMaxPlayers: function() {
     return this.maxPlayers;
   },
@@ -28,6 +31,7 @@ var Map = Class.create({
   },
   prerender: function(container) {
     this.entry.prerender(container);
+    container.appendChild(new Element("span").addClassName("map-name").update(this.getName().replace("_", " ")));
   },
   render: function(container) {
     this.entry.render(container);
@@ -37,11 +41,17 @@ var Map = Class.create({
 Map.Entry = Class.create({
   tiles: null,
   data: null,
+
   initialize: function(data) {
     this.data = data;
     this.tiles = {};
     
-    var x = 0; y  = 0;
+    var x = 0, y;
+    this.size = {
+      x: 0, y: 0,
+      setX: function(x) {if (this.x <= x) this.x = x + 1},
+      setY: function(y) {if (this.y <= y) this.y = y + 1}
+    };
 
     while (typeof data[x] != 'undefined') {
       this.tiles[x] = {};
@@ -93,19 +103,49 @@ Map.Entry = Class.create({
         }
         
         this.tiles[x][y] = tile;
-        y++;
+        this.size.setY(y++);
       }
-      x++;
+      this.size.setX(x++);
     }
+    console.log(this.size.x + "x" + this.size.y);
+  },
+  getRandomTile: function() {
+    var x = Math.floor(Math.random() * this.size.x);
+    var y = Math.floor(Math.random() * this.size.y);
+
+    try {
+      var tile = this.tiles[x][y].next ? this.tiles[x][y].next : this.tiles[x][y];
+      return (tile.isVanishing() || tile.isDestroyed() || tile.getName() == 'none') ? this.getRandomTile() : tile;
+    } catch (e) {
+      if (this.hasTiles()) {
+        return this.getRandomTile();
+      }
+      return null;
+    }
+  },
+  hasTiles: function() {
+    var x = 0, y = 0;
+    while (typeof this.tiles[y] != 'undefined') {
+      x = 0;
+      while (typeof this.tiles[y][x] != 'undefined') {
+        var tile = this.tiles[y][x++];;
+        tile = tile.next ? tile.next : tile;
+        if (tile instanceof Tile.Ground && !tile.isDestroyed() && !tile.isVanishing()) {
+          return true;
+        }
+      }
+      y++;
+    }
+    return false;
   },
   each: function(callback) {
     var x = 0, y = 0;
-    while (typeof this.tiles[x] != 'undefined') {
-      y = 0;
-      while (typeof this.tiles[x][y] != 'undefined') {
-        callback(this.tiles[x][y++]);
+    while (typeof this.tiles[y] != 'undefined') {
+      x = 0;
+      while (typeof this.tiles[y][x] != 'undefined') {
+        callback(this.tiles[y][x++]);
       }
-      x++;
+      y++;
     }      
   },
   update: function(delay, shake) {
@@ -163,10 +203,10 @@ Object.extend(Map, {
       y = 0;
 
       for (var j = 0, len = line.length; j < len; j++, y++) {
-        if (typeof data[x] == 'undefined') {
-          data[x] = {};
+        if (typeof data[y] == 'undefined') {
+          data[y] = {};
         }
-        data[x][y] = line.charAt(j);
+        data[y][x] = line.charAt(j);
       }
     }
     return new Map(name, author, maxPlayers, new Map.Entry(data));
