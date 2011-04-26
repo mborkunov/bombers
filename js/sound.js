@@ -4,6 +4,8 @@ Object.extend(Sound, {
     container: $('sounds'),
     volume: 0.35,
     enabled: true,
+    poolSize: 3,
+    pool: {},
     isEnabled: function() {
         return this.enabled;
     },
@@ -17,14 +19,29 @@ Object.extend(Sound, {
         if (!this.enabled) {
             return;
         }
-        /**
-         * todo: cache sounds
-         */
-        var audio = new Element('audio', {src: 'sounds/' + name + '.wav', autoplay: true});
-        audio.volume = this.volume;
-        audio.observe('ended', function() {
-            this.parentNode.removeChild(this);
-        }.bind(audio));
-        Sound.container.appendChild(audio);
+
+        if (typeof(this.pool[name]) == 'undefined') {
+          this.pool[name] = [];
+        }
+
+
+        if (this.pool[name].length <= this.poolSize) {
+          /**
+           * todo: cache sounds
+           */
+          var audio = new Audio('sounds/' + name + '.wav');
+          audio.preload = 'none';
+          audio.volume = this.volume;
+          this.pool[name].push(audio);
+          audio.play();
+        } else {
+          for (var i = 0; i < this.pool[name].length; i++) {
+            if (this.pool[name][i].ended) {
+              this.pool[name][i].play();
+              break;
+            }
+          }
+        }
+
     }
 });
