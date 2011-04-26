@@ -118,6 +118,7 @@ var Tile = Class.create({
 
     if (this.isVanishing()) {
       this.element.style['-webkit-transform'] = 'scale(' + this.vanishing + ', ' + this.vanishing +')';
+      this.element.style.MozTransform = 'scale(' + this.vanishing + ', ' + this.vanishing +')';
       this.element.style.opacity = this.vanishing;
     }
   },
