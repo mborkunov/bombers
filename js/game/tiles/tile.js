@@ -55,7 +55,7 @@ var Tile = Class.create({
   },
   vanish: function() {
     console.log('vanish: ' + this.getName());
-    Sound.play("crunch");
+    Sound.play('crunch');
     this.vanishing = 1;
   },
   destroy: function() {

@@ -20,7 +20,7 @@
 }
 
 #game-container.credits {
-  background-image: url('../../images/themes/default/horst_evil.png');
+  background: url('../../images/overlay.png'), url('../../images/themes/default/horst_evil.png');
 }
 
 #game-container.editor {

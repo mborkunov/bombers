@@ -124,7 +124,7 @@ var Arena = Class.create(Screen, {
       }
     }.bind(this));
 
-   this.map.update(delay, this.shake);
+    this.map.update(delay, this.shake);
 
     if (!this.arbiter.isFlying()) {
       var random = this.map.getRandomTile();

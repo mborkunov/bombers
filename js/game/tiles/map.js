@@ -66,7 +66,6 @@ Map.Entry = Class.create({
           case '^':
             tile = new Tile.Arrow(x, y, data[x][y]);
             break;
-
           case 'R':
             if (Math.round((Math.random() * 100)) % 3 == 0) {
               tile = new Tile.Box(x, y);
@@ -74,29 +73,23 @@ Map.Entry = Class.create({
               tile = new Tile.Ground(x, y);
             }
             break;
-
           case '1': case '2': case '3': case '4':
           case '5': case '6': case '7': case '0':
           case ' ':
             tile = new Tile.Ground(x, y);
             break;
-            
           case '+':
             tile = new Tile.Box(x, y);
             break;
-            
           case 'S':
             tile = new Tile.Ice(x, y);
             break;
-
           case 'o':
             tile = new Tile.Trap(x, y);
             break;
-            
           case '*':
             tile = new Tile.Wall(x, y);
             break;
-
           default:
             tile = new Tile.None(x, y);
             break;
@@ -130,7 +123,7 @@ Map.Entry = Class.create({
       while (typeof this.tiles[y][x] != 'undefined') {
         var tile = this.tiles[y][x++];;
         tile = tile.next ? tile.next : tile;
-        if (tile instanceof Tile.Ground && !tile.isDestroyed() && !tile.isVanishing()) {
+        if (tile.getName() != 'none' && !tile.isDestroyed() && !tile.isVanishing()) {
           return true;
         }
       }

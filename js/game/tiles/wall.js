@@ -20,6 +20,7 @@ Tile.Wall = Class.create(Tile, {
   },
   vanish: function() {
     Sound.play('crunch');
+    //this.vanishing = -1;
     this.destroy();
   }
 });

@@ -19,7 +19,6 @@ var Arbiter = Class.create(GameObject, {
       this.element.style.top = (this.y * 40) + 'px';
       this.element.style.left = (this.x * 40)+ 'px';
 
-      //console.log(this.scale);
       this.element.style['-webkit-transform'] = 'scale(' + this.scale + ', ' + this.scale +')';
     }
   },

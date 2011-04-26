@@ -82,14 +82,16 @@ var GameObject = Class.create({
       return false;
     }
     if (this.isFlying()) {
-      var diff = 100;
+      var diff = 10;
       var speedX = (this.destination.getX() - this.departure[0]) / diff;
       var speedY = (this.destination.getY() - this.departure[1]) / diff;
 
       if (this._check(this.x, this.destination.getX(), speedX) || this._check(this.y, this.destination.getY(), speedY)) {
         this.x = this.destination.getX();
         this.y = this.destination.getY();
-        (this.destination.next ? this.destination.next : this.destination).vanish();
+        if (this.destination) {
+          this.getTile(this.destination).vanish();
+        }
         this.destination = null;
         this.departure = null;
         this.scale = 1;
@@ -111,7 +113,15 @@ var GameObject = Class.create({
         var progress = x / Math.abs(x1 - x2);
         this.scale = 1 + Math.sin(progress * Math.PI);
       }
+      if (!this.isFlying()) {
+        if (this.destination) {
+          this.getTile(this.destination).vanish();
+        }
+      }
     }
+  },
+  getTile: function(object) {
+    return object ? object.tile ? object.tile : object : null;
   },
   _check: function(position, destination, diff) {
     return (Math.abs(position - destination) < Math.abs(position + diff - destination));
