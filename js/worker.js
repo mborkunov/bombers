@@ -1,9 +1,11 @@
 var Worker = Class.create({
-    defaultDelay: 30,
+    defaultFps: 30,
     lastcall: null,
-    delay: null,
+    fps: null,
     initialize: function() {
-        this.delay = this.defaultDelay;
+        this.fps = this.defaultFps;
+        this.timeout = 0;
+        this.lastcall = 0;
     },
     start: function() {
         this.loop();
@@ -11,25 +13,26 @@ var Worker = Class.create({
     loop: function() {
         this.lastcall = date();
         try {
-            this.action(this.delay);
+          this.action(date() - this.lastCallEnd);
         } catch (e) {console.log(e);}
-        this.delay = Math.abs(this.delay - (date() - this.lastcall));
-        setTimeout(this.loop.bind(this), this.delay);
+        this.lastCallEnd = date();
+        this.timeout = Math.abs(1000 / this.fps - (date() - this.lastcall));
+        setTimeout(this.loop.bind(this), this.timeout);
     }
 });
 
 var Graphics = Class.create(Worker, {
   initialize: function() {
-    this.delay = 30;
+    this.fps = 50;
   },
-  action: function() {
-    Game.instance.getScreen().render();
+  action: function(delay) {
+    Game.instance.getScreen().render(delay);
   }
 });
 
 var State = Class.create(Worker, {
   initialize: function() {
-    this.delay = 20;
+    this.fps = 50;
   },
   action: function(delay) {
     Game.instance.getScreen().update(delay);
