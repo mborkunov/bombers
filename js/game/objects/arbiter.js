@@ -1,10 +1,12 @@
 var Arbiter = Class.create(GameObject, {
+  running: null,
   initialize: function($super) {
     $super();
     this.x = -1;
     this.y = -1.1;
+    this.running = true;
   },
-  render: function(container) {
+  render: function($super, container) {
     if (!this.element && container) {
       this.container = container;
       this.element = new Element('div', {id: 'arbiter'}).setStyle({
@@ -14,20 +16,24 @@ var Arbiter = Class.create(GameObject, {
 
       container.appendChild(this.element);
     }
-
-    if (this.element) {
-      this.element.style.top = (this.y * 40) + 'px';
-      this.element.style.left = (this.x * 40)+ 'px';
-
-      var scale = 'scale(' + this.scale + ',' + this.scale +')';
-      this.element.style['-webkit-transform'] = scale;
-      this.element.style.MozTransform = scale;
-    }
+    $super();
+  },
+  isRunning: function() {
+    return this.running;
+  },
+  run: function() {
+    this.running = true;
   },
   hurry: function() {
-
+    // warn
   },
-  update: function($super) {
+  update: function($super, delay, map) {
+    if (!this.isFlying()) {
+      var random = map.getRandomTile();
+      if (random) {
+        this.flyTo(random);
+      }
+    }
     $super();
   }
 });

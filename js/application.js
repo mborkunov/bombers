@@ -46,7 +46,7 @@ document.observe("dom:loaded", function() {
          "js/game/controllers/ai.js"
      ];
 
-    document.onmousedown = function() {return false;} // disable text selection - chromium
+    document.onmousedown = function() {return false}; // disable text selection - chromium
     require(scripts, function() {
         new Game().start();
     });

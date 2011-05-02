@@ -4,7 +4,7 @@ Object.extend(Sound, {
     container: $('sounds'),
     volume: 0.35,
     enabled: true,
-    poolSize: 3,
+    poolSize: 10,
     pool: {},
     isEnabled: function() {
         return this.enabled;
@@ -26,9 +26,6 @@ Object.extend(Sound, {
 
 
         if (this.pool[name].length <= this.poolSize) {
-          /**
-           * todo: cache sounds
-           */
           var audio = new Audio('sounds/' + name + '.wav');
           audio.preload = 'none';
           audio.volume = this.volume;

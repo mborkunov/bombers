@@ -112,3 +112,47 @@
   text-align: center;
   margin: 40px 0 0;
 }
+
+#game-container.arena .field {
+  margin: 50px 0 0 60px;
+}
+
+#game-container.arena .tile {
+    z-index: 10;
+}
+
+#game-container.arena .bomber {
+    z-index: 11;
+}
+#game-container.arena .bomber.dead {
+    background-position-x: 40px !important;
+}
+
+#game-container.arena .falling {
+    z-index: 1;
+}
+
+#game-container.arena #arbiter {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    z-index: 666;
+}
+#game-container.arena .map-name {
+    position: absolute;
+    display: block;
+    top: -40px;
+    left: 20px;
+    font-size: 24px;
+    color: #ccc;
+}
+
+#game-container.arena #logo {
+    position: absolute;
+    z-index: 9;
+    top: -40px;
+    left: 250px;
+    width: 146px;
+    height: 40px;
+    background-image: url('../../images/logo_small.png');
+}

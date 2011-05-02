@@ -4,6 +4,15 @@
   background: #000;
 }
 
+.arena #arbiter {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    z-index: 666;
+    background: url('../../images/themes/green/trollface.png') 0 0 no-repeat;
+    background-size: 40px 40px;
+}
+
 .arena .tile {
   background-color: #424242;
 }
@@ -44,4 +53,8 @@
 
 .arena .tile-wall {
   background: url('../../images/themes/green/tiles.png') 120px 0;
+}
+
+.arena .bomber {
+    background: url('../../images/themes/default/bomber_green.png') 0 0;
 }

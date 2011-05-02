@@ -22,34 +22,15 @@
 #game-container.arena {
   background: #000;
 }
-
-
-.arena #arbiter {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    z-index: 666;
+#game-container.arena #arbiter {
     background: url('../../images/themes/default/arbiter.png') 0 0 no-repeat;
-}
-.arena .map-name {
-    position: absolute;
-    display: block;
-    top: -40px;
-    left: 20px;
-    font-size: 24px;
-    color: #ccc;
-}
-
-.arena .tile {
-  background-color: #424242;
+};
+.arena .tile.highlight {
+    opacity: 0.9;
 }
 
 .arena .tile-none {
   background-color: #000;
-}
-
-.arena .field {
-  margin: 50px 0 0 60px;
 }
 
 .arena .tile-arrow-east {
@@ -88,4 +69,6 @@
   background: url('../../images/themes/default/tiles.png') 120px 0;
 }
 
-
+.arena .bomber {
+    background: url('../../images/themes/default/bomber_green.png') 0 0;
+}

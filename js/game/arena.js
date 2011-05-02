@@ -1,27 +1,28 @@
 var Arena = Class.create(Screen, {
-  menu: null,
   name: 'Arena',
   rendered: false,
-  direction: null,
-  x: null,
-  y: null,
-  area: null,
   paused: false,
   battleField: null,
   overlay: null,
   dialog: null,
   shake: null,
   objects: null,
+  timeisup: null,
 
   init: function() {
-    this.objects = $A([]);
-    this.x = 0;
-    this.y = 0;
-    this.shake = 0;
-    this.area = {
-      x: 16, y: 10
+    this.objects = {
+      bombers: [],
+      arbiter:  new Arbiter(),
+      extras: [],
+      each: function(call) {
+        this.bombers.each(function(bomber) {
+          call(bomber);
+        });
+        call(this.arbiter);
+      }
     };
-    this.direction = 0;
+    this.shake = 0;
+    this.timeisup = false;
     this.rendered = false;
     this.listeners = {
       mousemove: function(e) {
@@ -53,46 +54,43 @@ var Arena = Class.create(Screen, {
 
     Map.load(maps[id], function(map) {
       this.map = map;
+
+      this.map.getPlayerStartupPositions().each(function(position) {
+        var x = this.map.entry.size.x - 1, y = this.map.entry.size.y - 1;
+
+        var bomber = new Bomber(new Controller.Keyboard(Controller.Keyboard.Type.ARROWS), "red", {x: x / 2, y: y / 2});
+        bomber.flyTo(this.map.entry.tiles[position.x][position.y]);
+        this.objects.bombers.push(bomber);
+      }.bind(this));
+      this.prerender();
     }.bind(this));
 
-
-    this.objects.push(this.arbiter = new Arbiter());
-
-    this.objects.push(new Bomber(new Controller.Keyboard('ARROWS'), "red", {x:1, y: 5}));
-    this.objects.push(new Bomber(new Controller.Keyboard('WASD'), "green", {x: 5, y: 2}));
-    this.objects.push(new Bomber(new Controller.Keyboard('IJKL'), "blue"));
-
-    this.prerender();
+    //this.bombers.push(new Bomber(new Controller.Keyboard(Controller.Keyboard.Type.WASD), "green", {x: 5, y: 2}));
+    //this.bombers.push(new Bomber(new Controller.Keyboard(Controller.Keyboard.Type.IJKL), "blue"));
+    //this.bombers.push(new Bomber(new Controller.Keyboard(Controller.Mouse), "yellow"), {x: 2, y: 5});
   },
   prerender: function() {
-    if (this.map == null || this.rendered) {
-      return;
-    }
-
     this.rendered = true;
-
-    var x = this.area.x, y = this.area.y;
-    var width = Math.round(this.container.getWidth() / x);
-    var height = Math.round(this.container.getHeight() / y);
 
     this.battleField = new Element('div').setStyle({position: 'relative'}).addClassName('field');
     this.map.prerender(this.battleField);
     this.container.appendChild(this.battleField);
 
     this.renderThemeSwitcher();
+    this.battleField.appendChild(new Element('div', {id: 'logo'}));
 
-    this.objects.each(function(item) {
-      item.render(this.battleField);
+    this.objects.each(function(object) {
+      object.render(this.battleField);
     }.bind(this));
   },
   renderThemeSwitcher: function() {
     var themes = $A([
-      {name: 'Default', id: 'default', color: 'silver'},
+      {name: 'Default', id: 'green', color: 'green'},
+      {name: 'Classic', id: 'default', color: 'silver'},
+      {name: 'Snow', id: 'snow', color: 'snow'}/*,
       {name: 'Dark', id: 'dark', color: 'gray'},
-      {name: 'Snow', id: 'snow', color: 'snow'},
-      {name: 'Green', id: 'green', color: 'green'},
       {name: 'Strange', id: 'strange', color: 'darkcyan'},
-      {name: 'Stone', id: 'stone', color: 'yellow'}
+      {name: 'Stone', id: 'stone', color: 'yellow'}*/
     ]);
     var themesElement = new Element('div').setStyle({position: 'absolute', top: 0, right: 0, zIndex: 10, height: '20px', width: (20 * themes.size()) + 'px'});
     this.container.appendChild(themesElement);
@@ -106,6 +104,7 @@ var Arena = Class.create(Screen, {
     }.bind(themesElement));
   },
   update: function(delay) {
+    if (this.map == null) return;
     if (this.paused) return;
     if (this.keys.indexOf(Event.KEY_HOME) != -1) {
       if (typeof (this.timeout) != 'undefined') {
@@ -118,28 +117,21 @@ var Arena = Class.create(Screen, {
     }
 
     this.objects.each(function(object) {
-      object.update();
-      if (typeof (object.controller) != 'undefined') {
-        object.controller.update(this.keys);
+      if (object instanceof Bomber) {
+        object.controller.update(this.keys, delay);
       }
+      if (object instanceof Arbiter && !object.isRunning()) {
+        return;
+      }
+      object.update(delay, this.map);
     }.bind(this));
 
     this.map.update(delay, this.shake);
-
-    if (!this.arbiter.isFlying()) {
-      var random = this.map.getRandomTile();
-      if (random) {
-        this.arbiter.flyTo(random);
-      }
-    }
-  },
-  changeDirection: function() {
-    //this.position = Math.round(Math.random()*3);
+    this.map.highlight(this.objects.bombers);
   },
   render: function(time) {
+    if (!this.rendered) return;
     if (!this.paused) {
-      this.prerender();
-
       this.map.render(this.battleField);
 
       this.objects.each(function(item) {
@@ -150,10 +142,10 @@ var Arena = Class.create(Screen, {
     if (this.paused && !this.overlay) {
       this.overlay = new Element('div', {id: 'overlay'});
       this.dialog = new Element('div').addClassName('dialog');
-      this.dialog.appendChild(new Element('a').addClassName('action').update('Return to main menu').observe('click', function() {
+      this.dialog.appendChild(new Element('a').addClassName('action').update('Abort ').observe('click', function() {
         Game.instance.setScreen(Menu);
       }));
-      this.dialog.appendChild(new Element('a').addClassName('action').update('Cancel').observe('click', function() {
+      this.dialog.appendChild(new Element('a').addClassName('action').update('Resume').observe('click', function() {
         this.paused = false;
       }.bind(this)));
       this.container.appendChild(this.overlay);

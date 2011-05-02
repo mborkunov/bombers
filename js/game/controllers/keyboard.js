@@ -3,24 +3,23 @@ Controller.Keyboard = Class.create(Controller, {
   initialize: function($super, type) {
     $super();
     this.i = 1;
-    this.keys = Controller.Keyboard.Type[type];
+    this.keys = type;
   },
-  update: function(keys) {
+  update: function(keys, delay) {
+    if (!this.active) return;
+
     if (keys.indexOf(this.keys.left) != -1) {
-      this.bomber.move(.1, 3);
+      this.bomber.move(3, delay);
     } else if (keys.indexOf(this.keys.right) != -1) {
-      this.bomber.move(.1, 1);
+      this.bomber.move(1, delay);
     } else if (keys.indexOf(this.keys.up) != -1) {
-      this.bomber.move(.1, 0);
+      this.bomber.move(0, delay);
     } else if (keys.indexOf(this.keys.down) != -1) {
-      this.bomber.move(.1, 2);
+      this.bomber.move(2, delay);
     }
 
     if (keys.indexOf(this.keys.action) != -1) {
-        console.log("bomb");
         this.bomber.spawnBomb();
-        this.i += 0.001;
-        this.bomber.getElement().setStyle({"-webkit-transform": "scale(" + this.i + "," + this.i + ")"});
     }
   }
 });
@@ -32,7 +31,7 @@ Object.extend(Controller.Keyboard, {
       right: Event.KEY_RIGHT,
       up: Event.KEY_UP,
       down: Event.KEY_DOWN,
-      action: Event.KEY_ENTER | 13
+      action: Event.KEY_ENTER || 13
     },
     WASD: {
       left: 65,

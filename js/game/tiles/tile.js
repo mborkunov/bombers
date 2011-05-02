@@ -26,6 +26,9 @@ var Tile = Class.create({
   isBlocking: function() {
     return this.blocking;
   },
+  isFallen: function() {
+    return this.vanishing == 0;
+  },
   isVanishing: function() {
     return this.vanishing !== null && this.vanishing >= 0;
   },
@@ -64,6 +67,7 @@ var Tile = Class.create({
       this.next.prerender(this.container);
     }
     this.element.hide();
+    this.element.style['-webkit-transform'] = 'scale(1, 1)';
     this.destroyed = true;
   },
   shake: function(shake) {
@@ -106,6 +110,10 @@ var Tile = Class.create({
     }.bind(this);
     this.element.observe('click', this.clickHandler);
     container.appendChild(this.element);
+  },
+  highlight: function() {
+    if (this.element)
+      this.element.addClassName("highlight");
   },
   render: function(container) {
     var top = this.element.y + 'px'

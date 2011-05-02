@@ -1,4 +1,4 @@
-var Extra = Class.create({
+var Extra = Class.create(GameObject, {
     initialize: function() {
 
     }

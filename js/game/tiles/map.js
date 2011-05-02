@@ -10,18 +10,27 @@ var Map = Class.create({
     this.maxPlayers = maxPlayers;
     this.entry = entry;
   },
-  
   getAuthor: function() {
     return this.author;
   },
   getName: function() {
     return this.name;
   },
-  addBomb: function() {
-    
+  highlight: function(bombers) {
+    //this.entry.clearHighlights();
+    bombers.each(function(bomber) {
+      if (bomber.isDead()) return;
+      this.entry.highlightTile(bomber.getX(), bomber.getY());
+    }.bind(this))
+  },
+  getPlayerStartupPositions: function() {
+    return this.entry.getPlayerStartupPositions();
   },
   getRandomTile: function() {
     return this.entry.getRandomTile();
+  },
+  getTile: function(x, y) {
+    return this.entry.getTile(x, y);
   },
   getMaxPlayers: function() {
     return this.maxPlayers;
@@ -41,10 +50,12 @@ var Map = Class.create({
 Map.Entry = Class.create({
   tiles: null,
   data: null,
+  playerPositions: null,
 
   initialize: function(data) {
     this.data = data;
     this.tiles = {};
+    this.playerPositions = [];
     
     var x = 0, y;
     this.size = {
@@ -75,6 +86,7 @@ Map.Entry = Class.create({
             break;
           case '1': case '2': case '3': case '4':
           case '5': case '6': case '7': case '0':
+            this.playerPositions.push({number: parseInt(data[x][y]), x: x, y: y});
           case ' ':
             tile = new Tile.Ground(x, y);
             break;
@@ -100,14 +112,39 @@ Map.Entry = Class.create({
       }
       this.size.setX(x++);
     }
-    console.log(this.size.x + "x" + this.size.y);
+    console.log("Map size: " + this.size.x + "x" + this.size.y);
+  },
+  clearHighlights: function() {
+    this.each(function(tile) {
+      if (tile && tile.element)
+      tile.element.removeClassName("highlight");
+    });
+  },
+  getTile: function(x, y) {
+    var _x = Math.round(x), _y = Math.round(y);
+    var tile = null;
+    try {
+      tile = this.tiles[_x][_y];
+    } catch (e) {
+      tile = new Tile.None(_x, _y);
+    }
+    if (typeof (tile) == 'undefined') {
+      tile = new Tile.None(_x, _y);
+    }
+    if (x < 0 || y < 0) {
+      console.log(tile);
+    }
+    return tile.next ? tile.next : tile;
+  },
+  highlightTile: function(x, y) {
+    this.getTile(x, y).highlight();
   },
   getRandomTile: function() {
     var x = Math.floor(Math.random() * this.size.x);
     var y = Math.floor(Math.random() * this.size.y);
 
     try {
-      var tile = this.tiles[x][y].next ? this.tiles[x][y].next : this.tiles[x][y];
+      var tile = this.getTile(x, y);
       return (tile.isVanishing() || tile.isDestroyed() || tile.getName() == 'none') ? this.getRandomTile() : tile;
     } catch (e) {
       if (this.hasTiles()) {
@@ -115,6 +152,10 @@ Map.Entry = Class.create({
       }
       return null;
     }
+  },
+  getPlayerStartupPositions: function() {
+    console.log(this.playerPositions);
+    return this.playerPositions;
   },
   hasTiles: function() {
     var x = 0, y = 0;

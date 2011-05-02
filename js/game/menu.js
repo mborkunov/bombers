@@ -55,6 +55,7 @@ var Menu = Class.create(Screen, {
       keyup: function(e) {
       }
     };
+    Sound.play('whoosh');
   },
   dispatch: function($super) {
     if (this.list) {
@@ -72,7 +73,6 @@ var Menu = Class.create(Screen, {
         item.render(list);
       }.bind(this, this.list));
       this.container.appendChild(this.list);
-      //this.menu.render(this.container);
     }
   },
   selectNext: function() {
@@ -117,7 +117,12 @@ var Menu = Class.create(Screen, {
     return rs;
   },
   act: function(item) {
-    (item || this.getSelected()).execute();
+    try {
+      (item || this.getSelected()).execute();
+    } catch (e) {
+      this.selectNext();
+      this.act();
+    }
   }
 });
 

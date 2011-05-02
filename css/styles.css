@@ -43,6 +43,7 @@ div.clear {
     width: 100%;
     height: 100%;
     opacity: .5;
+    z-index: 100;
 }
 
 #game-container .dialog {
@@ -57,6 +58,7 @@ div.clear {
     opacity: .7;
     -moz-box-shadow: 0 0 5px silver;
     -moz-border-radius: 3px;
+    z-index: 101;
 }
 
 #game-container .dialog .action {

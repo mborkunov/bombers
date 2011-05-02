@@ -20,9 +20,17 @@ var Credits = Class.create(Screen, {
       }.bind(this),
       keydown: function(e) {
         if (!e.hasModifiers()) {
-          Game.instance.setScreen(Menu);
+          //Game.instance.setScreen(Menu);
         }
-      }
+        if (this.keys.indexOf(e.keyCode) === -1) {
+          this.keys.push(e.keyCode);
+        }
+      }.bind(this),
+      keyup: function(e) {
+        if (this.keys.indexOf(e.keyCode) !== -1) {
+          this.keys = this.keys.without(e.keyCode);
+        }
+      }.bind(this)
     };
 
     this.margin = $('game-container').getHeight();
@@ -76,7 +84,15 @@ var Credits = Class.create(Screen, {
       Game.instance.setScreen(Menu);
     }
 
-    if (!this.stop) this.margin -= 0.5;
+    if (this.stop) return;
+
+    if (this.keys.indexOf(Event.KEY_UP) != -1) {
+      this.margin += 5;
+    } else if (this.keys.indexOf(Event.KEY_DOWN) != -1) {
+      this.margin -= 5;
+    } else {
+      this.margin -= 0.5;
+    }
   },
   render: function(delay) {
     this.div.style.marginTop = parseInt(this.margin) + 'px';
