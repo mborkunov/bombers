@@ -210,6 +210,7 @@ Object.extend(Map, {
   load: function(name, callback) {
     console.log('loading', 'maps/' + name + this.extension);
     new Ajax.Request('maps/' + name + '.map', {
+      method: 'get',
       onSuccess: function(r) {
         var content = r.responseText;
         var map = Map.parse(name, content);

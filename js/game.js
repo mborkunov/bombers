@@ -4,7 +4,7 @@ var Game = Class.create({
     graphics: null,
     state: null,
     initialize: function() {
-        this.setTheme(localStorage.getItem('theme'));
+        this.setTheme(localStorage.getItem('theme') || 'default');
         Game.instance = this;
         this.setScreen(Intro);
         this.graphics = new Graphics();

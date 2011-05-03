@@ -1,5 +1,25 @@
 @import "base.css";
 
+#menu {
+  opacity: 0.7;
+  width: 30%;
+  padding: 0;
+}
+
+#menu li {
+  width: auto;
+  height: 30px;
+  background: #a87;
+  margin: 0 auto;
+  border: none;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+}
+#menu li.selected {
+    background: #965;
+}
+
+
 #game-container.arena {
   background: #000;
 }
