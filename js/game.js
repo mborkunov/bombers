@@ -15,14 +15,18 @@ var Game = Class.create({
         this.state.start();
     },
     setTheme: function(theme) {
-       if (theme == null) return;
-       localStorage.setItem('theme', theme);
-       var themeLink = $('theme');
-       if (!themeLink) {
-          themeLink = new Element('link', {id: 'theme', rel: 'stylesheet', type: 'text/css', name: theme});
-          document.head.appendChild(themeLink);
-       }
-       themeLink.setAttribute('href', 'css/themes/' + theme +'.css?' + Math.random());
+      if (theme == null) return;
+      localStorage.setItem('theme', theme);
+      var themeLink = $('theme');
+      if (!themeLink) {
+        themeLink = new Element('link', {id: 'theme', rel: 'stylesheet', type: 'text/css', name: theme});
+        document.head.appendChild(themeLink);
+      } else {
+        document.body.removeClassName(themeLink.getAttribute('name'));
+      }
+      themeLink.setAttribute('href', 'css/themes/' + theme +'.css?' + Math.random());
+      themeLink.setAttribute('name', theme);
+      document.body.addClassName(theme);
     },
     setScreen: function(screen) {
         if (this.screen !== null) {
