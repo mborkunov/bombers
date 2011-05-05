@@ -70,5 +70,36 @@
 }
 
 .arena .bomber {
+    height: 40px;
+    width: 40px;
+}
+.arena .bomber-tall {
+    margin-top: -20px;
+    height: 60px !important;
+}
+
+.arena .bomber-ball-green {
     background: url('../../images/themes/default/bomber_green.png') 0 0;
+}
+.arena .bomber-ball-red {
+    background: url('../../images/themes/default/bomber_red.png') 0 0;
+}
+.arena .bomber-ball-yellow {
+    background: url('../../images/themes/default/bomber_yellow.png') 0 0;
+}
+.arena .bomber-ball-blue {
+    background: url('../../images/themes/default/bomber_blue.png') 0 0;
+}
+
+.arena .bomber-bsd {
+    background: url('../../images/themes/default/bomber_bsd.png') 0 0;
+}
+.arena .bomber-tux {
+    background: url('../../images/themes/default/bomber_tux.png') 0 0;
+}
+.arena .bomber-snake {
+    background: url('../../images/themes/default/bomber_snake.png') 0 0;
+}
+.arena .bomber-spider {
+    background: url('../../images/themes/default/bomber_spider.png') 0 0;
 }

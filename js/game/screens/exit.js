@@ -2,6 +2,7 @@ var Exit = Class.create(Screen, {
     menu: null,
     name: 'Exit',
     rendered: false,
+    listeners: {},
     init: function() {
       this.listeners = {
           mousemove: function(e) {
@@ -30,7 +31,6 @@ var Exit = Class.create(Screen, {
             this.menu.render(this.container);
         }
     },
-    listeners: {},
     dispatch: function() {
        this.menu.dispatch();
        this.rendered = false;

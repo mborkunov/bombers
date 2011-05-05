@@ -58,16 +58,30 @@ var Arena = Class.create(Screen, {
       this.map.getPlayerStartupPositions().each(function(position) {
         var x = this.map.entry.size.x - 1, y = this.map.entry.size.y - 1;
 
-        var bomber = new Bomber(new Controller.Keyboard(Controller.Keyboard.Type.ARROWS), "red", {x: x / 2, y: y / 2});
+        var bombers =  ['TUX', 'BSD', 'SPIDER', 'SNAKE', 'BALL-RED', 'BALL-YELLOW', 'BALL-GREEN', 'BALL-BLUE'];
+
+        var controllerType;
+        switch (Math.floor(Math.random() * 4)) {
+          case 0:
+              controllerType = Controller.Keyboard.Type.ARROWS;
+            break;
+          case 1:
+              controllerType = Controller.Keyboard.Type.WASD;
+            break;
+          case 2:
+              controllerType = Controller.Keyboard.Type.IJKL;
+            break;
+          case 3:
+              controllerType = Controller.Keyboard.Type.ARROWS;
+            break;
+        }
+
+        var bomber = new Bomber(new Controller.Keyboard(controllerType), bombers[Math.floor(Math.random() * 8)], {x: x / 2, y: y / 2});
         bomber.flyTo(this.map.entry.tiles[position.x][position.y]);
         this.objects.bombers.push(bomber);
       }.bind(this));
       this.prerender();
     }.bind(this));
-
-    //this.bombers.push(new Bomber(new Controller.Keyboard(Controller.Keyboard.Type.WASD), "green", {x: 5, y: 2}));
-    //this.bombers.push(new Bomber(new Controller.Keyboard(Controller.Keyboard.Type.IJKL), "blue"));
-    //this.bombers.push(new Bomber(new Controller.Keyboard(Controller.Mouse), "yellow"), {x: 2, y: 5});
   },
   prerender: function() {
     this.rendered = true;

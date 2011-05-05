@@ -30,6 +30,9 @@ var Credits = Class.create(Screen, {
         if (this.keys.indexOf(e.keyCode) !== -1) {
           this.keys = this.keys.without(e.keyCode);
         }
+        if (e.keyCode == 27 || e.keyCode == 13) {
+          Game.instance.setScreen(Menu);
+        }
       }.bind(this)
     };
 

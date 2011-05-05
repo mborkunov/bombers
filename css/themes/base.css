@@ -129,7 +129,7 @@
 }
 
 #game-container.arena .falling {
-    z-index: 1;
+    z-index: 1 !important;
 }
 
 #game-container.arena #arbiter {

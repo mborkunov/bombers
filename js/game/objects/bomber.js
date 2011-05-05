@@ -6,7 +6,9 @@ var Bomber = Class.create(GameObject, {
   maxBombs: null,
   bombs: [],
   dead: null,
-  initialize: function($super, controller, color, coord) {
+  type: null,
+  tall: false,
+  initialize: function($super, controller, type, coord) {
     this.backgroundPosition = {x: 0, y: 0};
     this.distance = 0;
     this.speed = .05;
@@ -14,7 +16,8 @@ var Bomber = Class.create(GameObject, {
     this.dead = false;
     this.x = coord.x;
     this.y = coord.y;
-    this.color = color;
+    this.type = type;
+    this.tall = Bomber.Type[this.type];
     controller.attach(this);
     this.controller = controller;
   },
@@ -29,10 +32,16 @@ var Bomber = Class.create(GameObject, {
         position: 'absolute',
         top: this.y * 40 + 'px',
         left: this.x * 40 + 'px'
-      }).addClassName('bomber').addClassName('object');
+      }).addClassName('bomber')
+        .addClassName('object')
+        .addClassName('bomber-' + this.type.toLowerCase());
+
+      if (this.tall) this.element.addClassName('bomber-tall');
+
       this.element.observe("click", this.kill.bind(this));
       container.appendChild(this.element);
     }
+    this.element.style['z-index'] = Math.round((this.y + (this.tall ? .3 : 0)) * 10) + 10;
     $super();
   },
   kill: function() {
@@ -61,13 +70,14 @@ var Bomber = Class.create(GameObject, {
     if (this.isFlying() || this.isFalling()) return;
     var speed = this.getSpeed();
     var spriteDirection = this.backgroundPosition.y;
+    var height = this.element.getHeight();
     switch (direction) {
       case 0:
-          spriteDirection = 80;
+          spriteDirection = height * 2;
           this.y -= speed;
         break;
       case 1:
-          spriteDirection = 40;
+          spriteDirection = height;
           this.x += speed;
         break;
       case 2:
@@ -75,7 +85,7 @@ var Bomber = Class.create(GameObject, {
           this.y += speed;
         break;
       case 3:
-          spriteDirection = 120;
+          spriteDirection = height * 3;
           this.x -= speed;
         break;
     }
@@ -84,12 +94,12 @@ var Bomber = Class.create(GameObject, {
     }
     this.distance += speed;
 
-    if (this.distance >= .3) {
+    if (this.distance >= .1) {
       this.backgroundPosition.x += 40;
       if (this.backgroundPosition.x == 40) {
         this.backgroundPosition.x = 80;
       }
-      if (this.backgroundPosition.x >= 320) {
+      if (this.backgroundPosition.x >= 360) {
         this.backgroundPosition.x = 80;
       }
       this.element.style['background-position-x'] = this.backgroundPosition.x + 'px';
@@ -105,4 +115,11 @@ var Bomber = Class.create(GameObject, {
   throwBomb: function() {},
   kick: function() {},
   explode: function() {}
+});
+
+Object.extend(Bomber, {
+  Type: {
+    TUX: true, BSD: true, SPIDER: false, SNAKE: true,
+    'BALL-RED': false, 'BALL-YELLOW': false, 'BALL-GREEN': false, 'BALL-BLUE': false
+  }
 });

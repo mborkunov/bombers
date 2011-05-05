@@ -1,24 +1,26 @@
 var Worker = Class.create({
-    defaultFps: 30,
-    lastcall: null,
-    fps: null,
-    initialize: function() {
-        this.fps = this.defaultFps;
-        this.timeout = 0;
-        this.lastcall = 0;
-    },
-    start: function() {
-        this.loop();
-    },
-    loop: function() {
-        this.lastcall = date();
-        try {
-          this.action(date() - this.lastCallEnd);
-        } catch (e) {console.log(e);}
-        this.lastCallEnd = date();
-        this.timeout = Math.abs(1000 / this.fps - (date() - this.lastcall));
-        setTimeout(this.loop.bind(this), this.timeout);
+  defaultFps: 30,
+  lastCall: null,
+  fps: null,
+  initialize: function() {
+    this.fps = this.defaultFps;
+    this.timeout = 0;
+    this.lastCall = 0;
+  },
+  start: function() {
+    this.loop();
+  },
+  loop: function() {
+    this.lastCall = date();
+    try {
+      this.action(date() - this.lastCallEnd);
+    } catch (e) {
+      console.log(e);
     }
+    this.lastCallEnd = date();
+    this.timeout = Math.abs(1000 / this.fps - (date() - this.lastCall));
+    setTimeout(this.loop.bind(this), this.timeout);
+  }
 });
 
 var Graphics = Class.create(Worker, {

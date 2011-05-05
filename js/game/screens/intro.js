@@ -7,7 +7,7 @@ var Intro = Class.create(Screen, {
   introElement: null,
   drawText: false,
   speed: 10,
-  lastcall: 0,
+  lastCall: 0,
   text: "A world domination project",
   init: function() {
     this.listeners = {
@@ -34,12 +34,12 @@ var Intro = Class.create(Screen, {
     if (this.drawText && !this.timeout) {
       var length = this.textElement.firstChild.nodeValue.length;
       if (length - 1 < this.text.length) {
-        if ((date() - this.lastcall) >= 1000 / this.speed) {
+        if ((date() - this.lastCall) >= 1000 / this.speed) {
           var c = this.text.charAt(length - 1);
           this.textElement.firstChild.nodeValue += c;
           if (c != ' ') {
             Sound.play('typewriter');
-            this.lastcall = date();
+            this.lastCall = date();
           }
         }
       } else {

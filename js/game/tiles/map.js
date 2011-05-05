@@ -131,9 +131,6 @@ Map.Entry = Class.create({
     if (typeof (tile) == 'undefined') {
       tile = new Tile.None(_x, _y);
     }
-    if (x < 0 || y < 0) {
-      console.log(tile);
-    }
     return tile.next ? tile.next : tile;
   },
   highlightTile: function(x, y) {
@@ -154,7 +151,6 @@ Map.Entry = Class.create({
     }
   },
   getPlayerStartupPositions: function() {
-    console.log(this.playerPositions);
     return this.playerPositions;
   },
   hasTiles: function() {

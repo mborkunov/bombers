@@ -1,3 +1,9 @@
+if (typeof(Audio) == 'undefined') {
+  var Audio = function(source) {
+    this.src = source;
+  };
+  Audio.prototype.play = function() {}
+}
 var Sound = Class.create();
 
 Object.extend(Sound, {

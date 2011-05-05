@@ -57,17 +57,14 @@ var Tile = Class.create({
     }
   },
   vanish: function() {
-    console.log('vanish: ' + this.getName());
     Sound.play('crunch');
     this.vanishing = 1;
   },
   destroy: function() {
-    console.log("destroy: " + this.getName());
     if (this.next) {
       this.next.prerender(this.container);
     }
     this.element.hide();
-    this.element.style['-webkit-transform'] = 'scale(1, 1)';
     this.destroyed = true;
   },
   shake: function(shake) {
