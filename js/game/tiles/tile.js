@@ -98,7 +98,8 @@ var Tile = Class.create({
       position: 'absolute',
       left: this.left + 'px',
       top: this.top + 'px',
-      width: '40px', height: '40px'
+      width: '40px', height: '40px',
+      'z-index': this.getName() == 'wall' ? 10 : this.getName() == 'box' ? 9 : 8
     };
     this.element = new Element('div', {id: id}).addClassName('tile').addClassName(className).setStyle(styles);
     this.clickHandler = function() {
