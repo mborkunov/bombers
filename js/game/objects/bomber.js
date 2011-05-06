@@ -41,7 +41,7 @@ var Bomber = Class.create(GameObject, {
       this.element.observe("click", this.kill.bind(this));
       container.appendChild(this.element);
     }
-    this.element.style['z-index'] = Math.round((this.y + (this.tall ? .3 : 0)) * 10) + 10;
+    this.element.style['z-index'] = Math.round(Math.abs(this.y + (this.tall ? .3 : 0)) * 10) + 11;
     $super();
   },
   kill: function() {
