@@ -114,7 +114,7 @@ var GameObject = Class.create({
         var x2 = this.destination.getX() - offset;
         var x = this.x - offset;
 
-        if (x1 == x2) {
+        if (this.departure[0] == this.destination.getX()) {
           offset = Math.min(this.departure[1], this.destination.getY());
           x1 = this.departure[1] - offset;
           x2 = this.destination.getY() - offset;

@@ -16,7 +16,7 @@ var Intro = Class.create(Screen, {
         Game.instance.setScreen(Menu);
       }.bind(this),
       keydown: function(e) {
-        if (!e.hasModifiers()) {
+        if (!e.hasModifiers() && (e.keyCode == 27 || e.keyCode == 13)) {
           if (this.timeout) clearTimeout(this.timeout);
           Game.instance.setScreen(Menu);
         }

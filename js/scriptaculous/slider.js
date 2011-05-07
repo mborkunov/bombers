@@ -8,7 +8,7 @@
 if (!Control) var Control = { };
 
 // options:
-//  axis: 'vertical', or 'horizontal' (default)
+//  axis: 'vertical', or 'horizontal' (original)
 //
 // callbacks:
 //  onChange(value)

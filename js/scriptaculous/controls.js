@@ -389,7 +389,7 @@ Ajax.Autocompleter = Class.create(Autocompleter.Base, {
 //                    match text at the beginning of any *word* in the
 //                    strings in the autocomplete array. If you want to
 //                    search anywhere in the string, additionally set
-//                    the option fullSearch to true (default: off).
+//                    the option fullSearch to true (original: off).
 //
 // - fullSsearch - Search anywhere in autocomplete array strings.
 //

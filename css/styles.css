@@ -43,7 +43,7 @@ div.clear {
     width: 100%;
     height: 100%;
     opacity: .5;
-    z-index: 100;
+    z-index: 150;
 }
 
 #game-container .dialog {
@@ -58,7 +58,7 @@ div.clear {
     opacity: .7;
     -moz-box-shadow: 0 0 5px silver;
     -moz-border-radius: 3px;
-    z-index: 101;
+    z-index: 151;
 }
 
 #game-container .dialog .action {
@@ -192,6 +192,7 @@ div.clear {
     background: #fff;
     font-weight: bold;
     text-align: center;
+    border-radius: 10px 5px;
     -moz-border-radius: 10px 5px;
     -webkit-border-radius: 10px 5px;
     border: 2px groove #555;
@@ -204,4 +205,60 @@ div.clear {
 
 #game-container.arena {
   background: #000;
+}
+
+
+#game-container.arena .field {
+  margin: 50px 0 0 60px;
+}
+
+
+#game-container.arena #arbiter {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    z-index: 666;
+    background: yellow;
+}
+
+#game-container.arena .tile {
+    z-index: 10;
+}
+.arena .bomber {
+    height: 40px;
+    width: 40px;
+    z-index: 11;
+    background: #800;
+    background-repeat: no-repeat !important;
+}
+.arena .bomber-tall {
+    margin-top: -20px;
+    height: 60px !important;
+}
+
+.arena .tile-arrow-east,
+.arena .tile-arrow-south,
+.arena .tile-arrow-west,
+.arena .tile-arrow-north {
+  background: #faebd7;
+}
+.arena .tile-ice {
+  background: #00bfff;
+}
+.arena .tile-trap {
+  background: orange;
+}
+
+.arena .tile-ground {
+  background: gray;
+}
+
+.arena .tile-wall, .arena .tile-box {
+  z-index: 11 !important;
+}
+.arena .tile-box {
+  background: silver;
+}
+.arena .tile-wall {
+  background: darkgray;
 }

@@ -11,10 +11,10 @@ var Options = Class.create(Screen, {
       {value: 'fullscreen', text: 'Fullscreen'}
      ]),
      themes: $A([
-       {name: 'Default', id: 'default'},
+       {name: 'Default', id: 'original'},
        {name: 'Dark', id: 'dark'},
        {name: 'Snow', id: 'snow'},
-       {name: 'Green', id: 'green'},
+       {name: 'Green', id: 'default'},
        {name: 'Strange', id: 'strange'},
        {name: 'Stone', id: 'stone'}
      ]),

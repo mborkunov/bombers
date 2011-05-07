@@ -1,5 +1,5 @@
 #game-container {
-  background-image: url('../../images/themes/default/title.png');
+  background-image: url('../../images/themes/original/title.png');
 }
 
 #game-container.intro {
@@ -7,7 +7,7 @@
 }
 
 #game-container.intro .logo {
-  background: url("../../images/themes/default/fischlustig_logo.png") no-repeat;
+  background: url("../../images/themes/original/fischlustig_logo.png") no-repeat;
   width: 600px;
   height: 106px;
   margin: 30% auto 0;
@@ -20,15 +20,15 @@
 }
 
 #game-container.credits {
-  background: url('../../images/overlay.png'), url('../../images/themes/default/horst_evil.png');
+  background: url('../../images/overlay.png'), url('../../images/themes/original/horst_evil.png');
 }
 
 #game-container.editor {
-  background-image: url('../../images/themes/default/editor.png');
+  background-image: url('../../images/themes/original/editor.png');
 }
 
 #game-container.help {
-  background: url('../../images/overlay.png'), url('../../images/themes/default/title.png');
+  background: url('../../images/overlay.png'), url('../../images/themes/original/title.png');
 }
 
 #game-container.help h1 {
@@ -73,35 +73,35 @@
 }
 
 #game-container.help ul li.bomb img {
-  background: url('../../images/themes/default/extras.png') 0 0 no-repeat;
+  background: url('../../images/themes/original/extras.png') 0 0 no-repeat;
 }
 
 #game-container.help ul li.power img {
-  background: url('../../images/themes/default/extras.png') -40px 0 no-repeat;
+  background: url('../../images/themes/original/extras.png') -40px 0 no-repeat;
 }
 
 #game-container.help ul li.skateboard img {
-  background: url('../../images/themes/default/extras.png') -80px 0 no-repeat;
+  background: url('../../images/themes/original/extras.png') -80px 0 no-repeat;
 }
 
 #game-container.help ul li.kick img {
-  background: url('../../images/themes/default/extras.png') -120px 0 no-repeat;
+  background: url('../../images/themes/original/extras.png') -120px 0 no-repeat;
 }
 
 #game-container.help ul li.throw img {
-  background: url('../../images/themes/default/extras.png') -160px 0 no-repeat;
+  background: url('../../images/themes/original/extras.png') -160px 0 no-repeat;
 }
 
 #game-container.help ul li.joint img {
-  background: url('../../images/themes/default/extras.png') -200px 0 no-repeat;
+  background: url('../../images/themes/original/extras.png') -200px 0 no-repeat;
 }
 
 #game-container.help ul li.viagra img {
-  background: url('../../images/themes/default/extras.png') -240px 0 no-repeat;
+  background: url('../../images/themes/original/extras.png') -240px 0 no-repeat;
 }
 
 #game-container.help ul li.cocaine img {
-  background: url('../../images/themes/default/extras.png') -280px 0 no-repeat;
+  background: url('../../images/themes/original/extras.png') -280px 0 no-repeat;
 }
 
 #game-container.help > span {
@@ -113,31 +113,14 @@
   margin: 40px 0 0;
 }
 
-#game-container.arena .field {
-  margin: 50px 0 0 60px;
-}
-
-#game-container.arena .tile {
-    z-index: 10;
-}
-
-#game-container.arena .bomber {
-    z-index: 11;
-}
-#game-container.arena .bomber.dead {
-    background-position-x: 40px !important;
+#game-container.arena .bomber.bomber-dead {
+    background-position-x: -360px !important;
 }
 
 #game-container.arena .falling {
     z-index: 1 !important;
 }
 
-#game-container.arena #arbiter {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    z-index: 666;
-}
 #game-container.arena .map-name {
     position: absolute;
     display: block;

@@ -45,9 +45,11 @@ var Bomber = Class.create(GameObject, {
     $super();
   },
   kill: function() {
+    if (this.dead) return;
     this.dead = true;
     this.controller.deactivate();
-    this.element.addClassName('dead');
+    this.element.addClassName('bomber-dead');
+    this.element.setAttribute('title', "It's dead");
     Sound.play('die');
   },
   update: function($super, delay, map) {
@@ -73,11 +75,11 @@ var Bomber = Class.create(GameObject, {
     var height = this.element.getHeight();
     switch (direction) {
       case 0:
-          spriteDirection = height * 2;
+          spriteDirection = -height * 2;
           this.y -= speed;
         break;
       case 1:
-          spriteDirection = height;
+          spriteDirection = -height * 3;
           this.x += speed;
         break;
       case 2:
@@ -85,7 +87,7 @@ var Bomber = Class.create(GameObject, {
           this.y += speed;
         break;
       case 3:
-          spriteDirection = height * 3;
+          spriteDirection = - height;
           this.x -= speed;
         break;
     }
@@ -95,12 +97,9 @@ var Bomber = Class.create(GameObject, {
     this.distance += speed;
 
     if (this.distance >= .1) {
-      this.backgroundPosition.x += 40;
-      if (this.backgroundPosition.x == 40) {
-        this.backgroundPosition.x = 80;
-      }
-      if (this.backgroundPosition.x >= 360) {
-        this.backgroundPosition.x = 80;
+      this.backgroundPosition.x -= 40;
+      if (this.backgroundPosition.x <= -360) {
+        this.backgroundPosition.x = 0;
       }
       this.element.style['background-position-x'] = this.backgroundPosition.x + 'px';
       this.distance = 0;

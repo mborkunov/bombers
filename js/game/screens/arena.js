@@ -37,7 +37,7 @@ var Arena = Class.create(Screen, {
           this.keys = this.keys.without(e.keyCode);
         }
 
-        if (e.keyCode == 27) {
+        if (e.keyCode == 27 || e.keyCode == 19) {
           this.paused = !this.paused;
         }
       }.bind(this)
@@ -99,18 +99,16 @@ var Arena = Class.create(Screen, {
   },
   renderThemeSwitcher: function() {
     var themes = $A([
-      {name: 'Default', id: 'green', color: 'green'},
-      {name: 'Classic', id: 'default', color: 'silver'},
-      {name: 'Snow', id: 'snow', color: 'snow'}/*,
-      {name: 'Dark', id: 'dark', color: 'gray'},
-      {name: 'Strange', id: 'strange', color: 'darkcyan'},
-      {name: 'Stone', id: 'stone', color: 'yellow'}*/
+      {name: 'Default', id: 'default', color: 'gray'},
+      {name: 'Original', id: 'original', color: 'silver'},
+      {name: 'Debug', id: 'debug', color: 'red'},
+      {name: 'Snow', id: 'snow', color: 'snow'}
     ]);
-    var themesElement = new Element('div').setStyle({position: 'absolute', top: 0, right: 0, zIndex: 10, height: '20px', width: (20 * themes.size()) + 'px'});
+    var themesElement = new Element('div').setStyle({position: 'absolute', top: 0, right: 0, zIndex: 10, height: '30px', width: (30 * themes.size()) + 'px'});
     this.container.appendChild(themesElement);
 
     themes.each(function(theme) {
-      var themeEl = new Element('div', {title: theme.name, theme: theme.id}).setStyle({'float': 'left', background: theme.color, width: '20px', height: '20px'});
+      var themeEl = new Element('div', {title: theme.name, theme: theme.id}).setStyle({'float': 'left', background: theme.color, width: '30px', height: '30px'});
       this.appendChild(themeEl);
       themeEl.observe('mouseover', function(e) {
         Game.instance.setTheme(e.element().getAttribute('theme'));
@@ -153,8 +151,9 @@ var Arena = Class.create(Screen, {
       }.bind(this));
     }
 
-    if (this.paused && !this.overlay) {
+    if (this.paused && !this.dialog) {
       this.overlay = new Element('div', {id: 'overlay'});
+      this.overlay.observe('click', function(e) {e.element().remove()});
       this.dialog = new Element('div').addClassName('dialog');
       this.dialog.appendChild(new Element('a').addClassName('action').update('Abort ').observe('click', function() {
         Game.instance.setScreen(Menu);
@@ -164,10 +163,12 @@ var Arena = Class.create(Screen, {
       }.bind(this)));
       this.container.appendChild(this.overlay);
       this.container.appendChild(this.dialog);
-    } else if (!this.paused && this.overlay) {
-      this.container.removeChild(this.overlay);
+    } else if (!this.paused && this.dialog) {
       this.container.removeChild(this.dialog);
-      this.overlay = null;
+      try {
+        this.container.removeChild(this.overlay);
+      } catch (ignored) {};
+      this.overlay = this.dialog = null;
     }
   },
   dispatch: function() {

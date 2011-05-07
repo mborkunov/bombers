@@ -1,0 +1,9 @@
+.arena .tile-wall,.arena .tile-box {
+  box-shadow: 3px 3px 10px #000;
+}
+
+.arena .bomber.bomber-dead {
+    background-image: url('../../images/themes/debug/ribbon.png');
+    background-position: 100% 100% !important;
+    background-repeat: no-repeat !important;
+}

@@ -22,5 +22,25 @@ Tile.Wall = Class.create(Tile, {
     Sound.play('crunch');
     //this.vanishing = -1;
     this.destroy();
+  },
+  render: function($super, container) {
+
+    if (false && this.element) {
+      var arbiter = Game.instance.getScreen().objects.arbiter;
+
+      var ax = arbiter.getX(), ay = arbiter.getY();
+
+      var k = (ay - this.y) / (ax - this.x);
+
+      //var angle = k * 180 / Math.PI;
+
+      var sx = Math.round(Math.cos(Math.atan(k)) * 5);
+      var sy = Math.round(Math.sin(Math.atan(k)) * 5);
+
+      this.element.style['box-shadow'] = sx + 'px ' + sy + 'px 5px black';
+      this.element.style['z-index'] = 11;
+    }
+
+    $super(container);
   }
 });
