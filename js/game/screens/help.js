@@ -8,7 +8,7 @@ var Help = Class.create(Screen, {
       click: function(e) {
       },
       keydown: function(e) {
-          if (!e.hasModifiers()) {
+          if (e.keyCode == 27 || e.keyCode == 13) {
             Game.instance.setScreen(Menu);
           }
       }.bind(this)
