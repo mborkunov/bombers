@@ -8,7 +8,7 @@ var GameObject = Class.create({
   element: null,
   speed: null,
   location: null,
-  direction: 0,
+  direction: 2,
   destination: null,
   scale: null,
 
