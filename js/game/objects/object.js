@@ -7,9 +7,8 @@ var GameObject = Class.create({
   falling: null,
   element: null,
   speed: null,
-  x: null,
-  y: null,
-  direction: null,
+  location: null,
+  direction: 0,
   destination: null,
   scale: null,
 
@@ -20,23 +19,19 @@ var GameObject = Class.create({
     return this.element;
   },
   setDirection: function(direction) {
-
   },
   snap: function() {
-
+    if (this.direction % 2 == 0) {
+      this.location = this.location.roundX();
+    } else {
+      this.location = this.location.roundY();
+    }
   },
-  setPosition: function(x, y) {
-    this.x = x;
-    this.y = y;
+  setLocation: function(location) {
+    this.location = location;
   },
-  getX: function() {
-    return this.x;
-  },
-  getY: function() {
-    return this.y;
-  },
-  setOffset: function(x, y) {
-
+  getLocation: function() {
+    return this.location;
   },
   getSpeed: function() {
     return this.speed;
@@ -44,11 +39,11 @@ var GameObject = Class.create({
   setSpeed: function(speed) {
     this.speed = speed;
   },
-  increaseSpeed: function(s) {
-    this.speed += s || 1;
+  increaseSpeed: function(speed) {
+    this.speed += speed || 1;
   },
-  decreaseSpeed: function(s) {
-    this.speed -= s || 1;
+  decreaseSpeed: function(speed) {
+    this.speed -= speed || 1;
   },
   fall: function() {
     if (this.falling === null) {
@@ -71,14 +66,14 @@ var GameObject = Class.create({
     return this.falling !== null && this.falling > 0;
   },
   isFlying:function() {
-    return this.destination !== null && this.destination.getX() != this.x && this.destination.getY() != this.y;
+    return this.destination !== null && !this.location.equals(this.destination);
   },
   move: function(speed, direction) {
-
+    
   },
   flyTo: function(tile) {
-    this.destination = tile;
-    this.departure = [this.x, this.y]
+    this.destination = tile.getLocation();
+    this.departure = this.location.clone();
   },
   gainKick: function() {
     
@@ -92,13 +87,12 @@ var GameObject = Class.create({
       return;
     }
     if (this.isFlying()) {
-      var diff = 50;
-      var speedX = (this.destination.getX() - this.departure[0]) / diff;
-      var speedY = (this.destination.getY() - this.departure[1]) / diff;
+      var diff = 50; // fly speed
+      var speedX = (this.destination.getX() - this.departure.getX()) / diff;
+      var speedY = (this.destination.getY() - this.departure.getY()) / diff;
 
-      if (this._check(this.x, this.destination.getX(), speedX) || this._check(this.y, this.destination.getY(), speedY)) {
-        this.x = this.destination.getX();
-        this.y = this.destination.getY();
+      if (this._check(this.location.getX(), this.destination.getX(), speedX) || this._check(this.location.getY(), this.destination.getY(), speedY)) {
+        this.location = this.destination;
         if (this.destination && this instanceof Arbiter) {
           this.getTile(this.destination).vanish();
         }
@@ -106,19 +100,19 @@ var GameObject = Class.create({
         this.departure = null;
         this.scale = 1;
       } else {
-        this.x += speedX;
-        this.y += speedY;
+        this.location.setX(this.location.getX() + speedX);
+        this.location.setY(this.location.getY() + speedY);
 
-        var offset = Math.min(this.departure[0], this.destination.getX());
-        var x1 = this.departure[0] - offset;
+        var offset = Math.min(this.departure.getX(), this.destination.getX());
+        var x1 = this.departure.getX() - offset;
         var x2 = this.destination.getX() - offset;
-        var x = this.x - offset;
+        var x = this.location.getX() - offset;
 
-        if (this.departure[0] == this.destination.getX()) {
-          offset = Math.min(this.departure[1], this.destination.getY());
-          x1 = this.departure[1] - offset;
+        if (this.departure.getX() == this.destination.getX()) {
+          offset = Math.min(this.departure.getY(), this.destination.getY());
+          x1 = this.departure.getY() - offset;
           x2 = this.destination.getY() - offset;
-          x  = this.y - offset;
+          x  = this.location.getY() - offset;
         }
         var progress = x / Math.abs(x1 - x2);
         this.scale = 1 + Math.sin(progress * Math.PI) * 3;
@@ -130,16 +124,16 @@ var GameObject = Class.create({
       }
     }
   },
-  getTile: function(object) {
-    return object ? object.tile ? object.tile : object : null;
+  getTile: function(point) {
+    return Game.instance.screen.map.getTile(point.getX(), point.getY());
   },
   _check: function(position, destination, diff) {
     return (Math.abs(position - destination) < Math.abs(position + diff - destination));
   },
   render: function() {
     if (this.element) {
-      this.element.style.top = (this.y * 40) + 'px';
-      this.element.style.left = (this.x * 40)+ 'px';
+      this.element.style.top = (this.location.getY() * 40) + 'px';
+      this.element.style.left = (this.location.getX() * 40)+ 'px';
 
       var scale = 'scale(' + this.scale + ')';
       this.element.style['-webkit-transform'] = scale;

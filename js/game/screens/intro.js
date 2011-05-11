@@ -6,7 +6,7 @@ var Intro = Class.create(Screen, {
   opacity: 0,
   introElement: null,
   drawText: false,
-  speed: 10,
+  speed: 9,
   lastCall: 0,
   text: "A world domination project",
   init: function() {

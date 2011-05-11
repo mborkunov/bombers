@@ -76,8 +76,10 @@ var Arena = Class.create(Screen, {
             break;
         }
 
-        var bomber = new Bomber(new Controller.Keyboard(controllerType), bombers[Math.floor(Math.random() * 8)], {x: x / 2, y: y / 2});
-        bomber.flyTo(this.map.entry.tiles[position.x][position.y]);
+        var location = new Point(Math.floor(x / 2), Math.floor(y / 2));
+        var controller = new Controller.Keyboard(controllerType);
+        var bomber = new Bomber(controller, bombers[Math.floor(Math.random() * 8)], location);
+        bomber.flyTo(this.map.entry.tiles[position.point.getX()][position.point.getY()]);
         this.objects.bombers.push(bomber);
       }.bind(this));
       this.prerender();
@@ -167,7 +169,7 @@ var Arena = Class.create(Screen, {
       this.container.removeChild(this.dialog);
       try {
         this.container.removeChild(this.overlay);
-      } catch (ignored) {};
+      } catch (ignored) {}
       this.overlay = this.dialog = null;
     }
   },

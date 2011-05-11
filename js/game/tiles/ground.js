@@ -1,6 +1,6 @@
 Tile.Ground = Class.create(Tile, {
-  initialize: function($super, x, y) {
-    $super(x, y);
+  initialize: function($super, location) {
+    $super(location);
     this.name = 'ground';
     this.passable = true;
   }

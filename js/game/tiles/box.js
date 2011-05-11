@@ -1,6 +1,6 @@
 Tile.Box = Class.create(Tile, {
-  initialize: function($super, x, y) {
-    $super(x, y);
+  initialize: function($super, location) {
+    $super(location);
     this.name = 'box';
   },
   prerender: function($super, container) {
@@ -13,7 +13,7 @@ Tile.Box = Class.create(Tile, {
     }.bind(this));
   },
   destroy: function($super) {
-    this.next = new Tile.Ground(this.x, this.y);
+    this.next = new Tile.Ground(this.getLocation().clone());
     $super();
   },
   vanish: function() {
@@ -22,7 +22,7 @@ Tile.Box = Class.create(Tile, {
   },
   render: function($super, container) {
 
-    if (false && this.element) {
+    /*if (false && this.element) {
       var arbiter = Game.instance.getScreen().objects.arbiter;
 
       var ax = arbiter.getX(), ay = arbiter.getY();
@@ -38,7 +38,7 @@ Tile.Box = Class.create(Tile, {
 
       this.element.style['box-shadow'] =  sx + 'px ' + sy + 'px 5px black';
       this.element.style['z-index'] = 11;
-    }
+    }*/
 
     $super(container);
   }

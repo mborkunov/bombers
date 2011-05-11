@@ -20,7 +20,7 @@ var Map = Class.create({
     //this.entry.clearHighlights();
     bombers.each(function(bomber) {
       if (bomber.isDead()) return;
-      this.entry.highlightTile(bomber.getX(), bomber.getY());
+      this.entry.highlightTile(bomber.location.getX(), bomber.location.getY());
     }.bind(this))
   },
   getPlayerStartupPositions: function() {
@@ -69,41 +69,41 @@ Map.Entry = Class.create({
       y = 0;
       while (typeof data[x][y] != 'undefined') {      
         var tile = null;
-        
+        var point = new Point(x, y);
         switch (data[x][y]) {
           case '<':
           case '>':
           case 'v':
           case '^':
-            tile = new Tile.Arrow(x, y, data[x][y]);
+            tile = new Tile.Arrow(point, data[x][y]);
             break;
           case 'R':
             if (Math.round((Math.random() * 100)) % 3 == 0) {
-              tile = new Tile.Box(x, y);
+              tile = new Tile.Box(point);
             } else {
-              tile = new Tile.Ground(x, y);
+              tile = new Tile.Ground(point);
             }
             break;
           case '1': case '2': case '3': case '4':
           case '5': case '6': case '7': case '0':
-            this.playerPositions.push({number: parseInt(data[x][y]), x: x, y: y});
+            this.playerPositions.push({number: parseInt(data[x][y]), point: point});
           case ' ':
-            tile = new Tile.Ground(x, y);
+            tile = new Tile.Ground(point);
             break;
           case '+':
-            tile = new Tile.Box(x, y);
+            tile = new Tile.Box(point);
             break;
           case 'S':
-            tile = new Tile.Ice(x, y);
+            tile = new Tile.Ice(point);
             break;
           case 'o':
-            tile = new Tile.Trap(x, y);
+            tile = new Tile.Trap(point);
             break;
           case '*':
-            tile = new Tile.Wall(x, y);
+            tile = new Tile.Wall(point);
             break;
           default:
-            tile = new Tile.None(x, y);
+            tile = new Tile.None(point);
             break;
         }
         
@@ -126,10 +126,10 @@ Map.Entry = Class.create({
     try {
       tile = this.tiles[_x][_y];
     } catch (e) {
-      tile = new Tile.None(_x, _y);
+      tile = new Tile.None(new Point(_x, _y));
     }
     if (typeof (tile) == 'undefined') {
-      tile = new Tile.None(_x, _y);
+      tile = new Tile.None(new Point(_x, _y));
     }
     return tile.next ? tile.next : tile;
   },

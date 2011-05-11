@@ -1,6 +1,6 @@
 Tile.Wall = Class.create(Tile, {
-  initialize: function($super, x, y) {
-    $super(x, y);
+  initialize: function($super, location) {
+    $super(location);
     this.name = 'wall';
     this.passable = false;
     this.blocking = true;
@@ -15,7 +15,7 @@ Tile.Wall = Class.create(Tile, {
     }.bind(this));
   },
   destroy: function($super) {
-    this.next = new Tile.Ground(this.x, this.y);
+    this.next = new Tile.Ground(this.getLocation().clone());
     $super();
   },
   vanish: function() {
@@ -25,12 +25,12 @@ Tile.Wall = Class.create(Tile, {
   },
   render: function($super, container) {
 
-    if (false && this.element) {
+    /*if (false && this.element) {
       var arbiter = Game.instance.getScreen().objects.arbiter;
 
       var ax = arbiter.getX(), ay = arbiter.getY();
 
-      var k = (ay - this.y) / (ax - this.x);
+      var k = (ay - this.location.getX()) / (ax - this.x);
 
       //var angle = k * 180 / Math.PI;
 
@@ -39,7 +39,7 @@ Tile.Wall = Class.create(Tile, {
 
       this.element.style['box-shadow'] = sx + 'px ' + sy + 'px 5px black';
       this.element.style['z-index'] = 11;
-    }
+    }*/
 
     $super(container);
   }

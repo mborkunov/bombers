@@ -1,6 +1,6 @@
 Tile.Trap = Class.create(Tile.Ground, {
-  initialize: function($super, x, y) {
-    $super(x, y);
+  initialize: function($super, location) {
+    $super(location);
     this.name = 'trap';
   }
 });

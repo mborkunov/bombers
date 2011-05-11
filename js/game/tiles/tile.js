@@ -1,6 +1,5 @@
 var Tile = Class.create({
-  x: null,
-  y: null,
+  location: null,
   vanishing: null,
   destroyed: false,
   passable: false,
@@ -10,9 +9,8 @@ var Tile = Class.create({
   element: null,
   next: null,
 
-  initialize: function(x, y) {
-    this.x = x;
-    this.y = y;
+  initialize: function(location) {
+    this.location = location;
   },
   getType: function() {
     return this.type;
@@ -32,30 +30,17 @@ var Tile = Class.create({
   isVanishing: function() {
     return this.vanishing !== null && this.vanishing >= 0;
   },
-  getX: function() {
-    return this.x;
+  getLocation: function() {
+    return this.location;
   },
-  getY: function() {
-    return this.y;
-  },
-  setPosition: function(x, y) {
-    this.x = x;
-    this.y = y;
+  setLocation: function(location) {
+    this.location = location;
   },
   getName: function() {
     return this.name.toLowerCase();
   },
   spawnExtra: function() {},
   act: function() {},
-  update: function(delay, shake) {
-    this.shake(shake);
-    if (this.isVanishing() && !this.isDestroyed()) {
-      this.vanishing -= 0.01;
-      if (this.vanishing <= 0) {
-        this.destroy();
-      }
-    }
-  },
   vanish: function() {
     Sound.play('crunch');
     this.vanishing = 1;
@@ -89,10 +74,10 @@ var Tile = Class.create({
     }
   },
   prerender: function(container) {
-    var id = 'tile-' + this.name + '-' + this.x + 'x' + this.y;
+    var id = 'tile-' + this.name + '-' + this.location.getX() + 'x' + this.location.getY();
     var className = 'tile-' + this.getName();
-    this.left = this.x * 40;
-    this.top = this.y * 40;
+    this.left = this.location.getX() * 40;
+    this.top = this.location.getY() * 40;
 
     var styles = {
       position: 'absolute',
@@ -112,9 +97,18 @@ var Tile = Class.create({
     if (this.element)
       this.element.addClassName("highlight");
   },
+  update: function(delay, shake) {
+    this.shake(shake);
+    if (this.isVanishing() && !this.isDestroyed()) {
+      this.vanishing -= 0.01;
+      if (this.vanishing <= 0) {
+        this.destroy();
+      }
+    }
+  },
   render: function(container) {
-    var top = this.element.y + 'px'
-    var left = this.element.x + 'px'
+    var top = this.element.y + 'px';
+    var left = this.element.x + 'px';
 
     if (this.element.style.top != top || this.element.style.left != left) {
       this.element.style.top = top;
@@ -128,7 +122,7 @@ var Tile = Class.create({
     }
   },
   toString: function() {
-    return this.name + ' {x: ' + this.x + ', y: ' + this.y + '}';
+    return this.name + '-' + location.toString();
   }
 });
 

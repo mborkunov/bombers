@@ -1,8 +1,8 @@
 Tile.Arrow = Class.create(Tile.Ground, {
   
   direction: 0,
-  initialize: function($super, x, y, direction) {
-    $super(x, y);
+  initialize: function($super, location, direction) {
+    $super(location);
     this.name = 'arrow';
     this.direction = Tile.Arrow.getDirection(direction);
   },

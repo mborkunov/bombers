@@ -9,7 +9,7 @@ document.observe("dom:loaded", function() {
       waitSeconds: 15,
       locale: "ru-ru"
     }, [
-      'js/util/common.js', 'js/util/menu.js',
+      'js/util/common.js', 'js/util/menu.js', 'js/util/point.js',
       'js/worker.js', 'js/sound.js', 'js/game.js',
       'screens', 'tiles', 'objects', 'controllers'
     ], function() {

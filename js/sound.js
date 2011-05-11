@@ -30,15 +30,16 @@ Object.extend(Sound, {
           this.pool[name] = [];
         }
 
-
         if (this.pool[name].length <= this.poolSize) {
           var audio = new Audio('sounds/' + name + '.wav');
-          audio.preload = 'none';
+          audio.preload = 'auto';
           audio.volume = this.volume;
+          audio.observe('loadeddata', function(e) {
+            e.element().play();
+          });
           this.pool[name].push(audio);
-          audio.play();
         } else {
-          for (var i = 0; i < this.pool[name].length; i++) {
+          for (var i = 0, length = this.pool[name].length; i < length; i++) {
             if (this.pool[name][i].ended) {
               this.pool[name][i].play();
               break;
