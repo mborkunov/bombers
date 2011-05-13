@@ -14,6 +14,16 @@ var Point = Class.create({
   setX: function(x) {
     this.x = x;
   },
+  increaseX: function(delta) {
+    this.x += delta;
+  },
+  increaseY: function(delta) {
+    this.y += delta;
+  },
+  increase: function(deltaX, deltaY) {
+    this.x += deltaX;
+    this.y += deltaY;
+  },
   setY: function(y) {
     this.y = y;
   },

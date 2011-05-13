@@ -3,7 +3,7 @@ var Arbiter = Class.create(GameObject, {
   initialize: function($super) {
     $super();
     this.location = new Point(-1, -1.1);
-    this.running = true;
+    this.running = false;
   },
   render: function($super, container) {
     if (!this.element && container) {

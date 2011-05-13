@@ -141,7 +141,7 @@ var Arena = Class.create(Screen, {
     }.bind(this));
 
     this.map.update(delay, this.shake);
-    this.map.highlight(this.objects.bombers);
+    //this.map.highlight(this.objects.bombers);
   },
   render: function(time) {
     if (!this.rendered) return;

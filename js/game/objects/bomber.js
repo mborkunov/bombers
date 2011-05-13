@@ -63,50 +63,10 @@ var Bomber = Class.create(GameObject, {
   },
   move: function(direction, delay) {
     if (this.isFlying() || this.isFalling()) return;
-    var speed = this.getSpeed();
-    var spriteDirection = this.backgroundPosition.y;
-    var height = this.element.getHeight();
 
-    if (this.direction != direction) {
-      this.direction = direction;
-      this.snap();
-    }
+    this.location = this.getNextLocation(direction);
 
-    var tileLocation = this.location.clone();
-    var nextLocation = this.location.clone();
-
-    switch (direction) {
-      case 0:
-          spriteDirection = - height * 2;
-          tileLocation.setY(this.location.getY() - speed - .5);
-          nextLocation.setY(this.location.getY() - speed);
-        break;
-      case 1:
-          spriteDirection = - height * 3;
-          tileLocation.setX(this.location.getX() + speed + .5);
-          nextLocation.setX(this.location.getX() + speed);
-        break;
-      case 2:
-          spriteDirection = 0;
-          tileLocation.setY(this.location.getY() + speed + .5);
-          nextLocation.setY(this.location.getY() + speed);
-        break;
-      case 3:
-          spriteDirection = - height;
-          tileLocation.setX(this.location.getX() - speed - .5);
-          nextLocation.setX(this.location.getX() - speed);
-        break;
-    }
-
-    var tile = Game.instance.screen.map.getTile(tileLocation.getX(), tileLocation.getY());
-    if (tile.isPassable()) {
-      this.location = nextLocation;
-    }
-
-    if (this.backgroundPosition.y != spriteDirection) {
-      this.element.style['background-position-y'] = (this.backgroundPosition.y = spriteDirection) + 'px';
-    }
-    this.distance += speed;
+    this.distance += this.getSpeed();
 
     if (this.distance >= .2) {
       this.backgroundPosition.x -= 40;
@@ -116,6 +76,103 @@ var Bomber = Class.create(GameObject, {
       this.element.style['background-position-x'] = this.backgroundPosition.x + 'px';
       this.distance = 0;
     }
+  },
+  setSpriteDirection: function(direction) {
+    var height = this.element.getHeight();
+    var spriteDirection = - height * ((direction + 2) % 4);
+
+    if (this.backgroundPosition.y != spriteDirection) {
+      this.element.style['background-position-y'] = (this.backgroundPosition.y = spriteDirection) + 'px';
+    }
+  },
+  getNextLocation: function(direction) {
+    var speed = this.getSpeed();
+    var offset = .4;
+
+    var tileLocation1 = this.location.clone();
+    var tileLocation2 = this.location.clone();
+    var nextLocation = this.location.clone();
+
+    var mod = direction % 2 == 0;
+
+    var dynamicDirection = mod ? (direction - 1) : (2 - direction);
+    var directionOffset = (speed + offset);
+
+
+    if (mod) {
+      var asd = direction - 1;
+      tileLocation1.increase(offset, asd * directionOffset);
+      tileLocation2.increase(- offset, asd * directionOffset);
+    } else {
+      var asd = direction - 2;
+      tileLocation1.increase(asd * - directionOffset, offset);
+      tileLocation2.increase(asd * - directionOffset, -offset);
+    }
+
+
+    var tile1 = Game.instance.screen.map.getTile(tileLocation1.getX(), tileLocation1.getY());
+    var tile2 = Game.instance.screen.map.getTile(tileLocation2.getX(), tileLocation2.getY());
+
+    if (tile1.isPassable() && tile2.isPassable()) {
+        var argX = mod ? dynamicDirection * speed : 0,
+            argY = mod ? 0 : dynamicDirection * speed ;
+        nextLocation.increase(argY, argX);
+        this.setSpriteDirection(direction);
+      }/* else if (tile1.isPassable()) {
+        var argY = mod ? - speed : 0,
+            argX = mod ? 0 : - speed;
+        nextLocation.increase(argX, argY);
+        this.setSpriteDirection((2 + direction) % 4);
+      } else if (tile2.isPassable()) {
+        var argY = mod ? speed : 0,
+            argX = mod ? 0 : speed;
+        nextLocation.increase(argX, argY);
+        this.setSpriteDirection((4 + direction) % 4);
+      }*/
+
+    /*
+    if (direction % 2 == 0) {
+      tileLocation1.setY(tileLocation1.getY() + (direction - 1) * (speed + offset));
+      tileLocation1.setX(tileLocation1.getX() - offset);
+      tileLocation2.setY(tileLocation2.getY() + (direction - 1) * (speed + offset));
+      tileLocation2.setX(tileLocation2.getX() + offset);
+
+      var tile1 = Game.instance.screen.map.getTile(tileLocation1.getX(), tileLocation1.getY());
+      var tile2 = Game.instance.screen.map.getTile(tileLocation2.getX(), tileLocation2.getY());
+
+      if (tile1.isPassable() && tile2.isPassable()) {
+        nextLocation.setY(nextLocation.getY() + (direction - 1) * speed);
+        this.setSpriteDirection(direction);
+      } else if (tile1.isPassable()) {
+        nextLocation.setX(nextLocation.getX() - speed);
+        this.setSpriteDirection(3);
+      } else if (tile2.isPassable()) {
+        nextLocation.setX(nextLocation.getX() + speed);
+        this.setSpriteDirection(1);
+      }
+    } else {
+      tileLocation1.setX(tileLocation1.getX() + (2 - direction) * (speed + offset));
+      tileLocation1.setY(tileLocation1.getY() - offset);
+      tileLocation2.setX(tileLocation2.getX() + (2 - direction) * (speed + offset));
+      tileLocation2.setY(tileLocation2.getY() + offset);
+
+      var tile1 = Game.instance.screen.map.getTile(tileLocation1.getX(), tileLocation1.getY());
+      var tile2 = Game.instance.screen.map.getTile(tileLocation2.getX(), tileLocation2.getY());
+
+      if (tile1.isPassable() && tile2.isPassable()) {
+        nextLocation.setX(nextLocation.getX() - (direction - 2) * speed);
+        this.setSpriteDirection(direction);
+      } else if (tile1.isPassable()) {
+        nextLocation.setY(nextLocation.getY() - speed);
+        this.setSpriteDirection(0);
+      } else if (tile2.isPassable()) {
+        nextLocation.setY(nextLocation.getY() + speed);
+        this.setSpriteDirection(2);
+      }
+    }
+    */
+
+    return nextLocation;
   },
   spawnBomb: function() {
     if (this.bombs.length < this.maxBombs) {

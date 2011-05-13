@@ -17,7 +17,7 @@ var Map = Class.create({
     return this.name;
   },
   highlight: function(bombers) {
-    //this.entry.clearHighlights();
+    this.entry.clearHighlights();
     bombers.each(function(bomber) {
       if (bomber.isDead()) return;
       this.entry.highlightTile(bomber.location.getX(), bomber.location.getY());
@@ -116,7 +116,7 @@ Map.Entry = Class.create({
   },
   clearHighlights: function() {
     this.each(function(tile) {
-      if (tile && tile.element)
+      if (tile/* && tile.element*/)
       tile.element.removeClassName("highlight");
     });
   },
