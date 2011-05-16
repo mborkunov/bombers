@@ -223,8 +223,12 @@ div.clear {
 
 #game-container.arena .tile {
     z-index: 10;
+    position: absolute;
+    width: 40px;
+    height: 40px;
 }
 .arena .bomber {
+    position: absolute;
     height: 40px;
     width: 40px;
     z-index: 11;
@@ -261,4 +265,11 @@ div.clear {
 }
 .arena .tile-wall {
   background: darkgray;
+}
+
+#game-container.arena .extra {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    z-index: 11;
 }

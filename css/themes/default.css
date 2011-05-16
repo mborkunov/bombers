@@ -95,3 +95,10 @@
 .arena .bomber-spider {
     background: url('../../images/themes/default/bomber_spider.png') 0 0;
 }
+
+.arena .extra-bomb {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: url('../../images/themes/original/extras.png') 0 0 no-repeat;
+}

@@ -14,6 +14,7 @@ Tile.Box = Class.create(Tile, {
   },
   destroy: function($super) {
     this.next = new Tile.Ground(this.getLocation().clone());
+    //this.next.spawnExtra(Extra.Bomb);
     $super();
   },
   vanish: function() {

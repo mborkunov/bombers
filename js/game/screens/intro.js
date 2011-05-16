@@ -43,8 +43,16 @@ var Intro = Class.create(Screen, {
           }
         }
       } else {
+        this.logo.setStyle({
+          'width': parseInt(this.logo.getStyle('width')) + 1 + 'px'
+        });
+        this.textElement.setStyle({
+          'margin-top': parseInt(this.textElement.getStyle('margin-top')) + 5 + 'px'
+        });
         Sound.play('menu_back');
-        this.timeout = setTimeout(function() {Game.instance.setScreen(Menu)}, 2500);
+        this.timeout = setTimeout(function() {
+          Game.instance.setScreen(Menu);
+        }, 2500);
       }
     } else {
       if (this.opacity >= 1) {

@@ -13,6 +13,10 @@ var Arbiter = Class.create(GameObject, {
         left: (this.location.getX() * 40)+ 'px'
       }).addClassName('arbiter');
 
+      this.element.observe('click', function() {
+        this.run();
+      }.bind(this));
+
       container.appendChild(this.element);
     }
     $super();

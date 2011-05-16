@@ -80,10 +80,8 @@ var Tile = Class.create({
     this.top = this.location.getY() * 40;
 
     var styles = {
-      position: 'absolute',
       left: this.left + 'px',
-      top: this.top + 'px',
-      width: '40px', height: '40px'
+      top: this.top + 'px'
     };
     this.element = new Element('div', {id: id}).addClassName('tile').addClassName(className).setStyle(styles);
     this.clickHandler = function() {
