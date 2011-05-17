@@ -32,10 +32,10 @@ var MenuTree = Class.create({
             li.observe("mouseover", function() {
                 Sound.play('break');
                 this.over = true;
-                if (typeof(this.working) === "undefined") {
+                if (Object.isUndefined(this.working)) {
                     this.working = false;
                 }
-                if (typeof(this.finished) === "undefined") {
+                if (Object.isUndefined(this.finished)) {
                     this.finished = true;
                 }
 
@@ -48,7 +48,7 @@ var MenuTree = Class.create({
                         afterFinish: function() {
                             this.finished = true;
                             this.working = false;
-                            if (this.over == false) {
+                            if (!this.over) {
                                 this.working = true;
                                 this.finished = false;
                                 new Effect.Morph(li, {

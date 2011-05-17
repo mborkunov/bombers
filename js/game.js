@@ -11,12 +11,12 @@ var Game = Class.create({
     this.state = new State();
   },
   getStartScreen: function() {
-    var screen = Intro;
+    var screen = Game.Screen.Intro;
     if (location.hash.length > 0) {
       var _screen = location.hash.substr(1).toLowerCase();
       _screen = _screen.substr(0, 1).toUpperCase() + _screen.substr(1);
       try {
-        var screen = eval(_screen);
+        var screen = eval('Game.Screen.' + _screen);
       } catch (e) {
       }
     }

@@ -1,6 +1,8 @@
-Extra.Bomb = Class.create(Extra, {
-  initialize: function($super, location) {
-    $super(location);
-    this.name = "bomb";
-  }
+define('objects/extras/bomb', ['objects/extras/extra'], function() {
+  Game.Object.Extra.Bomb = Class.create(Game.Object.Extra, {
+    initialize: function($super, location) {
+      $super(location);
+      this.name = "bomb";
+    }
+  });
 });

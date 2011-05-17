@@ -1,4 +1,4 @@
-if (typeof(Audio) == 'undefined') {
+if (Object.isUndefined(Audio)) {
   var Audio = function(source) {
     this.src = source;
   };
@@ -26,7 +26,7 @@ Object.extend(Sound, {
             return;
         }
 
-        if (typeof(this.pool[name]) == 'undefined') {
+        if (Object.isUndefined(this.pool[name])) {
           this.pool[name] = [];
         }
 

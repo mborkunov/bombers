@@ -75,27 +75,27 @@
 }
 
 .arena .bomber-ball-green {
-    background: url('../../images/themes/original/bomber_green.png') 0 0,  url('../../images/themes/original/cross.png') 0 0 no-repeat;
+    background: url('../../images/themes/original/bomber_green.png') 0 0;
 }
 .arena .bomber-ball-red {
-    background: url('../../images/themes/original/bomber_red.png') 0 0, url('../../images/themes/original/cross.png') 0 0 no-repeat;
+    background: url('../../images/themes/original/bomber_red.png') 0 0;
 }
 .arena .bomber-ball-yellow {
-    background: url('../../images/themes/original/bomber_yellow.png') 0 0,url('../../images/themes/original/cross.png') 0 0 no-repeat;
+    background: url('../../images/themes/original/bomber_yellow.png') 0 0;
 }
 .arena .bomber-ball-blue {
-    background: url('../../images/themes/original/bomber_blue.png') 0 0, url('../../images/themes/original/cross.png') 0 0 no-repeat;
+    background: url('../../images/themes/original/bomber_blue.png') 0 0;
 }
 
 .arena .bomber-bsd {
-    background: url('../../images/themes/original/bomber_bsd.png') 0 0, url('../../images/themes/original/cross.png') 0 20px no-repeat;
+    background: url('../../images/themes/original/bomber_bsd.png') 0 0;
 }
 .arena .bomber-tux {
-    background: url('../../images/themes/original/bomber_tux.png') 0 0, url('../../images/themes/original/cross.png') 0 20px no-repeat;
+    background: url('../../images/themes/original/bomber_tux.png') 0 0;
 }
 .arena .bomber-snake {
-    background: url('../../images/themes/original/bomber_snake.png') 0 0, url('../../images/themes/original/cross.png') 0 20px no-repeat;
+    background: url('../../images/themes/original/bomber_snake.png') 0 0;
 }
 .arena .bomber-spider {
-    background: url('../../images/themes/original/bomber_spider.png') 0 0, url('../../images/themes/original/cross.png') 0 0 no-repeat;
+    background: url('../../images/themes/original/bomber_spider.png') 0 0;
 }

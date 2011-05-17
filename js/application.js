@@ -1,4 +1,4 @@
-if (typeof(console) === "undefined") {
+if (Object.isUndefined(console)) {
   console = {log: function() {}};
 }
 
