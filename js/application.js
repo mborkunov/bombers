@@ -1,5 +1,8 @@
 if (Object.isUndefined(console)) {
-  console = {log: function() {}};
+  console = {
+    log: function() {},
+    info: function() {}
+  };
 }
 
 document.observe("dom:loaded", function() {

@@ -43,7 +43,7 @@ div.clear {
     width: 100%;
     height: 100%;
     opacity: .5;
-    z-index: 150;
+    z-index: 300;
 }
 
 #game-container .dialog {
@@ -58,7 +58,7 @@ div.clear {
     opacity: .7;
     -moz-box-shadow: 0 0 5px silver;
     -moz-border-radius: 3px;
-    z-index: 151;
+    z-index: 301;
 }
 
 #game-container .dialog .action {
@@ -229,11 +229,6 @@ div.clear {
 }
 .arena .bomber {
     position: absolute;
-    height: 40px;
-    width: 40px;
-    z-index: 11;
-    background: #800;
-    background-repeat: no-repeat !important;
 }
 .arena .bomber-tall {
     margin-top: -20px;
@@ -258,7 +253,7 @@ div.clear {
 }
 
 .arena .tile-wall, .arena .tile-box {
-  z-index: 11 !important;
+  z-index: 200 !important;
 }
 .arena .tile-box {
   background: silver;

@@ -10,6 +10,7 @@ define('objects/object', [], function() {
     speed: null,
     location: null,
     direction: 2,
+    rotationAngle: null,
     destination: null,
     scale: null,
 
@@ -18,8 +19,6 @@ define('objects/object', [], function() {
     },
     getElement: function() {
       return this.element;
-    },
-    setDirection: function(direction) {
     },
     snap: function() {
       if (this.direction % 2 == 0) {
@@ -70,7 +69,6 @@ define('objects/object', [], function() {
       return this.destination !== null && !this.location.equals(this.destination);
     },
     move: function(speed, direction) {
-
     },
     flyTo: function(tile) {
       this.destination = tile.getLocation();

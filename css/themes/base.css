@@ -113,8 +113,29 @@
   margin: 40px 0 0;
 }
 
-#game-container.arena .bomber.bomber-dead {
-    background-position-x: -360px !important;
+#game-container.arena .bomber-1 {
+  background-color: silver;
+}
+#game-container.arena .bomber-2 {
+  background-color: green;
+}
+#game-container.arena .bomber-3 {
+  background-color: yellow;
+}
+#game-container.arena .bomber-4 {
+  background-color: #800;
+}
+#game-container.arena .bomber-5 {
+  background-color: #7fffd4;
+}
+#game-container.arena .bomber-6 {
+  background-color: #d2691e;
+}
+#game-container.arena .bomber-7 {
+  background-color: orange;
+}
+#game-container.arena .bomber-8 {
+  background-color: #f08080;
 }
 
 #game-container.arena .falling {

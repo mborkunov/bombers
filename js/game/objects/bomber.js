@@ -6,17 +6,18 @@ define('objects/bomber', ['objects/object'], function() {
     maxBombs: null,
     bombs: [],
     dead: null,
-    type: null,
+    number: null,
+    rollAngle: 0,
     tall: false,
-    initialize: function($super, controller, type, location) {
+    initialize: function($super, controller, number, location) {
       this.backgroundPosition = {x: 0, y: 0};
       this.distance = 0;
       this.speed = .05;
       this.maxBombs = 1;
       this.dead = false;
       this.location = location;
-      this.type = type;
-      this.tall = Game.Object.Bomber.Type[this.type];
+      this.number = number;
+      this.tall = false; //Game.Object.Bomber.Type[this.type];
       controller.attach(this);
       this.controller = controller;
     },
@@ -28,25 +29,40 @@ define('objects/bomber', ['objects/object'], function() {
         this.element = new Element('div').setStyle({
           top: (this.location.getY() * 40) + 'px',
           left: (this.location.getX() * 40) + 'px'
-        }).addClassName('bomber')
-            .addClassName('object')
-            .addClassName('bomber-' + this.type.toLowerCase());
+        }).addClassName('bomber').addClassName("bomber-" + this.number);
 
-        if (this.tall) this.element.addClassName('bomber-tall');
+        var eyes = ["cyclope", "stereo", "alien"];
+        this.eyes = new Element("div").addClassName("eyes object").addClassName(eyes[Math.floor(Math.random() * 3)]);
+        ["first", "second", "third"].each(function(eye) {
+          var eye = new Element("div").addClassName(eye + "-eye eye");
+          eye.appendChild(new Element("div").addClassName("pupil"));
+          this.appendChild(eye);
+        }.bind(this.eyes));
 
+        this.element.appendChild(this.eyes);
         this.element.observe("click", this.kill.bind(this));
         container.appendChild(this.element);
       }
-      this.element.style['z-index'] = Math.round(Math.abs(this.location.getY() + (this.tall ? .3 : 0)) * 10) + 11;
+
+      if (this.isFlying()) {
+        this.element.style['z-index'] = 200;
+      } else {
+        this.element.style['z-index'] = Math.round(Math.abs(this.location.getY() + (this.tall ? .3 : 0)) * 10) + 11;
+      }
+
+      var angle = 0;
+      if (!Object.isUndefined(this.eyes)) {
+        if (this.distance >= .1) {
+          angle += Math.round(10 * Math.sin(this.rollAngle++));
+          if (this.rollAngle >= 360) {
+            this.rollAngle = 0;
+          }
+          this.distance = 0;
+        }
+      }
+
+      this.eyes.style['-webkit-transform'] = 'rotate(' + (angle + this.rotationAngle) +'deg)';
       $super();
-    },
-    kill: function() {
-      if (this.dead) return;
-      this.dead = true;
-      this.controller.deactivate();
-      this.element.addClassName('bomber-dead');
-      this.element.setAttribute('title', "It's dead");
-      Sound.play('die');
     },
     update: function($super, delay, map) {
       if (!this.isFlying()) {
@@ -57,31 +73,29 @@ define('objects/bomber', ['objects/object'], function() {
           }
         }
       }
+
+      if (this.direction * 90 != this.rotationAngle) {
+        var diffAngle = this.direction * 90 - this.rotationAngle;
+
+        if (diffAngle > 0) {
+          if (diffAngle > 180) {
+            this.rotationAngle -= 20;
+          } else {
+           this.rotationAngle += 20;
+          }
+        } else {
+          this.rotationAngle -= 20;
+        }
+      }
       $super(delay);
     },
     move: function(direction, delay) {
       if (this.isFlying() || this.isFalling()) return;
       this.location = this.getNextLocation(direction);
-
       this.distance += this.getSpeed();
-      if (this.distance >= .2) {
-        this.backgroundPosition.x -= 40;
-        if (this.backgroundPosition.x <= -360) {
-          this.backgroundPosition.x = 0;
-        }
-        this.element.style['background-position-x'] = this.backgroundPosition.x + 'px';
-        this.distance = 0;
-      }
-    },
-    setSpriteDirection: function(direction) {
-      var height = this.element.getHeight();
-      var spriteDirection = - height * ((direction + 2) % 4);
-
-      if (this.backgroundPosition.y != spriteDirection) {
-        this.element.style['background-position-y'] = (this.backgroundPosition.y = spriteDirection) + 'px';
-      }
     },
     getNextLocation: function(direction) {
+      this.direction = direction;
       var speed = this.getSpeed();
       var offset = .4;
 
@@ -111,7 +125,6 @@ define('objects/bomber', ['objects/object'], function() {
         argX = mod ? 0 : - dynamicDirection * speed;
         argY = mod ? dynamicDirection * speed : 0;
         nextLocation.increase(argX, argY);
-        this.setSpriteDirection(direction);
       } else {
         var dir1 = tileLocation1.getX() < nextLocation.getX() ? 3 : 1,
             dir2 = tileLocation1.getY() < nextLocation.getY() ? 0 : 2;
@@ -120,12 +133,10 @@ define('objects/bomber', ['objects/object'], function() {
           argX = mod ? - speed : 0;
           argY = mod ? 0 : - speed;
           nextLocation.increase(argX, argY);
-          this.setSpriteDirection(dir);
         } else if (tile2.isPassable()) {
           argX = mod ? speed : 0;
           argY = mod ? 0 : speed;
           nextLocation.increase(argX, argY);
-          this.setSpriteDirection((dir + 2) % 4);
         }
       }
       return nextLocation;
@@ -137,18 +148,19 @@ define('objects/bomber', ['objects/object'], function() {
         //setTimeout(function() {this.bombs.remove()}.bind(this))
       }
     },
+    kill: function() {
+      if (this.dead) return;
+      this.dead = true;
+      this.controller.deactivate();
+      this.element.addClassName('bomber-dead');
+      this.element.setAttribute('title', "It's dead");
+      Sound.play('die');
+    },
     throwBomb: function() {
     },
     kick: function() {
     },
     explode: function() {
-    }
-  });
-
-  Object.extend(Game.Object.Bomber, {
-    Type: {
-      TUX: true, BSD: true, SPIDER: false, SNAKE: true,
-      'BALL-RED': false, 'BALL-YELLOW': false, 'BALL-GREEN': false, 'BALL-BLUE': false
     }
   });
 });

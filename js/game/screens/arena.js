@@ -56,10 +56,9 @@ define('screens/arena', ['screens/screen'], function() {
       Game.Map.load(maps[id], function(map) {
         this.map = map;
 
-        this.map.getPlayerStartupPositions().each(function(position) {
+        this.map.getPlayerStartupPositions().each(function(position, index) {
           var x = this.map.entry.size.x - 1, y = this.map.entry.size.y - 1;
 
-          var bombers = ['TUX', 'BSD', 'SPIDER', 'SNAKE', 'BALL-RED', 'BALL-YELLOW', 'BALL-GREEN', 'BALL-BLUE'];
 
           var controllerType;
           var keyboard = Game.Controller.Keyboard;
@@ -80,7 +79,7 @@ define('screens/arena', ['screens/screen'], function() {
 
           var location = new Point(Math.floor(x / 2), Math.floor(y / 2));
           var controller = new keyboard(controllerType);
-          var bomber = new Game.Object.Bomber(controller, bombers[Math.floor(Math.random() * 8)], location);
+          var bomber = new Game.Object.Bomber(controller, index + 1, location);
 
           bomber.flyTo(this.map.entry.tiles[position.point.getX()][position.point.getY()]);
           this.objects.bombers.push(bomber);
