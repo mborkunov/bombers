@@ -36,7 +36,7 @@ var Game = Class.create({
     } else {
       document.body.removeClassName(themeLink.getAttribute('name'));
     }
-    themeLink.setAttribute('href', 'css/themes/' + theme +'.css?' + Math.random());
+    themeLink.setAttribute('href', 'css/themes/' + theme +'.css');
     themeLink.setAttribute('name', theme);
     document.body.addClassName(theme);
   },

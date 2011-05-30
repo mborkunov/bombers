@@ -5,6 +5,15 @@ if (Object.isUndefined(console)) {
   };
 }
 
+window.applicationCache.addEventListener('updateready', function(e) {
+  if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+    window.applicationCache.swapCache();
+    if (confirm('A new version of this game is available. Load it?')) {
+      window.location.reload();
+    }
+  }
+}, false);
+
 document.observe("dom:loaded", function() {
   document.onmousedown = function() {return false}; // disable text selection - chromium
   require({
