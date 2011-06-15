@@ -94,6 +94,10 @@ define('screens/credits', ['screens/screen'], function() {
         this.margin += 5;
       } else if (this.keys.indexOf(Event.KEY_DOWN) != -1) {
         this.margin -= 5;
+      } else if (this.keys.indexOf(Event.KEY_PAGEUP) != -1) {
+        this.margin += 15;
+      } else if (this.keys.indexOf(Event.KEY_PAGEDOWN) != -1) {
+        this.margin -= 15;
       } else {
         this.margin -= 0.5;
       }

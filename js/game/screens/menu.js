@@ -3,24 +3,39 @@ define('screens/menu', ['screens/screen'], function() {
     counter: 0,
     name: 'Menu',
     menu: null,
-    level: 0,
     rendered: false,
+    changed: false,
     init: function() {
       var Type = Game.Screen.Menu.Item.Type;
-      this.menu = [
-        new Game.Screen.Menu.Item("New Game", Type.Screen, Game.Screen.Arena),
-        new Game.Screen.Menu.Item("Options", Type.Screen, Game.Screen.Options),
-        new Game.Screen.Menu.Item("Editor", Type.Screen, Game.Screen.Editor),
-        new Game.Screen.Menu.Item("Credits", Type.Screen, Game.Screen.Credits),
-        new Game.Screen.Menu.Item("Help", Type.Screen, Game.Screen.Help),
-        new Game.Screen.Menu.Item("Quit Game", Type.Screen, Game.Screen.Exit)
-      ];
+      var Item = Game.Screen.Menu.Item;
+      this.menu = new Item("Root", Type.Inner)
+        .addChild(new Item("New Game", Type.Screen, Game.Screen.Arena))
+        .addChild(new Item("Options", Type.Inner)
+            .addChild(new Item("FullScreen", Type.Settings))
+            .addChild(new Item("Sound", Type.Settings))
+            .addChild(new Item("Shake", Type.Settings))
+            .addChild(new Item("GamePlay", Type.Inner)
+              .addChild(new Item("Test", Type.Settings)))
+            .addChild(new Item("Theme", Type.Settings)))
+        .addChild(new Item("Editor", Type.Screen, Game.Screen.Editor))
+        .addChild(new Item("Credits", Type.Screen, Game.Screen.Credits))
+        .addChild(new Item("Help", Type.Screen, Game.Screen.Help))
+        .addChild(new Item("Quit Game", Type.Inner)
+          .addChild(new Item("Yes", Type.Custom, function() {
+            window.open('', '_self', '');
+            window.close();
+          }))
+          .addChild(new Item("No", Type.Custom, function(item) {
+            this.changeMenu(item.getParent().getParent());
+          }.bind(this)))
+        );
 
       this.listeners = {
         mousemove: function(e) {
         },
         keydown: function(e) {
-
+        },
+        keyup: function(e) {
           switch (e.keyCode) {
             case Event.KEY_DOWN:
               this.selectNext();
@@ -31,10 +46,11 @@ define('screens/menu', ['screens/screen'], function() {
             case Event.KEY_ENTER || 13:
               this.act();
               break;
+            case Event.KEY_ESC:
+              this.changeMenu(this.menu.getParent());
+              break;
           }
-        }.bind(this),
-        keyup: function(e) {
-        }
+        }.bind(this)
       };
       Sound.play('whoosh');
     },
@@ -43,43 +59,60 @@ define('screens/menu', ['screens/screen'], function() {
         this.list.remove();
       }
     },
+    changeMenu: function(item) {
+      if (item == null) return;
+      this.menu = item;
+      this.changed = true;
+      Sound.play('whoosh');
+    },
     update: function() {
     },
     render: function(time) {
       var self = this;
       if (!this.rendered) {
         this.rendered = true;
-        this.list = new Element("ul", {id: "menu"});
-        this.menu.each(function(list, item) {
-          item.render(list);
-        }.bind(this, this.list));
-        this.container.appendChild(this.list);
+        this.renderMenu(this.menu, this.container);
       }
+
+      if (this.changed) {
+        this.changed = false;
+        if (this.list) {
+          this.list.remove();
+        }
+        this.renderMenu(this.menu, this.container);
+      }
+    },
+    renderMenu: function(menu, container) {
+      this.list = new Element("ul", {id: "menu"});
+      menu.getChildren().each(function(list, item) {
+        item.render(list);
+      }.bind(this, this.list));
+      container.appendChild(this.list);
     },
     selectNext: function() {
       var selected = this.getSelected();
       var position = this.getPosition();
       if (selected == null) {
-        selected = this.menu[0];
+        selected = this.menu.getChildren()[0];
         selected.setSelected(true);
       } else {
-        if (position + 1 < this.menu.length) {
+        if (position + 1 < this.menu.size()) {
           selected.setSelected(false);
           this.getMenuItem(position + 1).setSelected(true);
         }
       }
     },
     getPosition: function() {
-      return this.menu.indexOf(this.getSelected());
+      return this.menu.getChildren().indexOf(this.getSelected());
     },
     getMenuItem: function(position) {
-      return this.menu[position];
+      return this.menu.getChildren()[position];
     },
     selectPrev: function() {
       var selected = this.getSelected();
       var position = this.getPosition();
       if (selected == null) {
-        selected = this.menu[this.menu.length - 1];
+        selected = this.menu.getChildren()[this.menu.length - 1];
         selected.setSelected(true);
       } else {
         if (position - 1 >= 0) {
@@ -90,7 +123,7 @@ define('screens/menu', ['screens/screen'], function() {
     },
     getSelected: function() {
       var rs = null;
-      this.menu.each(function(item) {
+      this.menu.getChildren().each(function(item) {
         if (item.isSelected()) {
           rs = item;
         }
@@ -114,6 +147,7 @@ define('screens/menu', ['screens/screen'], function() {
     selected: false,
     depth: 0,
     li: null,
+    parent: null,
     initialize: function(label, type) {
       this.label = label;
       this.type = type;
@@ -143,8 +177,15 @@ define('screens/menu', ['screens/screen'], function() {
     getType: function() {
       return this.type;
     },
+    setParent: function(parent) {
+      this.parent = parent;
+    },
+    getParent: function() {
+      return this.parent;
+    },
     addChild: function(child) {
       child.setDepth(this.depth + 1);
+      child.setParent(this);
       this.children.push(child);
       return this;
     },
@@ -179,25 +220,35 @@ define('screens/menu', ['screens/screen'], function() {
         this.setSelected(false)
       }.bind(this));
 
+      if (this.isSelected()) {
+        this.li.addClassName("selected");
+      }
       list.appendChild(this.li);
     },
     toString: function() {
       return "Menu item {" + this.label + ", " + this.depth + "}";
     },
     execute: function() {
-      this.type(this.args);
+      this.type(this, this.args);
+    },
+    size: function() {
+      return this.children.length;
     }
   });
 
   Game.Screen.Menu.Item.Type = {
-    Screen: function(args) {
+    Screen: function(item, args) {
       Sound.play('clear');
       Game.instance.setScreen(args[0]);
     },
-    Settings: function(arguments) {
+    Inner: function(item) {
+      Game.instance.getScreen().changeMenu(item);
     },
-    Custom: function(args) {
-      args[0]();
+    Settings: function(item, args) {
+      console.log(item, args);
+    },
+    Custom: function(item, args) {
+      args[0](item);
     }
   };
 });

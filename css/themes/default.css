@@ -75,7 +75,7 @@
 .bomber {
   width: 36px;
   height: 36px;
-  border: 2px solid black;
+  border: 1px solid black;
   border-radius: 20px;
   position: relative;
   background: url("../../images/light.png") 0 0 no-repeat;
