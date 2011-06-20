@@ -45,7 +45,6 @@ define('screens/menu', ['screens/screen'], function() {
             .addChild(new Item("Sounds", Type.Settings, "sounds", function(value) {
               Sound.setEnabled(value);
             })))
-
         .addChild(new Item("Editor", Type.Screen, Game.Screen.Editor))
         .addChild(new Item("Credits", Type.Screen, Game.Screen.Credits))
         .addChild(new Item("Help", Type.Screen, Game.Screen.Help))
