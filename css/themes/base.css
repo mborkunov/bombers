@@ -54,6 +54,10 @@
   padding: 5px;
 }
 
+#game-container.help ul li:hover {
+  color: #fff;
+}
+
 #game-container.help ul li img {
   width: 40px;
   height: 40px;
@@ -104,13 +108,30 @@
   background: url('../../images/themes/original/extras.png') -280px 0 no-repeat;
 }
 
-#game-container.help > span {
+#game-container.help .anykey {
   color: #eee;
   font-size: 24px;
   font-weight: bold;
   display: block;
   text-align: center;
   margin: 40px 0 0;
+  cursor: pointer;
+}
+
+#game-container.help .anykey:hover {
+  -webkit-animation: highlight 0.3s infinite;
+}
+
+@-webkit-keyframes highlight {
+ 0% {
+   color: #eee;
+ }
+ 50% {
+   color: #aaa;
+ }
+ 100% {
+   color: #eee;
+ }
 }
 
 #game-container.arena .bomber-1 {

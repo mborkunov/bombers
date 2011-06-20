@@ -22,7 +22,7 @@ document.observe("dom:loaded", function() {
       locale: "ru-ru"
     }, [
       'js/util/common.js', 'js/util/menu.js', 'js/util/point.js',
-      'js/worker.js', 'js/sound.js', 'js/game.js',
+      'js/worker.js', 'js/sound.js', 'js/game.js', 'js/config.js',
       'screens', 'tiles', 'objects', 'controllers'
     ], function() {
       new Game().start();

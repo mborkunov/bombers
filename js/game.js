@@ -4,7 +4,8 @@ var Game = Class.create({
   graphics: null,
   state: null,
   initialize: function() {
-    this.setTheme(localStorage.getItem('theme') || 'default');
+    this.setTheme(Config.get("graphic.theme"));
+    Sound.setEnabled(Config.get("sounds"));
     Game.instance = this;
     this.setScreen(this.getStartScreen());
     this.graphics = new Graphics();
@@ -28,7 +29,7 @@ var Game = Class.create({
   },
   setTheme: function(theme) {
     if (theme == null) return;
-    localStorage.setItem('theme', theme);
+    Config.set("graphic.theme", theme);
     var themeLink = $('theme');
     if (!themeLink) {
       themeLink = new Element('link', {id: 'theme', rel: 'stylesheet', type: 'text/css', name: theme});

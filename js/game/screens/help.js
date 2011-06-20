@@ -29,7 +29,7 @@ define('screens/help', ['screens/screen'], function() {
         {name: 'Cocaine', text: 'Lets you move very fast!! (too fast)'}
       ], 'drugs');
 
-      var anyKey = new Element("span").update("Press any key").setStyle({cursor: 'pointer'});
+      var anyKey = new Element("span").addClassName("anykey").update("Press any key");
       anyKey.on('click', function() {
         Game.instance.setScreen(Game.Screen.Menu)
       });
