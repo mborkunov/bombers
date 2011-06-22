@@ -115,7 +115,8 @@ define('screens/arena', ['screens/screen'], function() {
         var themeEl = new Element('div', {title: theme.name, theme: theme.id}).setStyle({'float': 'left', background: theme.color, width: '30px', height: '30px'});
         this.appendChild(themeEl);
         themeEl.observe('mouseover', function(e) {
-          Game.instance.setTheme(e.element().getAttribute('theme'));
+          Config.set("graphic.theme", e.element().getAttribute('theme'));
+          Game.instance.setTheme(Config.get("graphic.theme"));
         });
       }.bind(themesElement));
     },

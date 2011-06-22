@@ -16,7 +16,12 @@
   -webkit-border-radius: 0;
 }
 #menu li.selected {
-    background: #965;
+  background: #965;
+  color: #000 !important;
+}
+
+#menu li.value-off {
+  color: #644;
 }
 
 

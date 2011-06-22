@@ -10,7 +10,12 @@ define('screens/menu', ['screens/screen'], function() {
       var Item = Game.Screen.Menu.Item;
 
       this.menu = new Item("Root", Type.Inner)
-        .addChild(new Item("New Game", Type.Screen, Game.Screen.Arena))
+        .addChild(new Item("New Game", Type.Inner)
+          .addChild(new Item("Start Game", Type.Screen, Game.Screen.Arena))
+          .addChild(new Item("Random Positions", Type.Settings, "game.random_bombers_positions"))
+          .addChild(new Item("Random Map Order", Type.Settings, "game.random_maps"))
+          .addChild(new Item("Points to win", Type.Settings, "game.win_points"))
+          .addChild(new Item("Round Time", Type.Settings, "game.round_time")))
         .addChild(new Item("Options", Type.Inner)
             .addChild(new Item("Start/Max Extras", Type.Inner)
               .addChild(new Item("Start Bombs", Type.Settings, "start.bombs"))
@@ -262,6 +267,18 @@ define('screens/menu', ['screens/screen'], function() {
           this.li.addClassName("selected");
         }
         list.appendChild(this.li);
+      }
+      if (this.type === Game.Screen.Menu.Item.Type.Settings) {
+        this.li.className = "";
+        if (this.isSelected()) {
+          this.li.addClassName("selected");
+        }
+        var className = Try.these(function() {
+          return "value-" + Config.getAsString(this.args[0]).toLowerCase()
+        }.bind(this),function() {
+          return "value-" + Config.getAsString(this.args[0]);
+        }.bind(this));
+        this.li.addClassName(className);
       }
     },
     toString: function() {

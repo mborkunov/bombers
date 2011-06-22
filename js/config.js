@@ -51,6 +51,17 @@ var Config = {
         return false;
       }
       return 1;
+    } else if (key.indexOf("game") === 0) {
+      switch (key) {
+        case "game.random_bombers_positions":
+          return true;
+        case "game.random_maps":
+          return true;
+        case "game.win_points":
+          return 5;
+        case "game.round_time":
+          return 60;
+      }
     } else if (key.indexOf("extras") === 0) {
       return true;
     } else if (key.indexOf("max") === 0) {
