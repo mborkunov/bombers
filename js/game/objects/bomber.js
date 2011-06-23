@@ -59,7 +59,7 @@ define('objects/bomber', ['objects/object'], function() {
       if (!Object.isUndefined(this.eyes)) {
         if (this.distance >= .1) {
           this.rollAngle += 60;
-          this.rollingAngle = Math.round(8 * Math.sin(this.rollAngle / 180 * Math.PI));
+          this.rollingAngle = Math.round(5 * Math.sin(this.rollAngle / 180 * Math.PI));
           if (this.rollAngle >= 360) {
             this.rollAngle = 0;
           }
@@ -85,8 +85,16 @@ define('objects/bomber', ['objects/object'], function() {
         var requiredAngle = this.getAngleByDirection(this.direction);
         if (this.angle != requiredAngle) {
           var clockWise = this.getClockWiseDirection(this.angle, requiredAngle);
-          var diff = Math.min(20, Math.abs(requiredAngle - this.angle));
+          var absDiff = Math.abs(requiredAngle - this.angle);
+
+          var diff = (Math.abs(absDiff - 180) < 20 || absDiff < 15) ? absDiff : 15;
           this.angle += clockWise ? - diff : diff;
+          if (this.angle >= 360) {
+            this.angle %= 360;
+          }
+          if (this.angle < 0) {
+            this.angle = 360 + this.angle % 360;
+          }
         }
       }
       $super(delay);
@@ -104,11 +112,8 @@ define('objects/bomber', ['objects/object'], function() {
       }
     },
     getClockWiseDirection:function(currentAngle, requiredAngle) {
-      if (requiredAngle > currentAngle) {
-        return false; //requiredAngle - currentAngle > 180;
-      } else {
-        return true; //currentAngle - requiredAngle > 180;
-      }
+      var diff = requiredAngle - currentAngle;
+      return !((diff > 0 && diff < 180) || (diff < -180));
     },
     move: function(direction, delay) {
       if (this.isFlying() || this.isFalling()) return;
