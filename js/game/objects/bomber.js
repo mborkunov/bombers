@@ -7,12 +7,18 @@ define('objects/bomber', ['objects/object'], function() {
     bombs: [],
     dead: null,
     number: null,
-    rollAngle: 0,
+    angle: null,
     tall: false,
+    rollAngle: null,
+    rollingAngle: null,
     initialize: function($super, controller, number, location) {
       this.backgroundPosition = {x: 0, y: 0};
       this.distance = 0;
+      this.rollingAngle = 0;
+      this.rollAngle = 0,
+      this.angle = 0;
       this.speed = .05;
+      this.rollAngle = 0;
       this.maxBombs = 1;
       this.dead = false;
       this.location = location;
@@ -50,10 +56,10 @@ define('objects/bomber', ['objects/object'], function() {
         this.element.style['z-index'] = Math.round(Math.abs(this.location.getY() + (this.tall ? .3 : 0)) * 10) + 11;
       }
 
-      var angle = 0;
       if (!Object.isUndefined(this.eyes)) {
         if (this.distance >= .1) {
-          angle += Math.round(10 * Math.sin(this.rollAngle++));
+          this.rollAngle += 60;
+          this.rollingAngle = Math.round(8 * Math.sin(this.rollAngle / 180 * Math.PI));
           if (this.rollAngle >= 360) {
             this.rollAngle = 0;
           }
@@ -61,7 +67,8 @@ define('objects/bomber', ['objects/object'], function() {
         }
       }
 
-      this.eyes.style['-webkit-transform'] = 'rotate(' + (angle + this.rotationAngle) +'deg)';
+      this.rotate = (- this.angle + 90 + this.rollingAngle);
+      this.eyes.style['-webkit-transform'] = 'rotate(' + this.rotate +'deg) ';
       $super();
     },
     update: function($super, delay, map) {
@@ -74,20 +81,34 @@ define('objects/bomber', ['objects/object'], function() {
         }
       }
 
-      if (this.direction * 90 != this.rotationAngle) {
-        var diffAngle = this.direction * 90 - this.rotationAngle;
-
-        if (diffAngle > 0) {
-          if (diffAngle > 180) {
-            this.rotationAngle -= 20;
-          } else {
-           this.rotationAngle += 20;
-          }
-        } else {
-          this.rotationAngle -= 20;
+      if (!this.isDead()) {
+        var requiredAngle = this.getAngleByDirection(this.direction);
+        if (this.angle != requiredAngle) {
+          var clockWise = this.getClockWiseDirection(this.angle, requiredAngle);
+          var diff = Math.min(20, Math.abs(requiredAngle - this.angle));
+          this.angle += clockWise ? - diff : diff;
         }
       }
       $super(delay);
+    },
+    getAngleByDirection: function(direction) {
+      switch (direction) {
+        case 0:
+          return 90;
+        case 1:
+          return 0;
+        case 2:
+          return 270;
+        case 3:
+          return 180;
+      }
+    },
+    getClockWiseDirection:function(currentAngle, requiredAngle) {
+      if (requiredAngle > currentAngle) {
+        return false; //requiredAngle - currentAngle > 180;
+      } else {
+        return true; //currentAngle - requiredAngle > 180;
+      }
     },
     move: function(direction, delay) {
       if (this.isFlying() || this.isFalling()) return;
@@ -133,10 +154,12 @@ define('objects/bomber', ['objects/object'], function() {
           argX = mod ? - speed : 0;
           argY = mod ? 0 : - speed;
           nextLocation.increase(argX, argY);
+          this.direction = dir;
         } else if (tile2.isPassable()) {
           argX = mod ? speed : 0;
           argY = mod ? 0 : speed;
           nextLocation.increase(argX, argY);
+          this.direction = (dir + 2) % 4;
         }
       }
       return nextLocation;
