@@ -13,11 +13,15 @@ define('screens/arena', ['screens/screen'], function() {
     init: function() {
       this.objects = {
         bombers: [],
+        bombs: [],
         arbiter:  new Game.Object.Arbiter(),
         extras: [],
         each: function(call) {
           this.bombers.each(function(bomber) {
             call(bomber);
+          });
+          this.bombs.each(function(bomb){
+            call(bomb);
           });
           call(this.arbiter);
         }

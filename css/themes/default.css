@@ -86,6 +86,16 @@
   background: url("../../images/light.png") 0 0 no-repeat;
 }
 
+.bomb {
+  width: 36px;
+  height: 36px;
+  border: 1px solid black;
+  border-radius: 20px;
+  position: absolute;
+  z-index: 15 !important;
+  background: #666 url("../../images/light.png") 0 0 no-repeat;
+}
+
 .eyes {
   position: absolute;
   top: 50%;

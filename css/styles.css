@@ -229,6 +229,7 @@ div.clear {
 }
 .arena .bomber {
     position: absolute;
+    z-index: 200;
 }
 .arena .bomber-tall {
     margin-top: -20px;

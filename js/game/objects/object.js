@@ -124,7 +124,10 @@ define('objects/object', [], function() {
       }
     },
     getTile: function(point) {
-      return Game.instance.screen.map.getTile(point.getX(), point.getY());
+      return this.getScreen().map.getTile(point.getX(), point.getY());
+    },
+    getScreen: function() {
+      return Game.instance.screen;
     },
     _check: function(position, destination, diff) {
       return (Math.abs(position - destination) < Math.abs(position + diff - destination));
@@ -142,6 +145,7 @@ define('objects/object', [], function() {
 
         if (this.isFalling()) {
           this.element.style['-webkit-transform'] = 'scale(' + this.falling + ', ' + this.falling + ')';
+          this.element.style.MozTransform = 'scale(' + this.falling + ', ' + this.falling + ')';
           this.element.style.opacity = this.falling;
         }
       }

@@ -4,15 +4,15 @@ define('objects/bomber', ['objects/object'], function() {
     location: null,
     backgroundPosition: null,
     maxBombs: null,
-    bombs: [],
+    bombs: null,
     dead: null,
     number: null,
     angle: null,
-    tall: false,
     rollAngle: null,
     rollingAngle: null,
     initialize: function($super, controller, number, location) {
       this.backgroundPosition = {x: 0, y: 0};
+      this.bombs = [];
       this.distance = 0;
       this.rollingAngle = 0;
       this.rollAngle = 0,
@@ -23,7 +23,6 @@ define('objects/bomber', ['objects/object'], function() {
       this.dead = false;
       this.location = location;
       this.number = number;
-      this.tall = false; //Game.Object.Bomber.Type[this.type];
       controller.attach(this);
       this.controller = controller;
     },
@@ -53,7 +52,7 @@ define('objects/bomber', ['objects/object'], function() {
       if (this.isFlying()) {
         this.element.style['z-index'] = 200;
       } else {
-        this.element.style['z-index'] = Math.round(Math.abs(this.location.getY() + (this.tall ? .3 : 0)) * 10) + 11;
+        this.element.style['z-index'] = Math.round(Math.abs(this.location.getY() + 0) * 10) + 11;
       }
 
       if (!Object.isUndefined(this.eyes)) {
@@ -69,6 +68,7 @@ define('objects/bomber', ['objects/object'], function() {
 
       this.rotate = (- this.angle + 90 + this.rollingAngle);
       this.eyes.style['-webkit-transform'] = 'rotate(' + this.rotate +'deg) ';
+      this.eyes.style.MozTransform = 'rotate(' + this.rotate +'deg) ';
       $super();
     },
     update: function($super, delay, map) {
@@ -166,11 +166,14 @@ define('objects/bomber', ['objects/object'], function() {
       return nextLocation;
     },
     spawnBomb: function() {
-      if (this.bombs.length < this.maxBombs) {
-        this.bombs.push(1);
-        Sound.play('putbomb');
-        //setTimeout(function() {this.bombs.remove()}.bind(this))
-      }
+      if (this.isFlying() || this.isFalling()) return;
+      if (this.bombs.length >= this.maxBombs) return;
+
+      var tile = this.getTile(this.getLocation());
+      var bomb = new Game.Object.Bomb(tile.getLocation().clone(), this);
+      this.bombs.push(bomb);
+      this.getScreen().objects.bombs.push(bomb);
+      Sound.play('putbomb');
     },
     kill: function() {
       if (this.dead) return;
@@ -183,8 +186,6 @@ define('objects/bomber', ['objects/object'], function() {
     throwBomb: function() {
     },
     kick: function() {
-    },
-    explode: function() {
     }
   });
 });
