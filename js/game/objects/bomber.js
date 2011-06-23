@@ -101,14 +101,10 @@ define('objects/bomber', ['objects/object'], function() {
     },
     getAngleByDirection: function(direction) {
       switch (direction) {
-        case 0:
-          return 90;
-        case 1:
-          return 0;
-        case 2:
-          return 270;
-        case 3:
-          return 180;
+        case 0: return 90;
+        case 1: return 0;
+        case 2: return 270;
+        case 3: return 180;
       }
     },
     getClockWiseDirection:function(currentAngle, requiredAngle) {
