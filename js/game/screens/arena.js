@@ -91,6 +91,15 @@ define('screens/arena', ['screens/screen'], function() {
         this.prerender();
       }.bind(this));
     },
+    hasBomb: function(location) {
+      for (var i = 0; i < this.objects.bombs.length; i++) {
+        var bomb = this.objects.bombs[i];
+        if (bomb.getLocation().equals(location)) {
+          return true;
+        }
+      }
+      return false;
+    },
     prerender: function() {
       this.rendered = true;
 
@@ -178,8 +187,7 @@ define('screens/arena', ['screens/screen'], function() {
         this.container.removeChild(this.dialog);
         try {
           this.container.removeChild(this.overlay);
-        } catch (ignored) {
-        }
+        } catch (ignored) {}
         this.overlay = this.dialog = null;
       }
     },
@@ -188,7 +196,9 @@ define('screens/arena', ['screens/screen'], function() {
       this.container.removeChild(this.battleField);
       if (this.overlay) {
         this.container.removeChild(this.dialog);
-        this.container.removeChild(this.overlay);
+        try {
+          this.container.removeChild(this.overlay);
+        } catch (ignored) {}
       }
 
     }

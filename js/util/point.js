@@ -33,6 +33,23 @@ var Point = Class.create({
   roundY: function() {
     return new Point(this.x, Math.round(this.y));
   },
+  shift: function(offset, direction) {
+    switch (direction) {
+      case 0:
+          this.y -= offset;
+        break;
+      case 1:
+          this.x += offset
+        break;
+      case 2:
+          this.y += offset;
+        break;
+      case 3:
+          this.x -= offset;
+        break;
+    }
+    return this;
+  },
   round: function() {
     return new Point(Math.round(this.x), Math.round(this.y));
   },
@@ -43,7 +60,7 @@ var Point = Class.create({
     if (!point || !(point instanceof Point)) {
       throw 'illegal argument: ' + point;
     }
-    return this.x == point.getX() && this.y == point.getY();
+    return this.x === point.getX() && this.y === point.getY();
   }
 });
 

@@ -43,10 +43,14 @@ define('objects/bomb', ['objects/object'], function() {
       this.location = this.getNextLocation(direction);
       this.distance += this.getSpeed();
     },
-    explode: function() {
+    removeBomb: function() {
       this.element.parentNode.removeChild(this.element);
       this.getScreen().objects.bombs = this.getScreen().objects.bombs.without(this);
       this.bomber.bombs = this.bomber.bombs.without(this);
+    },
+    explode: function() {
+      this.removeBomb();
+      Sound.play("explode");
     }
   });
 });

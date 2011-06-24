@@ -19,7 +19,7 @@ define('objects/bomber', ['objects/object'], function() {
       this.angle = 0;
       this.speed = .05;
       this.rollAngle = 0;
-      this.maxBombs = 1;
+      this.maxBombs = 3;
       this.dead = false;
       this.location = location;
       this.number = number;
@@ -68,6 +68,7 @@ define('objects/bomber', ['objects/object'], function() {
 
       this.rotate = (- this.angle + 90 + this.rollingAngle);
       this.eyes.style['-webkit-transform'] = 'rotate(' + this.rotate +'deg) ';
+      this.eyes.style['transform'] = 'rotate(' + this.rotate +'deg) ';
       this.eyes.style.MozTransform = 'rotate(' + this.rotate +'deg) ';
       $super();
     },
@@ -139,8 +140,13 @@ define('objects/bomber', ['objects/object'], function() {
       tileLocation1.increase(deltaX1, deltaY1);
       tileLocation2.increase(deltaX2, deltaY2);
 
-      var tile1 = Game.instance.screen.map.getTile(tileLocation1.getX(), tileLocation1.getY());
-      var tile2 = Game.instance.screen.map.getTile(tileLocation2.getX(), tileLocation2.getY());
+      var tile1 = this.getTile(tileLocation1);
+      var tile2 = this.getTile(tileLocation2);
+
+      if (this.getScreen().hasBomb(this.location.clone().shift(offset + speed, this.direction).round())) {
+        //break;
+        return nextLocation;
+      }
 
       var argX, argY;
       if (tile1.isPassable() && tile2.isPassable()) {
@@ -170,9 +176,14 @@ define('objects/bomber', ['objects/object'], function() {
       if (this.bombs.length >= this.maxBombs) return;
 
       var tile = this.getTile(this.getLocation());
+      var screen = this.getScreen();
+      if (screen.hasBomb(tile.getLocation())) return;
+
       var bomb = new Game.Object.Bomb(tile.getLocation().clone(), this);
+
       this.bombs.push(bomb);
-      this.getScreen().objects.bombs.push(bomb);
+      screen.objects.bombs.push(bomb);
+
       Sound.play('putbomb');
     },
     kill: function() {

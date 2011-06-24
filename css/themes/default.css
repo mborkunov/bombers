@@ -87,11 +87,12 @@
 }
 
 .bomb {
-  width: 36px;
-  height: 36px;
+  width: 30px;
+  height: 30px;
   border: 1px solid black;
   border-radius: 20px;
   position: absolute;
+  margin: 4px;
   z-index: 15 !important;
   background: #666 url("../../images/light.png") 0 0 no-repeat;
 }

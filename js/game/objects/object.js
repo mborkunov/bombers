@@ -57,6 +57,8 @@ define('objects/object', [], function() {
           if (this instanceof Game.Object.Bomber) {
             this.controller.deactivate();
             this.dead = true;
+          } else if (this instanceof Game.Object.Bomb) {
+            this.removeBomb();
           }
           this.element.hide();
         }
@@ -138,14 +140,19 @@ define('objects/object', [], function() {
         this.element.style.left = (this.location.getX() * 40) + 'px';
 
         var scale = 'scale(' + this.scale + ')';
-        this.element.style['-webkit-transform'] = scale;
-        this.element.style['-o-transform'] = scale;
-        this.element.style.MozTransform = scale;
 
+        if (Prototype.Browser.WebKit) {
+          this.element.style['-webkit-transform'] = scale;
+        } else if (Prototype.Browser.Gecko) {
+          this.element.style.MozTransform = scale;
+        }
 
         if (this.isFalling()) {
-          this.element.style['-webkit-transform'] = 'scale(' + this.falling + ', ' + this.falling + ')';
-          this.element.style.MozTransform = 'scale(' + this.falling + ', ' + this.falling + ')';
+          if (Prototype.Browser.WebKit) {
+            this.element.style['-webkit-transform'] = 'scale(' + this.falling + ', ' + this.falling + ')';
+          } else if (Prototype.Browser.Gecko) {
+            this.element.style.MozTransform = 'scale(' + this.falling + ', ' + this.falling + ')';
+          }
           this.element.style.opacity = this.falling;
         }
       }
