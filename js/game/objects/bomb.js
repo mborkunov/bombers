@@ -1,4 +1,4 @@
-define('objects/bomb', ['objects/object'], function() {
+define('objects/bomb', ['objects/object', 'objects/explosion'], function() {
   Game.Object.Bomb = Class.create(Game.Object, {
     location: null,
     bomber: null,
@@ -50,6 +50,7 @@ define('objects/bomb', ['objects/object'], function() {
     },
     explode: function() {
       this.removeBomb();
+      this.getScreen().objects.explosions.push(new Game.Object.Explosion(this.location.clone()));
       Sound.play("explode");
     }
   });

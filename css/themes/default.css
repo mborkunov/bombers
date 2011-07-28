@@ -97,6 +97,16 @@
   background: #666 url("../../images/light.png") 0 0 no-repeat;
 }
 
+.explosion {
+  width: 30px;
+  height: 30px;
+  border: 1px solid black;
+  position: absolute;
+  margin: 4px;
+  z-index: 15 !important;
+  background: orange;
+}
+
 .eyes {
   position: absolute;
   top: 50%;

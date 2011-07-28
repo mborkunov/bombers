@@ -14,6 +14,7 @@ define('screens/arena', ['screens/screen'], function() {
       this.objects = {
         bombers: [],
         bombs: [],
+        explosions: [],
         arbiter:  new Game.Object.Arbiter(),
         extras: [],
         each: function(call) {
@@ -22,6 +23,9 @@ define('screens/arena', ['screens/screen'], function() {
           });
           this.bombs.each(function(bomb){
             call(bomb);
+          });
+          this.explosions.each(function(explosion){
+            call(explosion);
           });
           call(this.arbiter);
         }

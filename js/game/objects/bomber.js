@@ -67,9 +67,7 @@ define('objects/bomber', ['objects/object'], function() {
       }
 
       this.rotate = (- this.angle + 90 + this.rollingAngle);
-      this.eyes.style['-webkit-transform'] = 'rotate(' + this.rotate +'deg) ';
-      this.eyes.style['transform'] = 'rotate(' + this.rotate +'deg) ';
-      this.eyes.style.MozTransform = 'rotate(' + this.rotate +'deg) ';
+      $(this.eyes).rotate(this.rotate);
       $super();
     },
     update: function($super, delay, map) {
