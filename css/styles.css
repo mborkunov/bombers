@@ -1,15 +1,16 @@
 * {
-    padding: 0;
-    margin: 0;
-    font-family: Georgia;
+  padding: 0;
+  margin: 0;
+  font-family: Georgia;
 }
+
 html, body {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 body {
-    background: #222;
+  background: #222;
 }
 
 div.clear {
@@ -21,68 +22,72 @@ div.clear {
 }
 
 #game-container {
-    background: #000;
-    border: 1px solid #666;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 800px;
-    height: 600px;
-    margin: -300px 0 0 -400px ;
-    box-shadow: 0 0 10px #444;
-    -moz-box-shadow: 0 0 10px #444;
-    -webkit-box-shadow: 0 0 10px #444;
-    overflow: hidden;
+  background: #000;
+  border: 1px solid #666;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 800px;
+  height: 600px;
+  margin: -300px 0 0 -400px;
+  box-shadow: 0 0 10px #444;
+  -moz-box-shadow: 0 0 10px #444;
+  -webkit-box-shadow: 0 0 10px #444;
+  overflow: hidden;
 }
 
 #game-container #overlay {
-    position: absolute;
-    background: #000;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: .5;
-    z-index: 300;
+  position: absolute;
+  background: #000;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: .5;
+  z-index: 300;
 }
 
 #game-container .dialog {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 300px;
-    height: 160px;
-    margin: 30% 0 0 -150px;
-    background: #ccc;
-    border: 1px solid white;
-    opacity: .7;
-    -moz-box-shadow: 0 0 5px silver;
-    -moz-border-radius: 3px;
-    z-index: 301;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 300px;
+  height: 160px;
+  margin: 30% 0 0 -150px;
+  background: #666;
+  border: 2px solid #fff;
+  opacity: .8;
+  -moz-box-shadow: 0 0 5px silver;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  z-index: 301;
 }
 
 #game-container .dialog .action {
-    display: block;
-    padding: 3px 5px;
-    margin: 30px;
-    border: 1px solid #ccc;
-    background: #fff;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    cursor: pointer;
+  display: block;
+  padding: 3px 5px;
+  margin: 30px;
+  border: 1px solid #ccc;
+  background: #fff;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
 }
+
 #game-container .dialog .action:hover {
-    background: #eee;
+  background: #eee;
 }
 
 #game-container.fullscreen {
-    border: none;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    -moz-box-shadow: none;
+  border: none;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  -moz-box-shadow: none;
 }
 
 /* intro screen */
@@ -96,54 +101,53 @@ div.clear {
 
 /* intro screen// */
 
-
 /* //options screen */
 #game-container.options fieldset {
-    margin: 30px;
-    padding: 10px;
-    background: #fff;
-    border: 1px solid #666;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    position: relative;
+  margin: 30px;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid #666;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  position: relative;
 }
 
 #game-container.options fieldset legend {
-    margin: 0 0 0 20px;
-    padding: 3px 10px;
-    border: 1px solid #666;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    background: #fff;
-    border-bottom: none;
+  margin: 0 0 0 20px;
+  padding: 3px 10px;
+  border: 1px solid #666;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  background: #fff;
+  border-bottom: none;
 }
 
 #game-container.options fieldset .actions {
-    background: gray;
-    margin: 10px -10px -10px -10px;
-    padding: 10px;
-    text-align: right;
+  background: gray;
+  margin: 10px -10px -10px -10px;
+  padding: 10px;
+  text-align: right;
 }
 
 #game-container.options fieldset .actions a {
-    text-align: center;
-    display: inline-block;
-    background: #eee;
-    color: #444;
-    border: 1px solid transparent;
-    padding: 3px 5px;
-    width: 80px;
-    font-size: 11px;
-    font-weight: bold;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    cursor: pointer;
+  text-align: center;
+  display: inline-block;
+  background: #eee;
+  color: #444;
+  border: 1px solid transparent;
+  padding: 3px 5px;
+  width: 80px;
+  font-size: 11px;
+  font-weight: bold;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  cursor: pointer;
 }
 
 #game-container.options fieldset .actions a:hover {
-    background: #ddd;
-    color: #222;
-    cursor: pointer;
+  background: #ddd;
+  color: #222;
+  cursor: pointer;
 }
 
 #game-container.options fieldset legend {
@@ -170,70 +174,69 @@ div.clear {
 }
 
 #game-container.credits div {
-    color: #fff;
-    padding: 0 200px;
+  color: #fff;
+  padding: 0 200px;
 }
 
 /* options screen// */
 
 #menu {
-    list-style: none;
-    margin: 20% auto 0;
-    width: auto;
-    text-align: center;
+  list-style: none;
+  margin: 20% auto 0;
+  width: auto;
+  text-align: center;
 }
 
 #menu li {
-    font-size: 22px;
-    display: block;
-    width: 30%;
-    margin: 15px auto;
-    padding: 5px;
-    background: #fff;
-    font-weight: bold;
-    text-align: center;
-    border-radius: 10px 5px;
-    -moz-border-radius: 10px 5px;
-    -webkit-border-radius: 10px 5px;
-    border: 2px groove #555;
+  font-size: 22px;
+  display: block;
+  width: 30%;
+  margin: 15px auto;
+  padding: 5px;
+  background: #fff;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 10px 5px;
+  -moz-border-radius: 10px 5px;
+  -webkit-border-radius: 10px 5px;
+  border: 2px groove #555;
 }
 
 #menu li:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
-
 
 #game-container.arena {
   background: #000;
 }
 
-
 #game-container.arena .field {
   margin: 50px 0 0 60px;
 }
 
-
 #game-container.arena #arbiter {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    z-index: 666;
-    background: yellow;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  z-index: 666;
+  background: yellow;
 }
 
 #game-container.arena .tile {
-    z-index: 10;
-    position: absolute;
-    width: 40px;
-    height: 40px;
+  z-index: 10;
+  position: absolute;
+  width: 40px;
+  height: 40px;
 }
+
 .arena .bomber {
-    position: absolute;
-    z-index: 200;
+  position: absolute;
+  z-index: 200;
 }
+
 .arena .bomber-tall {
-    margin-top: -20px;
-    height: 60px !important;
+  margin-top: -20px;
+  height: 60px !important;
 }
 
 .arena .tile-arrow-east,
@@ -242,9 +245,11 @@ div.clear {
 .arena .tile-arrow-north {
   background: #faebd7;
 }
+
 .arena .tile-ice {
   background: #00bfff;
 }
+
 .arena .tile-trap {
   background: orange;
 }
@@ -256,16 +261,18 @@ div.clear {
 .arena .tile-wall, .arena .tile-box {
   z-index: 200 !important;
 }
+
 .arena .tile-box {
   background: silver;
 }
+
 .arena .tile-wall {
   background: darkgray;
 }
 
 #game-container.arena .extra {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    z-index: 11;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  z-index: 11;
 }

@@ -2,6 +2,7 @@ define('objects/explosion', ['objects/object'], function() {
   Game.Object.Explosion = Class.create(Game.Object, {
     growSpeed: null,
     size: null,
+    power: null,
     initialize: function($super, location) {
       this.growSpeed = .5;
       this.location = location;
@@ -13,6 +14,11 @@ define('objects/explosion', ['objects/object'], function() {
           left: (this.location.getX() * 40) + 'px'
         }).addClassName('explosion');
         container.appendChild(this.element);
+      } else if (this.element) {
+        this.location.increaseY(-0.01);
+
+        this.element.style.top = (this.location.getY() * 40) + 'px';
+        this.element.style.height = (parseInt(this.element.style.height) + 2) + 'px';
       }
 
       $super();
