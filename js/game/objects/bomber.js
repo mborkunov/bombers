@@ -76,6 +76,8 @@ define('objects/bomber', ['objects/object'], function() {
           var tile = map.getTile(this.location.getX(), this.location.getY());
           if (tile.getName() == 'none' || tile.isDestroyed()) {
             this.fall();
+          } else if (tile.getName() == 'ice') {
+            this.move(this.direction, delay / 2);
           }
         }
       }
@@ -112,11 +114,11 @@ define('objects/bomber', ['objects/object'], function() {
     },
     move: function(direction, delay) {
       if (this.isFlying() || this.isFalling()) return;
+      this.direction = direction;
       this.location = this.getNextLocation(direction);
       this.distance += this.getSpeed();
     },
     getNextLocation: function(direction) {
-      this.direction = direction;
       var speed = this.getSpeed();
       var offset = .4;
 

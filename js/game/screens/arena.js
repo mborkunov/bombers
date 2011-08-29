@@ -154,9 +154,6 @@ define('screens/arena', ['screens/screen'], function() {
         if (object instanceof Game.Object.Bomber) {
           object.controller.update(this.keys, delay);
         }
-        if (object instanceof Game.Object.Arbiter && !object.isRunning()) {
-          return;
-        }
         object.update(delay, this.map);
       }.bind(this));
 

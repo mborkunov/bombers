@@ -139,20 +139,10 @@ define('objects/object', [], function() {
         this.element.style.top = (this.location.getY() * 40) + 'px';
         this.element.style.left = (this.location.getX() * 40) + 'px';
 
-        var scale = 'scale(' + this.scale + ')';
-
-        if (Prototype.Browser.WebKit) {
-          this.element.style['-webkit-transform'] = scale;
-        } else if (Prototype.Browser.Gecko) {
-          this.element.style.MozTransform = scale;
-        }
+        this.element.scale(this.scale);
 
         if (this.isFalling()) {
-          if (Prototype.Browser.WebKit) {
-            this.element.style['-webkit-transform'] = 'scale(' + this.falling + ', ' + this.falling + ')';
-          } else if (Prototype.Browser.Gecko) {
-            this.element.style.MozTransform = 'scale(' + this.falling + ', ' + this.falling + ')';
-          }
+          this.element.scale(this.falling);
           this.element.style.opacity = this.falling;
         }
       }

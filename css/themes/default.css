@@ -87,14 +87,12 @@
 }
 
 .arena .bomb {
-  width: 30px;
-  height: 30px;
-  border: 1px solid black;
-  border-radius: 20px;
+  width: 36px;
+  height: 36px;
   position: absolute;
-  margin: 4px;
+  margin: 2px;
   z-index: 15 !important;
-  background: #666 url("../../images/light.png") 0 0 no-repeat;
+  background: url("../../images/themes/default/bomb.png") 0 0 no-repeat;
 }
 
 .explosion {

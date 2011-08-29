@@ -2,12 +2,15 @@ define('objects/bomb', ['objects/object', 'objects/explosion'], function() {
   Game.Object.Bomb = Class.create(Game.Object, {
     location: null,
     bomber: null,
+    scaleCounter: null,
     initialize: function($super, location, bomber) {
       this.backgroundPosition = {x: 0, y: 0};
       this.bomber = bomber;
       this.distance = 0;
       this.speed = .05;
       this.location = location;
+      this.scaleCounter = 0;
+      this.lastUpdate = 0;
     },
     render: function($super, container) {
       if (!this.element && container) {
@@ -34,6 +37,12 @@ define('objects/bomb', ['objects/object', 'objects/explosion'], function() {
         var tile = map.getTile(this.location.getX(), this.location.getY());
         if (tile.getName() == 'none' || tile.isDestroyed()) {
           this.fall();
+        }
+        var time = date();
+        if (time - this.lastUpdate > 10) {
+          this.lastUpdate = time;
+          var scale = 1 + Math.abs(Math.sin(this.scaleCounter+=3 * Math.PI / 180)) / 7;
+          this.element.scale(scale, scale);
         }
       }
       $super(delay);
