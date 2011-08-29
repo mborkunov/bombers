@@ -86,7 +86,7 @@
   background: url("../../images/light.png") 0 0 no-repeat;
 }
 
-.bomb {
+.arena .bomb {
   width: 30px;
   height: 30px;
   border: 1px solid black;
