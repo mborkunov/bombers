@@ -67,7 +67,7 @@ define('objects/bomber', ['objects/object'], function() {
       }
 
       this.rotate = (- this.angle + 90 + this.rollingAngle);
-      $(this.eyes).rotate(this.rotate);
+      this.eyes.rotate(this.rotate);
       $super();
     },
     update: function($super, delay, map) {
@@ -143,13 +143,10 @@ define('objects/bomber', ['objects/object'], function() {
       var tile1 = this.getTile(tileLocation1);
       var tile2 = this.getTile(tileLocation2);
 
-      if (this.getScreen().hasBomb(this.location.clone().shift(offset + speed, this.direction).round())) {
-        //break;
-        return nextLocation;
-      }
 
       var argX, argY;
-      if (tile1.isPassable() && tile2.isPassable()) {
+      if (tile1.isPassable() && !tile1.hasBomb()// || !tile1.getLocation().equals(this.location))
+          && tile2.isPassable() && !tile2.hasBomb()) {// || !tile2.getLocation().equals(this.location))) {
         argX = mod ? 0 : - dynamicDirection * speed;
         argY = mod ? dynamicDirection * speed : 0;
         nextLocation.increase(argX, argY);
@@ -157,12 +154,12 @@ define('objects/bomber', ['objects/object'], function() {
         var dir1 = tileLocation1.getX() < nextLocation.getX() ? 3 : 1,
             dir2 = tileLocation1.getY() < nextLocation.getY() ? 0 : 2;
         var dir = mod ? dir1 : dir2;
-        if (tile1.isPassable()) {
+        if (tile1.isPassable() && !tile1.hasBomb()) {// || !tile1.getLocation().equals(this.location))) {
           argX = mod ? - speed : 0;
           argY = mod ? 0 : - speed;
           nextLocation.increase(argX, argY);
           this.direction = dir;
-        } else if (tile2.isPassable()) {
+        } else if (tile2.isPassable() && !tile2.hasBomb()) { // || !tile2.getLocation().equals(this.location))) {
           argX = mod ? speed : 0;
           argY = mod ? 0 : speed;
           nextLocation.increase(argX, argY);

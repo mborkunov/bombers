@@ -92,7 +92,7 @@ define('tiles/map', [], function() {
               break;
             case '1': case '2': case '3': case '4':
             case '5': case '6': case '7': case '0':
-            this.playerPositions.push({number: parseInt(data[x][y]), point: point});
+            this.playerPositions.push({number: data[x][y] | 0, point: point});
             case ' ':
               tile = new Game.Tile.Ground(point);
               break;

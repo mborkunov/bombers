@@ -16,7 +16,7 @@ var Config = {
     } else if (v.indexOf("|") > 0) {
       var value = v.split("|");
       if (value[1] == "boolean") v = value[0] === "true";
-      else if (value[1] == "number") v = parseInt(value[0]);
+      else if (value[1] == "number") v = value[0] | 0;
       else if (value[1] == "string") v = value[0];
     }
     return v;

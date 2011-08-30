@@ -45,10 +45,10 @@ define('screens/intro', ['screens/screen'], function() {
           }
         } else {
           this.logo.setStyle({
-            'width': parseInt(this.logo.getStyle('width')) + 1 + 'px'
+            'width': this.logo.getStyle('width') | 0 + 1 + 'px'
           });
           this.textElement.setStyle({
-            'margin-top': parseInt(this.textElement.getStyle('margin-top')) + 5 + 'px'
+            'margin-top': this.textElement.getStyle('margin-top') | 0 + 5 + 'px'
           });
           Sound.play('menu_back');
           this.timeout = setTimeout(function() {

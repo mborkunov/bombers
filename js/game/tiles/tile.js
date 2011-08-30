@@ -55,6 +55,9 @@ define('tiles/tile', [], function() {
       this.element.hide();
       this.destroyed = true;
     },
+    hasBomb: function() {
+      return Game.instance.getScreen().hasBomb(this.location);
+    },
     shake: function(shake) {
       if (shake == 0) {
         return null;
@@ -123,7 +126,7 @@ define('tiles/tile', [], function() {
       }
     },
     toString: function() {
-      return this.name + '-' + location.toString();
+      return this.name + '-' + this.location.toString();
     }
   });
 
