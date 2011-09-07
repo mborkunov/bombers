@@ -90,10 +90,18 @@ define('tiles/tile', [], function() {
         top: this.top + 'px'
       };
       this.element = new Element('div', {id: id}).addClassName('tile').addClassName(className).setStyle(styles);
-      this.clickHandler = function() {
-        this.vanish();
-        this.element.stopObserving("click", this.clickHandler);
+      this.clickHandler = function(e) {
+        switch (e.button) {
+          case 0:
+              this.vanish();
+              this.element.stopObserving("click", this.clickHandler);
+          break;
+          case 1:
+              this.spawnBomb();
+            break;
+        }
       }.bind(this);
+
       this.element.observe('click', this.clickHandler);
       container.appendChild(this.element);
     },
@@ -109,6 +117,14 @@ define('tiles/tile', [], function() {
           this.destroy();
         }
       }
+    },
+    spawnBomb: function() {
+      var screen = Game.instance.getScreen();
+      if (screen.hasBomb(this.getLocation())) return;
+
+      var bomb = new Game.Object.Bomb(this.getLocation().clone(), this);
+      screen.objects.bombs.push(bomb);
+      Sound.play('putbomb');
     },
     render: function(container) {
       var top = this.element.y + 'px';

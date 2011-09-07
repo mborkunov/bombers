@@ -171,17 +171,7 @@ define('objects/bomber', ['objects/object'], function() {
     spawnBomb: function() {
       if (this.isFlying() || this.isFalling()) return;
       if (this.bombs.length >= this.maxBombs) return;
-
-      var tile = this.getTile(this.getLocation());
-      var screen = this.getScreen();
-      if (screen.hasBomb(tile.getLocation())) return;
-
-      var bomb = new Game.Object.Bomb(tile.getLocation().clone(), this);
-
-      this.bombs.push(bomb);
-      screen.objects.bombs.push(bomb);
-
-      Sound.play('putbomb');
+      this.getTile(this.getLocation()).spawnBomb();
     },
     kill: function() {
       if (this.dead) return;

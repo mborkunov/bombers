@@ -56,7 +56,7 @@ define('objects/object', [], function() {
             this.removeBomb();
           }
           if (this.element) {
-            this.element.remove();
+            this.element.style.setProperty('display', 'none', '');
           }
         }
       }

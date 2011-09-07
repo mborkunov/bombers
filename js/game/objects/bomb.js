@@ -54,8 +54,10 @@ define('objects/bomb', ['objects/object', 'objects/explosion'], function() {
     },
     removeBomb: function() {
       this.element.parentNode.removeChild(this.element);
-      this.getScreen().objects.bombs = this.getScreen().objects.bombs.without(this);
-      this.bomber.bombs = this.bomber.bombs.without(this);
+      try {
+        this.getScreen().objects.bombs = this.getScreen().objects.bombs.without(this);
+        this.bomber.bombs = this.bomber.bombs.without(this);
+      } catch (e) {}
     },
     explode: function() {
       this.removeBomb();

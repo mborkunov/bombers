@@ -18,6 +18,8 @@ if  (!Object.isUndefined(window.applicationCache)) {
 
 document.observe("dom:loaded", function() {
   document.onmousedown = function() {return false}; // disable text selection - chromium
+  document.oncontextmenu = function() {return false}; // disable context menu
+
   require({
       baseUrl: "js/game",
       waitSeconds: 15,
