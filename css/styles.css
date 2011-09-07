@@ -11,6 +11,7 @@ html, body {
 
 body {
   background: #222 url('../images/bg.png');
+  overflow: hidden;
 }
 
 div.clear {
@@ -23,16 +24,16 @@ div.clear {
 
 #game-container {
   background: #000;
-  border: 1px solid #666;
+  border: 1px solid #222;
   position: absolute;
   top: 50%;
   left: 50%;
   width: 800px;
   height: 600px;
   margin: -300px 0 0 -400px;
-  box-shadow: 0 0 10px #444;
-  -moz-box-shadow: 0 0 10px #444;
-  -webkit-box-shadow: 0 0 10px #444;
+  box-shadow: 0 0 10px #000;
+  -moz-box-shadow: 0 0 10px #000;
+  -webkit-box-shadow: 0 0 10px #000;
   overflow: hidden;
 }
 
