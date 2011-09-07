@@ -107,7 +107,7 @@ define('screens/arena', ['screens/screen'], function() {
     prerender: function() {
       this.rendered = true;
 
-      this.battleField = new Element('div').setStyle({position: 'relative'}).addClassName('field');
+      this.battleField = new Element('div', {id: 'field'}).setStyle({position: 'relative'}).addClassName('field');
       this.map.prerender(this.battleField);
       this.container.appendChild(this.battleField);
 
@@ -171,6 +171,7 @@ define('screens/arena', ['screens/screen'], function() {
       }
 
       if (this.paused && !this.dialog) {
+        $('field').addClassName('blur');
         this.overlay = new Element('div', {id: 'overlay'});
         this.overlay.observe('click', function(e) {
           e.element().remove()
@@ -185,6 +186,7 @@ define('screens/arena', ['screens/screen'], function() {
         this.container.appendChild(this.overlay);
         this.container.appendChild(this.dialog);
       } else if (!this.paused && this.dialog) {
+        $('field').removeClassName('blur');
         this.container.removeChild(this.dialog);
         try {
           this.container.removeChild(this.overlay);

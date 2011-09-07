@@ -1,21 +1,16 @@
 define('objects/object', [], function() {
   Game.Object = Class.create({
-    canFlyOverWalls: null,
-    canKick: null,
-    canPassBomber: null,
     stopped: null,
-    flying: null,
     falling: null,
     element: null,
     speed: null,
     location: null,
     direction: 2,
-    rotationAngle: null,
     destination: null,
-    scale: null,
+    scaleFactor: null,
 
     initialize: function() {
-      this.scale = 1;
+      this.scaleFactor = 1;
     },
     getElement: function() {
       return this.element;
@@ -60,7 +55,9 @@ define('objects/object', [], function() {
           } else if (this instanceof Game.Object.Bomb) {
             this.removeBomb();
           }
-          this.element.hide();
+          if (this.element) {
+            this.element.remove();
+          }
         }
       }
     },
@@ -75,12 +72,6 @@ define('objects/object', [], function() {
     flyTo: function(tile) {
       this.destination = tile.getLocation();
       this.departure = this.location.clone();
-    },
-    gainKick: function() {
-
-    },
-    loseKick: function() {
-
     },
     update: function() {
       if (this.isFalling()) {
@@ -99,7 +90,7 @@ define('objects/object', [], function() {
           }
           this.destination = null;
           this.departure = null;
-          this.scale = 1;
+          this.scaleFactor = 1;
         } else {
           this.location.setX(this.location.getX() + speedX);
           this.location.setY(this.location.getY() + speedY);
@@ -116,7 +107,7 @@ define('objects/object', [], function() {
             x = this.location.getY() - offset;
           }
           var progress = x / Math.abs(x1 - x2);
-          this.scale = 1 + Math.sin(progress * Math.PI) * 3;
+          this.scaleFactor = 1 + Math.sin(progress * Math.PI) * 3;
         }
         if (!this.isFlying() && this instanceof Game.Object.Arbiter) {
           if (this.destination) {
@@ -139,7 +130,7 @@ define('objects/object', [], function() {
         this.element.style.top = (this.location.getY() * 40) + 'px';
         this.element.style.left = (this.location.getX() * 40) + 'px';
 
-        this.element.scale(this.scale);
+        this.element.scale(this.scaleFactor);
 
         if (this.isFalling()) {
           this.element.scale(this.falling);

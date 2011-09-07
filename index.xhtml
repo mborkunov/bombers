@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg">
+  <!-- manifest="cache.appcache"-->
+  <head>
+    <script type="application/javascript" src="js/prototype.js"></script>
+    <script type="application/javascript" src="js/scriptaculous/scriptaculous.js?load=effects"></script>
+    <script type="application/javascript" src="js/require.js"></script>
+    <script type="application/javascript" src="js/util/common.js"></script>
+    <script type="application/javascript" src="js/application.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/styles.css"/>
+    <link rel="shortcut icon" href="favicon.ico"/>
+    <title>ClanBomber</title>
+    <style type="text/css">
+      .blur {
+        filter: url(#blur);
+      }
+    </style>
+  </head>
+  <body>
+    <svg:svg>
+      <svg:filter id="blur">
+        <svg:feGaussianBlur stdDeviation="3"/>
+      </svg:filter>
+    </svg:svg>
+    <div id="game-container"></div>
+    <div id="sounds" style="display: none"></div>
+  </body>
+</html>

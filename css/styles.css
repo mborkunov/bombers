@@ -1,7 +1,7 @@
 * {
   padding: 0;
   margin: 0;
-  font-family: Georgia;
+  font-family: georgia;
 }
 
 html, body {
@@ -10,7 +10,7 @@ html, body {
 }
 
 body {
-  background: #222;
+  background: #222 url('../images/bg.png');
 }
 
 div.clear {
@@ -178,7 +178,7 @@ div.clear {
   padding: 0 200px;
 }
 
-/* options screen// */
+/* options screen */
 
 #menu {
   list-style: none;
