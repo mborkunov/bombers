@@ -3,6 +3,7 @@ if (Object.isUndefined(Audio)) {
     this.src = source;
   };
   Audio.prototype.play = function() {}
+  Audio.prototype.observe = function() {}
 }
 var Sound = Class.create();
 
