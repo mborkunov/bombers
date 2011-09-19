@@ -16,12 +16,14 @@ var Game = Class.create({
     if (location.hash.length > 0) {
       var _screen = location.hash.substr(1).toLowerCase();
       _screen = _screen.substr(0, 1).toUpperCase() + _screen.substr(1);
-      try {
-        var screen = eval('Game.Screen.' + _screen);
-      } catch (e) {
-      }
+      screen = this.getScreenByName(_screen);
     }
     return screen;
+  },
+  getScreenByName: function(name) {
+    try {
+        return eval('Game.Screen.' + name);
+    } catch (e) {}
   },
   start: function() {
       this.graphics.start();

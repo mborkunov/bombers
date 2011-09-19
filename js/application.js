@@ -19,6 +19,14 @@ if  (!Object.isUndefined(window.applicationCache)) {
 document.observe("dom:loaded", function() {
   document.onmousedown = function() {return false}; // disable text selection - chromium
   document.oncontextmenu = function() {return false}; // disable context menu
+  if ('onhashchange' in window) {
+    window.onhashchange = function(e) {
+      var _screen = e.target.location.hash.substr(1).toLowerCase();
+      _screen = _screen.substr(0, 1).toUpperCase() + _screen.substr(1);
+      screen = Game.instance.getScreenByName(_screen);
+      Game.instance.setScreen(screen);
+    }
+  }
 
   require({
       baseUrl: "js/game",
