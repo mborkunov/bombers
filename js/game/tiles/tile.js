@@ -9,9 +9,12 @@ define('tiles/tile', [], function() {
     name: null,
     element: null,
     next: null,
-
+    currentCoordinates: null,
+    nextCoordinates: null,
     initialize: function(location) {
       this.location = location;
+      this.currentCoordinates = {x: location.x, y: location.y};
+      this.nextCoordinates = {x: 0, y: 0};
     },
     getType: function() {
       return this.type;
@@ -71,11 +74,11 @@ define('tiles/tile', [], function() {
           top += this.top;
           left += this.left;
 
-          this.element.y = top;
-          this.element.x = left;
+          this.nextCoordinates.y = top;
+          this.nextCoordinates.x = left;
         } else {
-          this.element.y = this.top;
-          this.element.x = this.left;
+          this.nextCoordinates.y = this.top;
+          this.nextCoordinates.x = this.left;
         }
       }
     },
@@ -130,7 +133,10 @@ define('tiles/tile', [], function() {
       var top = this.element.y + 'px';
       var left = this.element.x + 'px';
 
-      if (this.element.style.top != top || this.element.style.left != left) {
+      if (this.nextCoordinates.x != this.currentCoordinates.x || this.nextCoordinates.y != this.currentCoordinates.y) {
+        this.currentCoordinates.x = this.nextCoordinates.x;// = {x: this.element.style.left, y: this.element.style.top}
+        this.currentCoordinates.y = this.nextCoordinates.y;
+
         this.element.style.top = top;
         this.element.style.left = left;
       }

@@ -4,7 +4,10 @@ define('tiles/map', [], function() {
     entry: null,
     author: null,
     maxPlayers: -1,
-
+    eachHandler: function(bomber) {
+      if (bomber.isDead()) return;
+      this.entry.highlightTile(bomber.location.getX(), bomber.location.getY());
+    }.bind(this),
     initialize: function(name, author, maxPlayers, data) {
       this.name = name;
       this.author = author;
@@ -19,11 +22,8 @@ define('tiles/map', [], function() {
       return this.name;
     },
     highlight: function(bombers) {
-      this.entry.clearHighlights();
-      bombers.each(function(bomber) {
-        if (bomber.isDead()) return;
-        this.entry.highlightTile(bomber.location.getX(), bomber.location.getY());
-      }.bind(this))
+      //this.entry.clearHighlights();
+      bombers.each(this.eachHandler);
     },
     getPlayerStartupPositions: function() {
       return this.entry.getPlayerStartupPositions();
@@ -53,11 +53,25 @@ define('tiles/map', [], function() {
     tiles: null,
     data: null,
     playerPositions: null,
+    updateHandler: function(tile) {
+      var delay = 10, shake = 0;
+      if (tile.next != null) {
+        tile = tile.next;
+      }
+      tile.update(delay, shake);
+    }.bind(this),
+    renderHandler: null,
 
     initialize: function(data) {
       this.data = data;
       this.tiles = {};
       this.playerPositions = [];
+      this.renderHandler = function(tile, container) {
+        if (tile.next != null) {
+          tile = tile.next;
+        }
+        tile.render(container);
+      }.bind(this);
 
       var x = 0, y;
       this.size = {
@@ -184,25 +198,15 @@ define('tiles/map', [], function() {
       }
     },
     update: function(delay, shake) {
-      this.each(function(tile) {
-        if (tile.next != null) {
-          tile = tile.next;
-        }
-        tile.update(delay, shake);
-      }.bind(this));
+      this.each(this.updateHandler);
     },
     prerender: function(container) {
       this.each(function(tile) {
         tile.prerender(container);
       }.bind(this));
     },
-    render: function(container) {
-      this.each(function(tile) {
-        if (tile.next != null) {
-          tile = tile.next;
-        }
-        tile.render(container);
-      }.bind(this));
+    render: function() {
+      this.each(this.renderHandler);
     }
   });
 

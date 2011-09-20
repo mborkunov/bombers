@@ -9,7 +9,8 @@ define('screens/arena', ['screens/screen'], function() {
     shake: null,
     objects: null,
     timeisup: null,
-
+    updateObjectsHandler: null,
+    renderObjectsHandler:  null,
     init: function() {
       this.objects = {
         bombers: [],
@@ -51,6 +52,16 @@ define('screens/arena', ['screens/screen'], function() {
           }
         }.bind(this)
       };
+      this.updateObjectsHandler = function(object) {
+        var delay = 20;
+        if (object instanceof Game.Object.Bomber) {
+          object.controller.update(this.keys, delay);
+        }
+        object.update(delay, this.map);
+      }.bind(this);
+      this.renderObjectsHandler = function(item) {
+        item.render(this.battleField);
+      }.bind(this);
 
       var maps = $A(['Big_Standard','Blast_Matrix','Bloody_Ring','Boiling_Egg','Bomb_Attack',
         'Broken_Heart','Crammed','Death_Corridor','Dilemma','FearCircle',
@@ -149,14 +160,7 @@ define('screens/arena', ['screens/screen'], function() {
           this.shake = -1;
         }.bind(this), 100);
       }
-
-      this.objects.each(function(object) {
-        if (object instanceof Game.Object.Bomber) {
-          object.controller.update(this.keys, delay);
-        }
-        object.update(delay, this.map);
-      }.bind(this));
-
+      this.objects.each(this.updateObjectsHandler);
       this.map.update(delay, this.shake);
       //this.map.highlight(this.objects.bombers);
     },
@@ -164,14 +168,11 @@ define('screens/arena', ['screens/screen'], function() {
       if (!this.rendered) return;
       if (!this.paused) {
         this.map.render(this.battleField);
-
-        this.objects.each(function(item) {
-          item.render(this.battleField);
-        }.bind(this));
+        this.objects.each(this.renderObjectsHandler);
       }
 
       if (this.paused && !this.dialog) {
-        $('field').addClassName('blur');
+        $('field').addClassName('filter');
         this.overlay = new Element('div', {id: 'overlay'});
         this.overlay.observe('click', function(e) {
           e.element().remove()
@@ -186,7 +187,7 @@ define('screens/arena', ['screens/screen'], function() {
         this.container.appendChild(this.overlay);
         this.container.appendChild(this.dialog);
       } else if (!this.paused && this.dialog) {
-        $('field').removeClassName('blur');
+        $('field').removeClassName('filter');
         this.container.removeChild(this.dialog);
         try {
           this.container.removeChild(this.overlay);
