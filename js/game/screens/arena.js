@@ -25,6 +25,9 @@ define('screens/arena', ['screens/screen'], function() {
           this.bombs.each(function(bomb){
             call(bomb);
           });
+          this.extras.each(function(extra){
+            call(extra);
+          });
           this.explosions.each(function(explosion){
             call(explosion);
           });
@@ -173,7 +176,7 @@ define('screens/arena', ['screens/screen'], function() {
 
       if (this.paused && !this.dialog) {
         $('field').addClassName('filter');
-        this.overlay = new Element('div', {id: 'overlay'});
+        this.overlay = new Element('div', {id: 'arena-overlay'});
         this.overlay.observe('click', function(e) {
           e.element().remove()
         });
@@ -197,14 +200,15 @@ define('screens/arena', ['screens/screen'], function() {
     },
     dispatch: function() {
       this.rendered = false;
-      this.container.removeChild(this.battleField);
-      if (this.overlay) {
-        this.container.removeChild(this.dialog);
-        try {
-          this.container.removeChild(this.overlay);
-        } catch (ignored) {}
-      }
-
+      try {
+        this.container.removeChild(this.battleField);
+        if (this.overlay) {
+          this.container.removeChild(this.dialog);
+          try {
+            this.container.removeChild(this.overlay);
+          } catch (ignored) {}
+        }
+      } catch (ignored) {}
     }
   });
 

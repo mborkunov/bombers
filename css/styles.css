@@ -37,7 +37,7 @@ div.clear {
   overflow: hidden;
 }
 
-#game-container #overlay {
+#game-container #arena-overlay {
   position: absolute;
   background: #000;
   top: 0;

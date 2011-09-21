@@ -303,6 +303,7 @@ define('screens/menu', ['screens/screen'], function() {
       Game.instance.getScreen().changeMenu(item);
     },
     Settings: function(item, args) {
+      Sound.play('break');
       var key = args[0];
       var value = Config.change(key);
       if (Object.isFunction(args[1])) {

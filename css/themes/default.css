@@ -221,9 +221,64 @@
   border-radius: 2px;
 }
 
-.arena .extra-bomb {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    background: url('../../images/themes/original/extras.png') 0 0 no-repeat;
+.arena .extra {
+  position: absolute;
+  width: 40px;
+  height: 40px;
 }
+
+.arena .extra-bomb {
+  background: url('../../images/themes/original/extras.png') 0 0 no-repeat;
+}
+.arena .extra-power {
+  background: url('../../images/themes/original/extras.png') -40px 0 no-repeat;
+}
+.arena .extra-kick {
+  background: url('../../images/themes/original/extras.png') -160px 0 no-repeat;
+}
+.arena .extra-glove {
+  background: url('../../images/themes/original/extras.png') -160px 0 no-repeat;
+}
+.arena .extra-skateboard {
+  background: url('../../images/themes/original/extras.png') -80px 0 no-repeat;
+}
+.arena .extra-joint {
+  background: url('../../images/themes/original/extras.png') -120px 0 no-repeat;
+}
+.arena .extra-cocaine {
+    background: url('../../images/themes/original/extras.png') -200px 0 no-repeat;
+}
+.arena .extra-viagra {
+    background: url('../../images/themes/original/extras.png') -240px 0 no-repeat;
+}
+
+
+#game-container.score {
+  background: url('../../images/themes/default/score_bg.png') no-repeat;
+}
+
+.score .next {
+  float: right;
+  color: #fff;
+  height: 150px;
+  width: 150px;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.score .next .sign {
+
+}
+.score .next .preview {
+  height: 110px;
+  width: auto;
+  margin: 3px 0;
+  border: 1px solid #666;
+  background: #000;
+}
+
+.score .next .name {
+
+}
+

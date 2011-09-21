@@ -103,7 +103,7 @@ define('screens/credits', ['screens/screen'], function() {
       }
     },
     render: function(delay) {
-      this.div.style.marginTop = this.margin | 0 + 'px';
+      this.div.style.marginTop = parseInt(this.margin) + 'px';
     }
   });
 });

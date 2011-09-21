@@ -5,7 +5,7 @@ if (Object.isUndefined(console)) {
   };
 }
 
-if  (!Object.isUndefined(window.applicationCache)) {
+if (!Object.isUndefined(window.applicationCache)) {
   window.applicationCache.addEventListener('updateready', function(e) {
     if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
       window.applicationCache.swapCache();
@@ -15,17 +15,20 @@ if  (!Object.isUndefined(window.applicationCache)) {
     }
   }, false);
 }
+var checkHashChange = true;
 
 document.observe("dom:loaded", function() {
   document.onmousedown = function() {return false}; // disable text selection - chromium
   document.oncontextmenu = function() {return false}; // disable context menu
   if ('onhashchange' in window) {
-    window.onhashchange = function(e) {
-      var _screen = e.target.location.hash.substr(1).toLowerCase();
-      _screen = _screen.substr(0, 1).toUpperCase() + _screen.substr(1);
-      screen = Game.instance.getScreenByName(_screen);
-      Game.instance.setScreen(screen);
-    }
+    /*window.onhashchange = function(e) {
+      if (checkHashChange) {
+        var _screen = e.target.location.hash.substr(1).toLowerCase();
+        _screen = _screen.substr(0, 1).toUpperCase() + _screen.substr(1);
+        screen = Game.instance.getScreenByName(_screen);
+        Game.instance.setScreen(screen);
+      }
+    }*/
   }
 
   require({

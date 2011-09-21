@@ -43,8 +43,6 @@ define('tiles/tile', [], function() {
     getName: function() {
       return this.name.toLowerCase();
     },
-    spawnExtra: function() {
-    },
     act: function() {
     },
     vanish: function() {
@@ -100,7 +98,7 @@ define('tiles/tile', [], function() {
               this.element.stopObserving("click", this.clickHandler);
           break;
           case 1:
-              this.spawnBomb();
+              this.spawnExtra();
             break;
         }
       }.bind(this);
@@ -119,6 +117,41 @@ define('tiles/tile', [], function() {
         if (this.vanishing <= 0) {
           this.destroy();
         }
+      }
+    },
+    spawnExtra: function() {
+      var screen = Game.instance.getScreen();
+      var extra = null;
+
+      switch (Math.floor(Math.random() * 10)) {
+        case 0:
+            extra = Game.Object.Extra.Bomb;
+          break;
+        case 1:
+            extra = Game.Object.Extra.Cocaine;
+          break;
+        case 2:
+            extra = Game.Object.Extra.Glove;
+          break;
+        case 3:
+            extra = Game.Object.Extra.Joint;
+          break;
+        case 4:
+            extra = Game.Object.Extra.Kick;
+          break;
+        case 5:
+            extra = Game.Object.Extra.Power;
+          break;
+        case 6:
+            extra = Game.Object.Extra.Skateboard;
+          break;
+        case 7:
+            extra = Game.Object.Extra.Viagra;
+          break;
+      }
+
+      if (extra) {
+        screen.objects.extras.push(new extra(this.location.clone()));
       }
     },
     spawnBomb: function() {
