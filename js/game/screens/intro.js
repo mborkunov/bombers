@@ -14,12 +14,12 @@ define('screens/intro', ['screens/screen'], function() {
       this.listeners = {
         click: function(e) {
           if (this.timeout) clearTimeout(this.timeout);
-          //Game.instance.setScreen(Game.Screen.Menu);
+          Game.instance.setScreen(Game.Screen.Menu);
         }.bind(this),
         keydown: function(e) {
           if (!e.hasModifiers() && (e.keyCode == 27 || e.keyCode == 13)) {
             if (this.timeout) clearTimeout(this.timeout);
-            //Game.instance.setScreen(Game.Screen.Menu);
+            Game.instance.setScreen(Game.Screen.Menu);
           }
         }.bind(this)
       };

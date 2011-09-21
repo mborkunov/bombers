@@ -62,7 +62,7 @@ var Game = Class.create({
       console.log(this.working, this.opacity);
       if (this.working != 0 && this.element) {
         this.element.style.setProperty('opacity', this.opacity += this.working / 25);
-        this.working *= 1.2;
+        this.working *= 1.9;
         if (this.working < 0 && this.opacity <= 0) {
           this.stop();
           this.remove();
