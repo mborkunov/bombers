@@ -86,6 +86,7 @@ define('screens/menu', ['screens/screen'], function() {
         }.bind(this)
       };
       Sound.play('whoosh');
+      this.prerender();
     },
     dispatch: function($super) {
       if (this.list) {
@@ -100,13 +101,14 @@ define('screens/menu', ['screens/screen'], function() {
     },
     update: function() {
     },
-    render: function(time) {
-      var self = this;
+    prerender: function() {
       if (!this.rendered) {
         this.rendered = true;
         this.renderMenu(this.menu, this.container);
       }
-
+    },
+    render: function() {
+      var self = this;
       if (this.changed) {
         this.changed = false;
         if (this.list) {

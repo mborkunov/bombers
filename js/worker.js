@@ -12,8 +12,11 @@ var Worker = Class.create({
   },
   loop: function() {
     this.lastCall = date();
+    var screen = Game.instance.getScreen();
     try {
-      this.action(date() - this.lastCallEnd);
+      if (screen && !screen.sleeping) {
+        this.action(date() - this.lastCallEnd);
+      }
     } catch (e) {
       console.log(e);
     }

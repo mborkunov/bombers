@@ -4,7 +4,9 @@ define('screens/screen', [], function() {
     container: null,
     keys: null,
     listeners: null,
+    sleeping: null,
     initialize: function() {
+      this.sleeping = false;
       this.keys = [];
       this.listeners = {};
       this.game = Game.instance;
@@ -16,7 +18,13 @@ define('screens/screen', [], function() {
     },
     update: function() {
     },
+    prerender: function() {
+      
+    },
     render: function() {
+    },
+    setSleeping: function(sleeping) {
+      this.sleeping = sleeping;
     },
     dispatch: function() {
       this.container.update();

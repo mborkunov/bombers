@@ -64,7 +64,7 @@ define('tiles/map', [], function() {
 
     initialize: function(data) {
       this.data = data;
-      this.tiles = {};
+      this.tiles = [];
       this.playerPositions = [];
       this.renderHandler = function(tile, container) {
         if (tile.next != null) {
@@ -85,7 +85,7 @@ define('tiles/map', [], function() {
       };
 
       while (!Object.isUndefined(data[x])) {
-        this.tiles[x] = {};
+        this.tiles[x] = [];
         y = 0;
         while (!Object.isUndefined(data[x][y])) {
           var tile = null;
@@ -174,27 +174,22 @@ define('tiles/map', [], function() {
     },
     hasTiles: function() {
       var x = 0, y = 0;
-      while (!Object.isUndefined(this.tiles[y])) {
-        x = 0;
-        while (!Object.isUndefined(this.tiles[y][x])) {
-          var tile = this.tiles[y][x++];
+      for (var y = 0, yLength = this.tiles.length; y < yLength; y++)  {
+        for (var x = 0, xLength = this.tiles[y].length; x < xLength; x++)  {
+          var tile = this.tiles[y][x];
           tile = tile.next ? tile.next : tile;
           if (tile.getName() != 'none' && !tile.isDestroyed() && !tile.isVanishing()) {
             return true;
           }
         }
-        y++;
       }
       return false;
     },
     each: function(callback) {
-      var x = 0, y = 0;
-      while (!Object.isUndefined(this.tiles[y])) {
-        x = 0;
-        while (!Object.isUndefined(this.tiles[y][x])) {
-          callback(this.tiles[y][x++]);
+      for (var y = 0, yLength = this.tiles.length; y < yLength; y++)  {
+        for (var x = 0, xLength = this.tiles[y].length; x < xLength; x++)  {
+          callback(this.tiles[y][x]);
         }
-        y++;
       }
     },
     update: function(delay, shake) {
@@ -236,7 +231,7 @@ define('tiles/map', [], function() {
 
       var x = 0, y = 0;
 
-      var data = {};
+      var data = [];
 
       for (var i = 2, length = lines.length; i < length; i++,x++) {
         var line = lines[i];
