@@ -9,10 +9,10 @@ define('controllers/keyboard', ['controllers/controller'], function() {
     update: function(keys, delay) {
       if (!this.active) return;
 
-      var left = keys.indexOf(this.keys.left) != -1;
+      var left  = keys.indexOf(this.keys.left)  != -1;
       var right = keys.indexOf(this.keys.right) != -1;
-      var down = keys.indexOf(this.keys.down) != -1;
-      var up = keys.indexOf(this.keys.up) != -1;
+      var down  = keys.indexOf(this.keys.down)  != -1;
+      var up    = keys.indexOf(this.keys.up)    != -1;
 
 
       if (!(left && right)) {

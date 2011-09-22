@@ -3,6 +3,9 @@ define('objects/extras/skateboard', ['objects/extras/extra'], function() {
     initialize: function($super, location) {
       $super(location);
       this.name = 'skateboard';
+    },
+    act: function(bomber) {
+      bomber.setSpeed(bomber.getSpeed() + .05);
     }
   });
 });

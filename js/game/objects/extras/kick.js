@@ -3,6 +3,9 @@ define('objects/extras/kick', ['objects/extras/extra'], function() {
     initialize: function($super, location) {
       $super(location);
       this.name = 'kick';
+    },
+    act: function(bomber) {
+      bomber.canKick = true;
     }
   });
 });

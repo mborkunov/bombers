@@ -4,6 +4,9 @@ define('objects/bomber', ['objects/object'], function() {
     location: null,
     backgroundPosition: null,
     maxBombs: null,
+    canKick: null,
+    canThrow: null,
+    power: null,
     bombs: null,
     dead: null,
     number: null,
@@ -20,9 +23,13 @@ define('objects/bomber', ['objects/object'], function() {
       this.speed = .05;
       this.rollAngle = 0;
       this.maxBombs = 3;
+      this.power = 1;
       this.dead = false;
       this.location = location;
       this.number = number;
+      this.canKick = false;
+      this.canThrow = false;
+
       controller.attach(this);
       this.controller = controller;
     },
@@ -117,6 +124,16 @@ define('objects/bomber', ['objects/object'], function() {
       this.direction = direction;
       this.location = this.getNextLocation(direction);
       this.distance += this.getSpeed();
+
+      var tile = this.getTile(this.location.clone());
+      if (tile instanceof Game.Tile.Ground && tile.hasExtra()) {
+        this.pickupExtra(tile.getExtra());
+      }
+    },
+    pickupExtra: function(extra) {
+      console.log(extra.name);
+      extra.act(this);
+      extra.remove();
     },
     getNextLocation: function(direction) {
       var speed = this.getSpeed();

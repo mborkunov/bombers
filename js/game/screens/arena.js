@@ -100,7 +100,13 @@ define('screens/arena', ['screens/screen'], function() {
           }
 
           var location = new Point(Math.floor(x / 2), Math.floor(y / 2));
-          var controller = new keyboard(controllerType);
+
+          var controller;
+          if (Math.random() * 10 < 5) {
+            controller = new Game.Controller.Ai();
+          } else {
+            controller = new keyboard(controllerType);
+          }
           var bomber = new Game.Object.Bomber(controller, index + 1, location);
 
           bomber.flyTo(this.map.entry.tiles[position.point.getX()][position.point.getY()]);

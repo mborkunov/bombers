@@ -15,6 +15,7 @@ define('tiles/tile', [], function() {
       this.location = location;
       this.currentCoordinates = {x: location.x, y: location.y};
       this.nextCoordinates = {x: 0, y: 0};
+      this.extra = null;
     },
     getType: function() {
       return this.type;
@@ -24,12 +25,6 @@ define('tiles/tile', [], function() {
     },
     isPassable: function() {
       return this.passable;
-    },
-    isBlocking: function() {
-      return this.blocking;
-    },
-    isFallen: function() {
-      return this.vanishing == 0;
     },
     isVanishing: function() {
       return this.vanishing !== null && this.vanishing >= 0;
@@ -42,8 +37,6 @@ define('tiles/tile', [], function() {
     },
     getName: function() {
       return this.name.toLowerCase();
-    },
-    act: function() {
     },
     vanish: function() {
       Sound.play('crunch');
@@ -151,7 +144,10 @@ define('tiles/tile', [], function() {
       }
 
       if (extra) {
-        screen.objects.extras.push(new extra(this.location.clone()));
+        this.extra = new extra(this.location.clone());
+        this.extra.tile = this;
+        screen.objects.extras.push(this.extra);
+
       }
     },
     spawnBomb: function() {
@@ -175,8 +171,7 @@ define('tiles/tile', [], function() {
       }
 
       if (this.isVanishing()) {
-        this.element.style['-webkit-transform'] = 'scale(' + this.vanishing + ', ' + this.vanishing + ')';
-        this.element.style.MozTransform = 'scale(' + this.vanishing + ', ' + this.vanishing + ')';
+        this.element.scale(this.vanishing);
         this.element.style.opacity = this.vanishing;
       }
     },

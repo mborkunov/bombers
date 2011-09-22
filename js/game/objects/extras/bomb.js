@@ -3,6 +3,9 @@ define('objects/extras/bomb', ['objects/extras/extra'], function() {
     initialize: function($super, location) {
       $super(location);
       this.name = "bomb";
+    },
+    act: function(bomber) {
+      bomber.maxBombs++;
     }
   });
 });

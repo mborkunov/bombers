@@ -2,8 +2,10 @@ define('objects/extras/extra', [], function() {
   Game.Object.Extra = Class.create(Game.Object, {
     name: null,
     element: null,
+    tile: null,
     initialize: function($super, location) {
       $super();
+      this.tile = null;
       this.location = location;
     },
     render: function($super) {
@@ -15,6 +17,18 @@ define('objects/extras/extra', [], function() {
         Game.instance.screen.battleField.appendChild(this.element);
       }
       $super();
+    },
+    act: function() {
+    },
+    remove: function() {
+      this.tile.extra = null;
+      this.tile = null;
+      var extras = Game.instance.screen.objects.extras;
+      extras = extras.without(this);
+      this.dispatch();
+    },
+    dispatch: function() {
+      this.element.remove();
     }
   });
 });

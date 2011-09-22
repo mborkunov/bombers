@@ -15,10 +15,8 @@ define('screens/editor', ['screens/screen'], function() {
       $super();
     },
     update: function(delay) {
-
     },
     render: function(delay) {
-
     }
   });
 });

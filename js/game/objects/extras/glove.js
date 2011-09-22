@@ -3,6 +3,9 @@ define('objects/extras/glove', ['objects/extras/extra'], function() {
     initialize: function($super, location) {
       $super(location);
       this.name = 'glove';
+    },
+    act: function(bomber) {
+      bomber.canThrow = true;
     }
   });
 });

@@ -3,6 +3,9 @@ define('objects/extras/power', ['objects/extras/extra'], function() {
     initialize: function($super, location) {
       $super(location);
       this.name = 'power';
+    },
+    act: function(bomber) {
+      bomber.power++;
     }
   });
 });
