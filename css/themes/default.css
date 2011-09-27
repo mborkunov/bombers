@@ -72,19 +72,10 @@
   background: url('../../images/themes/default/tiles.png') 80px 0;
 }
 .arena .tile-wall,.arena .tile-box {
-  box-shadow: 5px 5px 10px #000;
+  /*box-shadow: 5px 5px 10px #000;*/
 }
 .arena .tile-wall {
   background: url('../../images/themes/default/tiles.png') 120px 0;
-}
-
-.bomber {
-  width: 36px;
-  height: 36px;
-  border: 1px solid black;
-  border-radius: 20px;
-  position: relative;
-  background: url("../../images/light.png") 0 0 no-repeat;
 }
 
 .arena .bomb {
@@ -106,119 +97,44 @@
   background: orange;
 }
 
+.bomber {
+  width: 36px;
+  height: 36px;
+  border: 1px solid black;
+  border-radius: 20px;
+  position: relative;
+  background: url("../../images/light.png") 0 0 no-repeat;
+}
+
 .eyes {
-  position: absolute;
+  /*position: absolute;
   top: 50%;
   left: 50%;
-  margin: -18px 0 0 -18px;
+  margin: -18px 0 0 -18px;*/
   width: 36px;
   height: 36px;
 }
 
-.first-eye, .second-eye, .third-eye {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  background: white;
-  border-radius: 7px;
-  border: 2px solid black;
-  top: 3px;
-  z-index: 1;
+.bomber .eyes.stereo {
+  background: url('../../images/themes/default/stereo-eyes.png') 0 0 no-repeat;
 }
 
-.bomber-dead .eyes .eye {
-  top: 10px;
-  -webkit-transform: rotate(45deg);
-  background: black;
-  border-radius: 0;
-  border-width: 0;
-  height: 1px;
+.bomber .eyes.cyclope {
+  background: url('../../images/themes/default/cyclope-eyes.png') 0 0 no-repeat;
 }
 
-.bomber-dead .eyes .eye .pupil {
-  -webkit-transform: rotate(-90deg);
-  top: 0;
-  left: 0;
-  margin: 0;
-  width: 10px;
-  background: black;
-  border-radius: 0;
-  height: 1px;
+.bomber .eyes.alien {
+  background: url('../../images/themes/default/alien-eyes.png') 0 0 no-repeat;
 }
 
-.bomber-dead .eyes .third-eye {
-  margin-left: -5px !important;
-  top: 5px !important;
-}
+.bomber-dead .eyes.stereo {
+  background: url('../../images/themes/default/stereo-eyes-dead.png') 0 0 no-repeat;
 
-
-.bomber .stereo .first-eye {
-  left: 3px;
 }
-.bomber-dead .stereo .first-eye {
-  left: 5px;
+.bomber-dead .eyes.cyclope {
+  background: url('../../images/themes/default/cyclope-eyes-dead.png') 0 0 no-repeat;
 }
-
-.bomber .stereo .second-eye {
-  right: 3px;
-}
-.bomber-dead .stereo .second-eye {
-  right: 5px;
-}
-
-.bomber .stereo .third-eye {
-  display: none;
-}
-
-.bomber .cyclope .first-eye {
-  left: 50%;
-  margin-left: -9px;
-  width: 16px;
-  height: 16px;
-  border-radius: 10px;
-  top: 0;
-}
-.bomber-dead .cyclope .first-eye {
-  height: 1px;
-  top: 7px;
-}
-.bomber-dead .cyclope .first-eye .pupil {
-  height: 1px;
-  width: 16px;
-}
-
-.bomber .cyclope .second-eye {
-  display: none;
-}
-
-.bomber .cyclope .third-eye {
-  display: none;
-}
-
-.bomber .alien .first-eye {
-  left: 0;
-}
-
-.bomber .alien .second-eye {   
-  right: 0;
-}
-
-.bomber .alien .third-eye {
-  left: 50%;
-  margin-left: -7px;
-  top: -1px;
-  z-index: 0;
-}
-
-.bomber .eyes .pupil {
-  position: absolute;
-  top: 30%;
-  left: 50%;
-  width: 4px;
-  height: 4px;
-  margin: -2px 0 0 -2px;
-  background: black;
-  border-radius: 2px;
+.bomber-dead .eyes.alien {
 }
 
 .arena .extra {

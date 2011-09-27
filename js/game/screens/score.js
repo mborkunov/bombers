@@ -27,7 +27,6 @@ define('screens/score', ['screens/screen'], function() {
       this.container.appendChild(anyKey);
     },
     dispatch: function($super) {
-      $super();
     },
     update: function(delay) {
     },

@@ -14,6 +14,8 @@ define('screens/help', ['screens/screen'], function() {
           }
         }.bind(this)
       };
+      this.helpContainer = new Element('div');
+      this.container.appendChild(this.helpContainer);
 
       this.drawHelp('Extras', [
         {name: 'Bomb', text: 'You can place an additional bomb'},
@@ -33,15 +35,14 @@ define('screens/help', ['screens/screen'], function() {
       anyKey.on('click', function() {
         Game.instance.setScreen(Game.Screen.Menu)
       });
-      this.container.appendChild(anyKey);
+      this.helpContainer.appendChild(anyKey);
     },
     dispatch: function($super) {
       clearTimeout(this.timeout);
-      this.container.update();
-      $super();
+      this.helpContainer.remove();
     },
     drawHelp: function(name, items, cls) {
-      this.container.appendChild(new Element('h1').update(name));
+      this.helpContainer.appendChild(new Element('h1').update(name));
 
       var list = new Element('ul').addClassName(cls);
       $A(items).each(function(item) {
@@ -53,7 +54,7 @@ define('screens/help', ['screens/screen'], function() {
 
         this.appendChild(li);
       }.bind(list));
-      this.container.appendChild(list);
+      this.helpContainer.appendChild(list);
     }
   });
 });

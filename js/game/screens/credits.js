@@ -81,7 +81,7 @@ define('screens/credits', ['screens/screen'], function() {
       this.container.appendChild(this.div);
     },
     dispatch: function($super) {
-      $super();
+      this.div.remove();
     },
     update: function(delay) {
       if (Math.abs(this.margin) - 180 > $('game-container').getHeight()) {

@@ -29,7 +29,6 @@ define('screens/intro', ['screens/screen'], function() {
       this.container.appendChild(this.textElement = new Element("div").addClassName("text").update(" "));
     },
     dispatch: function($super) {
-      $super();
     },
     update: function(delay) {
       if (this.drawText && !this.timeout) {
