@@ -24,11 +24,14 @@ define('screens/intro', ['screens/screen'], function() {
         }.bind(this)
       };
       Sound.play('winlevel');
+      this.div = new Element('div');
+      this.div.appendChild(this.logo = new Element("div").addClassName("logo").setStyle({opacity: 0}));
+      this.div.appendChild(this.textElement = new Element("div").addClassName("text").update(" "));
 
-      this.container.appendChild(this.logo = new Element("div").addClassName("logo").setStyle({opacity: 0}));
-      this.container.appendChild(this.textElement = new Element("div").addClassName("text").update(" "));
+      this.container.appendChild(this.div);
     },
     dispatch: function($super) {
+      this.div.remove();
     },
     update: function(delay) {
       if (this.drawText && !this.timeout) {
