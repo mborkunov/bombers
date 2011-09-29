@@ -7,6 +7,8 @@ define('objects/arbiter', ['objects/object'], function() {
     initialize: function($super) {
       $super();
       this.roundtime = Config.get('game.round_time') * 1000;
+
+      this.currentTime = this.roundtime - this.elapsed;
       this.hurry = false;
       this.elapsed = 0;
       this.location = new Point(-1, -1.1);
@@ -24,15 +26,37 @@ define('objects/arbiter', ['objects/object'], function() {
           this.run();
         }.bind(this));
 
+        this.timerElement = new Element('div', {id: 'timer'});
+        this.clockElement = new Element('div', {id: 'clock'});
+        this.clockElement.observe('click', function() {
+          this.run();
+        }.bind(this));
+
+        this.counterElement = new Element('div', {id: 'counter'}).update(this.getRemainingTime());
+        this.timerElement.appendChild(this.clockElement);
+        this.timerElement.appendChild(this.counterElement);
+        container.appendChild(this.timerElement);
         container.appendChild(this.element);
+      } else {
+        var remaining = this.getRemainingTime();
+        if (this.currentTime != remaining) {
+          this.currentTime = remaining;
+          if (remaining == 0) {
+            this.clockElement.addClassName('expired');
+            this.counterElement.update(':)');
+          } else {
+            this.counterElement.update(remaining);
+          }
+        }
       }
       $super();
     },
-    isRunning: function() {
-      return this.running;
+    getRemainingTime: function() {
+      return (this.roundtime - this.elapsed) / 1000 | 0;
     },
     run: function() {
       if (!this.running) {
+        this.elapsed = Number.MAX_VALUE;
         Sound.play('time_over');
         this.running = true;
       }

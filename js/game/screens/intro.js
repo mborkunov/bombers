@@ -5,10 +5,10 @@ define('screens/intro', ['screens/screen'], function() {
     menu: null,
     rendered: false,
     opacity: 0,
-    introElement: null,
     drawText: false,
     speed: 9,
     lastCall: 0,
+    margin: 0,
     text: "A world domination project",
     init: function() {
       this.margin = 10;
