@@ -73,7 +73,8 @@
 
 #game-container.help ul li span.text {
   width: auto;
-  margin-left: 50px;
+  display: block;
+  margin: 0 0 0 50px;
 }
 
 #game-container.help ul li.bomb img {

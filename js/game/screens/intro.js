@@ -11,6 +11,7 @@ define('screens/intro', ['screens/screen'], function() {
     lastCall: 0,
     text: "A world domination project",
     init: function() {
+      this.margin = 10;
       this.listeners = {
         click: function(e) {
           if (this.timeout) clearTimeout(this.timeout);
@@ -46,21 +47,20 @@ define('screens/intro', ['screens/screen'], function() {
             }
           }
         } else {
-          this.logo.setStyle({
-            'width': parseInt(this.logo.getStyle('width')) + 1 + 'px'
-          });
-          this.textElement.setStyle({
-            'margin-top': this.textElement.getStyle('margin-top') | 0 + 5 + 'px'
-          });
           Sound.play('menu_back');
           this.timeout = setTimeout(function() {
             console.log('intro set screen');
             Game.instance.setScreen(Game.Screen.Menu);
-          }, 2500);
+          }, 1500);
         }
       } else {
         if (this.opacity >= 1) {
           this.drawText = true;
+        }
+        if (this.timeout) {
+          this.logo.style.setProperty('margin-top', '-' + this.margin + 'px');
+          this.textElement.style.setProperty('margin-top', this.margin * 2 + 'px');
+          this.margin += 5;
         }
         this.opacity += 0.015;
       }
