@@ -77,5 +77,47 @@ var Config = {
     } else if (key == "sounds") {
       return true;
     }
+  },
+  getProperty: function() {
+
   }
-}
+};
+
+
+Config.Property = Class.create({
+  getValue: function() {
+  },
+  getNextValue: function() {
+  },
+  getPreviousValue: function() {
+  }
+});
+
+Object.extend(Config.Property, {
+  parse: function(propertyString) {
+    var parts = propertyString.split('|');
+
+    switch (parts[parts.length - 1]) {
+      case "boolean":
+      break;
+
+      case "number":
+      break;
+
+      case "string":
+      break;
+    }
+  }
+});
+
+Config.Property.Type = Class.create({
+});
+
+Config.Property.Type.Enum = Class.create(Config.Property.Type, {
+});
+
+Config.Property.Type.Number = Class.create(Config.Property.Type, {
+});
+
+Config.Property.Type.Boolean = Class.create(Config.Property.Type, {
+});

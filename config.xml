@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+  <property id="sounds">
+    <name>Sound</name>
+    <description>Enable or disable sound</description>
+    <value>false</value>
+    <type name="boolean"/>
+  </property>
+
+  <property id="graphic.theme">
+    <name>Theme</name>
+    <description>Theme</description>
+    <value>default</value>
+    <type name="enum">
+      <values>
+        <value>default</value>
+        <value>original</value>
+        <value>debug</value>
+        <value>snow</value>
+      </values>
+    </type>
+  </property>
+
+  <property id="graphic.theme">
+    <name>Theme</name>
+    <description>Theme</description>
+    <value>default</value>
+    <type name="enum">
+      <values>
+        <value>default</value>
+        <value>original</value>
+        <value>debug</value>
+        <value>snow</value>
+      </values>
+    </type>
+  </property>
+</config>
