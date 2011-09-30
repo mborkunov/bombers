@@ -4,8 +4,8 @@ var Game = Class.create({
   graphics: null,
   state: null,
   initialize: function() {
-    this.setTheme(Config.get("graphic.theme"));
-    Sound.setEnabled(Config.get("sounds"));
+    this.setTheme(Config.getProperty("graphic.theme").getValue());
+    Sound.setEnabled(Config.getProperty("sounds").getValue());
     Game.instance = this;
     this.setScreen(this.getStartScreen());
     this.graphics = new Graphics();
@@ -94,7 +94,7 @@ var Game = Class.create({
   },
   setTheme: function(theme) {
     if (theme == null) return;
-    Config.set("graphic.theme", theme);
+    //Config.getProperty("graphic.theme").setValue(theme);
     var themeLink = $('theme');
     if (!themeLink) {
       themeLink = new Element('link', {id: 'theme', rel: 'stylesheet', type: 'text/css', name: theme});

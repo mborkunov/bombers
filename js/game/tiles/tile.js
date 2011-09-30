@@ -13,8 +13,8 @@ define('tiles/tile', [], function() {
     nextCoordinates: null,
     initialize: function(location) {
       this.location = location;
-      this.currentCoordinates = {x: location.x, y: location.y};
-      this.nextCoordinates = {x: 0, y: 0};
+      this.currentCoordinates = {x: location.getX(), y: location.getY()};
+      this.nextCoordinates = {x: this.left, y: this.top};
       this.extra = null;
     },
     getType: function() {
@@ -57,7 +57,7 @@ define('tiles/tile', [], function() {
         return null;
       } else {
         if (shake > 0) {
-          var offset = Math.round(Math.random() * 10) % 2 == 0 ? 2 : 1;
+          var offset = Math.round(Math.random() * 10) % 2 == 0 ? 1 : 2;
 
           var top = Math.round(Math.random() * 10) % 2 == 0 ? - offset : offset;
           var left = Math.round(Math.random() * 10) % 2 == 0 ? - offset : offset;
@@ -159,15 +159,12 @@ define('tiles/tile', [], function() {
       Sound.play('putbomb');
     },
     render: function(container) {
-      var top = this.element.y + 'px';
-      var left = this.element.x + 'px';
-
       if (this.nextCoordinates.x != this.currentCoordinates.x || this.nextCoordinates.y != this.currentCoordinates.y) {
         this.currentCoordinates.x = this.nextCoordinates.x;// = {x: this.element.style.left, y: this.element.style.top}
         this.currentCoordinates.y = this.nextCoordinates.y;
 
-        this.element.style.top = top;
-        this.element.style.left = left;
+        this.element.style.top = this.currentCoordinates.y + 'px';
+        this.element.style.left = this.currentCoordinates.x + 'px';
       }
 
       if (this.isVanishing()) {

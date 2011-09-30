@@ -40,6 +40,13 @@ document.observe("dom:loaded", function() {
       'js/worker.js', 'js/sound.js', 'js/game.js', 'js/config.js',
       'screens', 'tiles', 'objects', 'controllers'
     ], function() {
-      new Game().start();
+    Config.initialize({
+      onSuccess: function() {
+        new Game().start();
+      },
+      onFailure: function() {
+        console.error('cannot load config file');
+      }
+    });
   });
 });

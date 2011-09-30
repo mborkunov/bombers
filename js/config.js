@@ -1,97 +1,229 @@
 var Config = {
-  themes: ["default", "original", "debug", "snow"],
-  getAsString: function(k) {
-    var value = Config.get(k);
-    if (typeof value == "boolean") return value ? "On" : "Off";
-    else if (typeof value == "number") return value;
-    else if (typeof value == "string") return value;
-
-    return "---"
-  },
-  get: function(k) {
-    var v = localStorage.getItem(k);
-    if (v === null) {
-      v = Config.getDefaultValue(k);
-      Config.set(k, v);
-    } else if (v.indexOf("|") > 0) {
-      var value = v.split("|");
-      if (value[1] == "boolean") v = value[0] === "true";
-      else if (value[1] == "number") v = value[0] | 0;
-      else if (value[1] == "string") v = value[0];
+  properties: {},
+  getProperty: function(id) {
+    if (typeof (this.properties[id]) !== 'undefined') {
+      return this.properties[id];
     }
-    return v;
+    console.error('There is no property for id #' + id);
   },
   change: function(key) {
-    var value = Config.get(key);
-
-    if (typeof value == "boolean") {
-      return Config.set(key, !value);
-    } else if (typeof value == "number") {
-      return Config.set(key, value < 16 ? value + 1 : 1);
-    } else if (typeof value == "string") {
-      if (key == "graphic.theme") {
-        var theme;
-        var index = Config.themes.indexOf(value);
-        if (index < 0 || index + 1 >= Config.themes.length) {
-          theme = Config.themes[0];
-        } else {
-          theme = Config.themes[++index];
+    var property = Config.getProperty(key);
+    property.setValue(property.getNextValue());
+    localStorage.setItem(key, property.getValue());
+    return property.getValue();
+  },
+  initialize: function(options) {
+    new Ajax.Request('config.xml', {
+      method: 'get',
+      onSuccess: function(t) {
+        var properties = t.responseXML.getElementsByTagName('property');
+        for (var i = 0; i < properties.length; i++) {
+          var property = Config.Property.create(properties[i]);
+          property.loadUserValue();
+          Config.properties[property.getId()] = property;
         }
-        return Config.set(key, theme);
-      }
-    }
-  },
-  set: function(k, v) {
-    localStorage.setItem(k, v + "|" + typeof v);
-    return v;
-  },
-  getDefaultValue: function(key) {
-    if (key.indexOf("start") === 0) {
-      if (key === "start.kick" || key === "start.glove") {
-        return false;
-      }
-      return 1;
-    } else if (key.indexOf("game") === 0) {
-      switch (key) {
-        case "game.random_bombers_positions":
-          return true;
-        case "game.random_maps":
-          return true;
-        case "game.win_points":
-          return 5;
-        case "game.round_time":
-          return 60;
-      }
-    } else if (key.indexOf("extras") === 0) {
-      return true;
-    } else if (key.indexOf("max") === 0) {
-      return 8;
-    } else if (key.indexOf("diseases") === 0) {
-      return true;
-    } else if (key.indexOf("graphic") === 0) {
-      if (key === "graphic.kidz") return false;
-      else if (key === "graphic.theme") {
-        return "default";
-      }
-      return true;
-    } else if (key == "sounds") {
-      return true;
-    }
-  },
-  getProperty: function() {
-
+        options.onSuccess();
+      },
+      onFailure: options.onFailure
+    });
   }
 };
 
-
 Config.Property = Class.create({
+  value: null,
+  defaultValue: null,
+  initialize: function(xmlConfig) {
+    this.id = xmlConfig.getAttribute('id');
+    this.name = xmlConfig.getElementsByTagName('name')[0].firstChild.nodeValue;
+
+    var description = xmlConfig.getElementsByTagName('description')[0];
+    if (description.childNodes.length > 0) {
+      this.description = description.firstChild.nodeValue;
+    } else {
+      this.description = '';
+    }
+  },
+  loadUserValue: function() {
+    if (localStorage.getItem(this.id) !== null)  {
+      this.setValue(localStorage.getItem(this.id));
+    }
+  },
+  getId: function() {
+    return this.id;
+  },
+  getName: function() {
+    return this.name;
+  },
+  getDescription: function() {
+    return this.description;
+  },
   getValue: function() {
+    return this.value;
   },
-  getNextValue: function() {
+  getScreenValue: function() {
+    return this.value;
   },
-  getPreviousValue: function() {
+  setValue: function() {
+    localStorage.setItem(this.id, this.value);
+  },
+  getNextValue: null,
+  getPreviousValue: null,
+  toString: function() {
+    return '(' + this.type + ') #' + this.id + ' ' + this.value + ' <' + this.getPreviousValue() + '|' + this.getNextValue() + '>' + ' - ' + this.name;
   }
 });
+
+
+Config.Property.Enum = Class.create(Config.Property, {
+  type: 'enum',
+  values: null,
+  initialize: function($super, xmlConfig) {
+    $super(xmlConfig);
+
+    this.values = [];
+    this.value = xmlConfig.getAttribute('default');
+    this.defaultValue = this.value;
+
+    var enumElement = xmlConfig.getElementsByTagName('enum')[0];
+    var values = enumElement.getElementsByTagName('value');
+    for (var i = 0, length = values.length; i < length; i++) {
+      this.values.push(values[i].firstChild.nodeValue);
+    }
+    if (this.values.indexOf(this.value) < 0) {
+      this.value = this.values[0];
+    }
+  },
+  setValue: function($super, value) {
+    if (this.values.indexOf(value) >= 0) {
+      this.value = value;
+    }
+    $super();
+  },
+  getNextValue: function() {
+    var currentIndex = this.values.indexOf(this.value); 
+    if (currentIndex < 0) {
+      return this.values[0];
+    } else {
+      if (currentIndex + 1 >= this.value.length) {
+        return this.values[0];
+      } else {
+        return this.values[currentIndex + 1];
+      }
+    }
+  },
+  getPreviousValue: function() {
+    var currentIndex = this.values.indexOf(this.value);
+    if (currentIndex < 0) {
+      return this.values[0];
+    } else {
+      if (currentIndex - 1 < 0) {
+        return this.values[this.values.length - 1];
+      } else {
+        return this.values[currentIndex - 1];
+      }
+    }
+  },
+  toString: function($super) {
+    return $super() + ' [' + this.values + ']';
+  }
+});
+
+Config.Property.Number = Class.create(Config.Property, {
+  type: 'number',
+  initialize: function($super, xmlConfig) {
+    $super(xmlConfig);
+
+    this.value = parseInt(xmlConfig.getAttribute('default'));
+
+    var range = xmlConfig.getElementsByTagName('range')[0];
+    this.step = parseInt(range.getAttribute('step'));
+    this.min = parseInt(range.getAttribute('min'));
+    this.max = parseInt(range.getAttribute('max'));
+
+    if (this.min > this.max) {
+      var temp = this.max;
+      this.max = this.min;
+      this.min = temp;
+    }
+
+    if (this.value < this.min) {
+      this.value = this.min;
+    } else if (this.value > this.max) {
+      this.value = this.max;
+    }
+    this.defaultValue = this.value;
+  },
+  setValue: function($super, value) {
+    if (typeof (value) === 'number') {
+      if (value >= this.min) {
+        this.value = value;
+      } else {
+        this.value = this.min;
+      }
+      if (value <= this.max) {
+        this.value = value;
+      } else {
+        this.value = this.max;
+      }
+    } else {
+      this.setValue(parseInt(value));
+    }
+    $super();
+  },
+  getNextValue: function() {
+    var nextValue = this.value + this.step;
+    return nextValue > this.max ? this.min : nextValue;
+  },
+  getPreviousValue: function() {
+    var prevValue = this.value - this.step;
+    return prevValue < this.min ? this.max : prevValue;
+  }
+});
+
+Config.Property.Boolean = Class.create(Config.Property, {
+  type: 'boolean',
+  initialize: function($super, xmlConfig) {
+    $super(xmlConfig);
+
+    this.value = this._getBoolean(xmlConfig.getAttribute('default').toLowerCase());
+    this.defaultValue = this.value;
+  },
+  getNextValue: function() {
+    return !this.value;
+  },
+  setValue: function($super, value) {
+    if (typeof (value) === 'boolean') {
+      this.value = value;
+    } else {
+      this.value = this._getBoolean(value);
+    }
+    $super();
+  },
+  getScreenValue: function() {
+    return this.value ? 'on' : 'off';
+  },
+  _getBoolean: function(value) {
+    switch (value) {
+      case true:
+      case 'true':
+      case '1':
+        return true;
+        break;
+      case false:
+      case 'false':
+      case '0':
+        return false;
+        break;
+      default:
+        return false;
+        break;
+    }
+  },
+  getPreviousValue: function() {
+    return this.getNextValue();
+  }
+});
+
 
 Object.extend(Config.Property, {
   parse: function(propertyString) {
@@ -107,17 +239,23 @@ Object.extend(Config.Property, {
       case "string":
       break;
     }
+  },
+  create: function(xmlProperty) {
+    if (!xmlProperty.hasAttribute('type')) return null;
+    var property;
+
+    switch (xmlProperty.getAttribute('type')) {
+      case 'boolean':
+          property = new Config.Property.Boolean(xmlProperty);
+        break;
+      case 'enum':
+          property = new Config.Property.Enum(xmlProperty);
+        break;
+      case 'number':
+          property = new Config.Property.Number(xmlProperty);
+        break;
+    }
+
+    return property;
   }
-});
-
-Config.Property.Type = Class.create({
-});
-
-Config.Property.Type.Enum = Class.create(Config.Property.Type, {
-});
-
-Config.Property.Type.Number = Class.create(Config.Property.Type, {
-});
-
-Config.Property.Type.Boolean = Class.create(Config.Property.Type, {
 });

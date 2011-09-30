@@ -6,7 +6,7 @@ define('objects/arbiter', ['objects/object'], function() {
     hurry: null,
     initialize: function($super) {
       $super();
-      this.roundtime = Config.get('game.round_time') * 1000;
+      this.roundtime = Config.getProperty('game.round_time').getValue();
 
       this.currentTime = this.roundtime - this.elapsed;
       this.hurry = false;
@@ -52,7 +52,7 @@ define('objects/arbiter', ['objects/object'], function() {
       $super();
     },
     getRemainingTime: function() {
-      return (this.roundtime - this.elapsed) / 1000 | 0;
+      return (this.roundtime - this.elapsed) | 0;
     },
     run: function() {
       if (!this.running) {
@@ -70,8 +70,8 @@ define('objects/arbiter', ['objects/object'], function() {
         return;
       }
       if (!this.running) {
-        this.elapsed += delay;
-        if (!this.hurry && Math.abs(this.roundtime - this.elapsed) <= 15000) {
+        this.elapsed += delay / 1000;
+        if (!this.hurry && Math.abs(this.roundtime - this.elapsed) <= 15) {
           this.hurryUp();
         }
         if (this.elapsed >= this.roundtime) {

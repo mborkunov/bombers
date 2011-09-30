@@ -1,37 +1,160 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <config>
-  <property id="sounds">
+
+  <property id="sounds" type="boolean" default="true">
     <name>Sound</name>
-    <description>Enable or disable sound</description>
-    <value>false</value>
-    <type name="boolean"/>
+    <description/>
   </property>
 
-  <property id="graphic.theme">
+  <property id="graphic.theme" type="enum" default="default">
     <name>Theme</name>
-    <description>Theme</description>
-    <value>default</value>
-    <type name="enum">
-      <values>
-        <value>default</value>
-        <value>original</value>
-        <value>debug</value>
-        <value>snow</value>
-      </values>
-    </type>
+    <description/>
+    <enum>
+      <value>default</value>
+      <value>original</value>
+      <value>debug</value>
+      <value>snow</value>
+    </enum>
   </property>
 
-  <property id="graphic.theme">
-    <name>Theme</name>
-    <description>Theme</description>
-    <value>default</value>
-    <type name="enum">
-      <values>
-        <value>default</value>
-        <value>original</value>
-        <value>debug</value>
-        <value>snow</value>
-      </values>
-    </type>
+  <property id="game.random_maps" type="boolean" default="false">
+    <name>Random maps</name>
+    <description/>
+  </property>
+
+  <property id="game.random_bombers_positions" type="boolean" default="true">
+    <name>Random bomber positions</name>
+    <description/>
+  </property>
+
+  <property id="game.win_points" type="number" default="5">
+    <name>Points to win</name>
+    <description/>
+    <range min="1" max="7" step="1"/>
+  </property>
+
+  <property id="game.round_time" type="number" default="90">
+    <name>Points to win</name>
+    <description/>
+    <range min="15" max="300" step="15"/>
+  </property>
+
+  <property id="start.bombs" type="number" default="1">
+    <name>Start bombs</name>
+    <description/>
+    <range min="1" max="10" step="1"/>
+  </property>
+
+  <property id="start.power" type="number" default="1">
+    <name>Start power</name>
+    <description/>
+    <range min="1" max="15" step="1"/>
+  </property>
+
+  <property id="start.skateboards" type="number" default="0">
+    <name>Start skateboards</name>
+    <description/>
+    <range min="0" max="15" step="1"/>
+  </property>
+
+  <property id="start.kick" type="boolean" default="false">
+    <name>Start kick</name>
+    <description/>
+  </property>
+
+  <property id="start.glove" type="boolean" default="false">
+    <name>Start glove</name>
+    <description/>
+  </property>
+
+  <property id="max.bombs" type="number" default="9">
+    <name>Max bombs</name>
+    <description/>
+    <range min="1" max="10" step="1"/>
+  </property>
+
+  <property id="max.power" type="number" default="12">
+    <name>Max power</name>
+    <description/>
+    <range min="1" max="15" step="1"/>
+  </property>
+
+  <property id="max.skateboards" type="number" default="5">
+    <name>Max skateboards</name>
+    <description/>
+    <range min="0" max="10" step="1"/>
+  </property>
+
+  <property id="extras.bombs" type="boolean" default="true">
+    <name>Extra Bombs</name>
+    <description/>
+  </property>
+
+  <property id="extras.power" type="boolean" default="true">
+    <name>Extra Power</name>
+    <description/>
+  </property>
+
+  <property id="extras.skateboard" type="boolean" default="true">
+    <name>Extra Skateboards</name>
+    <description/>
+  </property>
+
+  <property id="extras.kick" type="boolean" default="true">
+    <name>Extra Kick</name>
+    <description/>
+  </property>
+
+  <property id="extras.glove" type="boolean" default="true">
+    <name>Extra Glove</name>
+    <description/>
+  </property>
+
+  <property id="diseases.joint" type="boolean" default="true">
+    <name>Joint disease</name>
+    <description/>
+  </property>
+
+  <property id="diseases.viagra" type="boolean" default="true">
+    <name>Joint viagra</name>
+    <description/>
+  </property>
+
+  <property id="diseases.cocaine" type="boolean" default="true">
+    <name>Joint cocaine</name>
+    <description/>
+  </property>
+
+  <property id="graphic.kidz" type="boolean" default="false">
+    <name>Kidz mode</name>
+    <description/>
+  </property>
+
+  <property id="graphic.corpse_parts" type="boolean" default="true">
+    <name>Corpse parts</name>
+    <description/>
+  </property>
+
+  <property id="graphic.shaky_explosions" type="boolean" default="true">
+    <name>Shaky explosions</name>
+    <description/>
+  </property>
+
+  <property id="timing.bombs.countdown" type="number" default="0">
+    <name>Bomb Countdown (1/10 s)</name>
+    <description/>
+    <range min="0" max="50" step="5"/>
+  </property>
+
+  <property id="timing.bombs.chain_reaction" type="number" default="0">
+    <name>Bomb Chain Reaction Delay (1/100 s)</name>
+    <description/>
+    <range min="0" max="50" step="5"/>
+  </property>
+
+  <property id="timing.bombs.moving_speed" type="number" default="0">
+    <name>Moving Bombs Speed</name>
+    <description/>
+    <range min="10" max="500" step="10"/>
   </property>
 </config>

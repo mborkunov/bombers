@@ -53,13 +53,13 @@ define('tiles/map', [], function() {
     tiles: null,
     data: null,
     playerPositions: null,
-    updateHandler: function(tile) {
-      var delay = 10, shake = 0;
+    shake: null,
+    updateHandler: function(tile, options) {
       if (tile.next != null) {
         tile = tile.next;
       }
-      tile.update(delay, shake);
-    }.bind(this),
+      tile.update(options.delay, options.shake);
+    },
     renderHandler: null,
 
     initialize: function(data) {
@@ -106,7 +106,7 @@ define('tiles/map', [], function() {
               break;
             case '1': case '2': case '3': case '4':
             case '5': case '6': case '7': case '0':
-            this.playerPositions.push({number: data[x][y] | 0, point: point});
+              this.playerPositions.push({number: data[x][y] | 0, point: point});
             case ' ':
               tile = new Game.Tile.Ground(point);
               break;
@@ -185,15 +185,17 @@ define('tiles/map', [], function() {
       }
       return false;
     },
-    each: function(callback) {
+    each: function(callback, options) {
+      options = options || {};
       for (var y = 0, yLength = this.tiles.length; y < yLength; y++)  {
         for (var x = 0, xLength = this.tiles[y].length; x < xLength; x++)  {
-          callback(this.tiles[y][x]);
+          callback(this.tiles[y][x], options);
         }
       }
     },
     update: function(delay, shake) {
-      this.each(this.updateHandler);
+      var options = {shake: shake, delay: delay};
+      this.each(this.updateHandler, options);
     },
     prerender: function(container) {
       this.each(function(tile) {

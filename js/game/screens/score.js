@@ -14,19 +14,22 @@ define('screens/score', ['screens/screen'], function() {
       };
     },
     prerender: function() {
+      this.layer = new Element('div');
+      this.container.appendChild(this.layer);
       var next = new Element("div").addClassName('next');
       next.appendChild(new Element("div").addClassName('sign').update('Next Map'));
       next.appendChild(new Element("div").addClassName('preview'));
       next.appendChild(new Element("div").addClassName('name').update('Hello World'));
-      this.container.appendChild(next);
+      this.layer.appendChild(next);
 
       var anyKey = new Element("span").addClassName("anykey").update("Press any key");
       anyKey.on('click', function() {
         Game.instance.setScreen(Game.Screen.Arena)
       });
-      this.container.appendChild(anyKey);
+      this.layer.appendChild(anyKey);
     },
     dispatch: function($super) {
+      this.layer.remove();
     },
     update: function(delay) {
     },

@@ -11,6 +11,9 @@ define('screens/arena', ['screens/screen'], function() {
     timeisup: null,
     updateObjectsHandler: null,
     renderObjectsHandler:  null,
+    scoreScreenTimeout: null,
+    shakyExplosions: null,
+    checkBomberFilter: function(bomber) {return !bomber.isDead()},
     init: function() {
       this.objects = {
         bombers: [],
@@ -18,22 +21,21 @@ define('screens/arena', ['screens/screen'], function() {
         explosions: [],
         arbiter:  new Game.Object.Arbiter(),
         extras: [],
+        iterate: function(items, func) {
+          for (var i = 0, length = items.length; i < length; i++) {
+            func(items[i]);
+          }
+        },
         each: function(call) {
-          this.bombers.each(function(bomber) {
-            call(bomber);
-          });
-          this.bombs.each(function(bomb){
-            call(bomb);
-          });
-          this.extras.each(function(extra){
-            call(extra);
-          });
-          this.explosions.each(function(explosion){
-            call(explosion);
-          });
+          this.iterate(this.bombers, call);
+          this.iterate(this.bombs, call);
+          this.iterate(this.extras, call);
+          this.iterate(this.explosions, call);
+
           call(this.arbiter);
         }
       };
+      this.shakyExplosions = Config.getProperty('graphic.shaky_explosions').getValue();
       this.shake = 0;
       this.timeisup = false;
       this.rendered = false;
@@ -152,26 +154,37 @@ define('screens/arena', ['screens/screen'], function() {
         var themeEl = new Element('div', {title: theme.name, theme: theme.id}).setStyle({'float': 'left', background: theme.color, width: '30px', height: '30px'});
         this.appendChild(themeEl);
         themeEl.observe('mouseover', function(e) {
-          Config.set("graphic.theme", e.element().getAttribute('theme'));
-          Game.instance.setTheme(Config.get("graphic.theme"));
+          Config.getProperty("graphic.theme").setValue(e.element().getAttribute('theme'));
+          Game.instance.setTheme(Config.getProperty("graphic.theme").getValue());
         });
       }.bind(themesElement));
+    },
+    checkBombers: function() {
+      if (!this.scoreScreenTimeout && this.objects.bombers.filter(this.checkBomberFilter).length == 0) {
+        this.scoreScreenTimeout = setTimeout(function() {
+          Game.instance.setScreen(Game.Screen.Score);
+        }, 1000);
+      }
     },
     update: function(delay) {
       if (this.map == null) return;
       if (this.paused) return;
       if (this.keys.indexOf(Event.KEY_HOME) != -1) {
-        if (!Object.isUndefined(this.timeout)) {
-          clearTimeout(this.timeout);
-        }
-        this.shake = 1;
-        this.timeout = setTimeout(function() {
-          this.shake = -1;
-        }.bind(this), 100);
+        this.shakeIt();
       }
       this.objects.each(this.updateObjectsHandler);
       this.map.update(delay, this.shake);
-      //this.map.highlight(this.objects.bombers);
+      this.checkBombers();
+    },
+    shakeIt: function() {
+      if (!this.shakyExplosions) return;
+      if (!Object.isUndefined(this.timeout)) {
+        clearTimeout(this.timeout);
+      }
+      this.shake = 1;
+      this.timeout = setTimeout(function() {
+        this.shake = -1;
+      }.bind(this), 300);
     },
     render: function(time) {
       if (!this.rendered) return;

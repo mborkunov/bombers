@@ -12,8 +12,9 @@ define('screens/menu', ['screens/screen'], function() {
       this.menu = new Item("Root", Type.Inner)
         .addChild(new Item("New Game", Type.Inner)
           .addChild(new Item("Start Game", Type.Screen, Game.Screen.Arena))
+          .addChild(new Item("Player setup", Type.Screen, Game.Screen.Players))
           .addChild(new Item("Random Positions", Type.Settings, "game.random_bombers_positions"))
-          .addChild(new Item("Random Map Order", Type.Settings, "game.random_maps"))
+          .addChild(new Item("Random Maps", Type.Settings, "game.random_maps"))
           .addChild(new Item("Points to win", Type.Settings, "game.win_points"))
           .addChild(new Item("Round Time", Type.Settings, "game.round_time")))
         .addChild(new Item("Options", Type.Inner)
@@ -36,10 +37,10 @@ define('screens/menu', ['screens/screen'], function() {
               .addChild(new Item("Joint", Type.Settings, "diseases.joint"))
               .addChild(new Item("Viagra", Type.Settings, "diseases.viagra"))
               .addChild(new Item("Cocaine", Type.Settings, "diseases.cocaine")))
-            /*.addChild(new Item("Bomb Timing&Speed", Type.Inner)
-              .addChild(new Item("Bomb Countdown (1/10 s)", Type.Settings))
-              .addChild(new Item("Bomb Chain Reaction Delay (1/100 s)", Type.Settings))
-              .addChild(new Item("Moving Bombs Speed", Type.Settings)))*/
+            .addChild(new Item("Timing &amp; Speed", Type.Inner)
+              .addChild(new Item("Bomb Countdown (1/10 s)", Type.Settings, 'timing.bombs.countdown'))
+              .addChild(new Item("Bomb Chain Reaction Delay (1/100 s)", Type.Settings, 'timing.bombs.chain_reaction'))
+              .addChild(new Item("Moving Bombs Speed", Type.Settings, 'timing.bombs.moving_speed')))
             .addChild(new Item("Graphic Options", Type.Inner)
               .addChild(new Item("Theme", Type.Settings, "graphic.theme", function(theme) {
                 Game.instance.setTheme(theme);
@@ -208,7 +209,12 @@ define('screens/menu', ['screens/screen'], function() {
     },
     getLabel: function() {
       if (this.type === Game.Screen.Menu.Item.Type.Settings) {
-        return this.label + " - " + Config.getAsString(this.args[0]);
+        var property = Config.getProperty(this.args[0]);
+        if (property.type == 'boolean') {
+          this.label;
+        } else {
+          return this.label + " - " + property.getScreenValue();
+        }
       }
       return this.label;
     },
@@ -249,16 +255,16 @@ define('screens/menu', ['screens/screen'], function() {
       } else {
         this.li = new Element("li").update(this.getLabel());
         this.li.observe("click", function() {
-          this.execute()
+          this.execute();
         }.bind(this));
         this.li.observe("mouseover", function() {
-          this.setSelected(true)
+          this.setSelected(true);
         }.bind(this));
         this.li.observe("mousemove", function() {
-          this.setSelected(true)
+          this.setSelected(true);
         }.bind(this));
         this.li.observe("mouseout", function() {
-          this.setSelected(false)
+          this.setSelected(false);
         }.bind(this));
 
         if (this.getType() === Game.Screen.Menu.Item.Type.Inner) {
@@ -275,12 +281,7 @@ define('screens/menu', ['screens/screen'], function() {
         if (this.isSelected()) {
           this.li.addClassName("selected");
         }
-        var className = Try.these(function() {
-          return "value-" + Config.getAsString(this.args[0]).toLowerCase()
-        }.bind(this),function() {
-          return "value-" + Config.getAsString(this.args[0]);
-        }.bind(this));
-        this.li.addClassName(className);
+        this.li.addClassName("value-" + Config.getProperty(this.args[0]).getScreenValue());
       }
     },
     toString: function() {
