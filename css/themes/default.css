@@ -1,4 +1,8 @@
 @import "base.css";
+@import "http://fonts.googleapis.com/css?family=Leckerli+One";
+* {
+  font-family: 'Leckerli One', serif;
+}
 
 #menu {
   opacity: 0.7;
@@ -18,11 +22,12 @@
 }
 #menu li.selected {
   background: #965;
-  color: #000 !important;
+  color: #000;
 }
 
 #menu li.value-off {
-  color: #644;
+  color: #644 !important;
+  text-decoration: line-through;
 }
 
 
@@ -37,6 +42,9 @@
 
 .arena .tile {
   background-color: #424242;
+}
+.arena .tile:hover {
+  opacity: .8;
 }
 
 .arena .tile-none {
