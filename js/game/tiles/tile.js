@@ -91,7 +91,7 @@ define('tiles/tile', [], function() {
               this.element.stopObserving("click", this.clickHandler);
           break;
           case 1:
-              this.spawnExtra();
+              this.spawnBomb();
             break;
         }
       }.bind(this);

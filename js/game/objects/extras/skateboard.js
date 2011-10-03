@@ -5,7 +5,13 @@ define('objects/extras/skateboard', ['objects/extras/extra'], function() {
       this.name = 'skateboard';
     },
     act: function(bomber) {
-      bomber.setSpeed(bomber.getSpeed() + .05);
+      bomber.setSpeed(bomber.getSpeed() + Game.Object.Extra.Skateboard.getSpeed());
     }
   });
+
+  Object.extend(Game.Object.Extra.Skateboard, {
+    getSpeed: function() {
+      return .05;
+    }
+  })
 });

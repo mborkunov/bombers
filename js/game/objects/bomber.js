@@ -20,15 +20,17 @@ define('objects/bomber', ['objects/object'], function() {
       this.rollingAngle = 0;
       this.rollAngle = 0,
       this.angle = 0;
-      this.speed = .05;
       this.rollAngle = 0;
-      this.maxBombs = 3;
-      this.power = 1;
       this.dead = false;
       this.location = location;
       this.number = number;
-      this.canKick = false;
-      this.canThrow = false;
+
+      this.speed = .05 + Config.getProperty('start.skateboards').getValue() * Game.Object.Extra.Skateboard.getSpeed();
+      console.log(Config.getProperty('start.skateboards').getValue());
+      this.maxBombs = Config.getProperty('start.bombs').getValue();
+      this.power = Config.getProperty('start.power').getValue();
+      this.canKick = Config.getProperty('start.kick').getValue();
+      this.canThrow = Config.getProperty('start.glove').getValue();
 
       controller.attach(this);
       this.controller = controller;
@@ -131,7 +133,7 @@ define('objects/bomber', ['objects/object'], function() {
       }
     },
     pickupExtra: function(extra) {
-      console.log(extra.name);
+      Sound.play('wow');
       extra.act(this);
       extra.remove();
     },
