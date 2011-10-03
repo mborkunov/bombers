@@ -8,9 +8,13 @@ var date = function() {
 
 Element.addMethods({
   rotate: function(element, angle) {
-    element.style['-webkit-transform'] = 'rotate(' + angle +'deg) ';
-    element.style['transform'] = 'rotate(' + angle +'deg) ';
-    element.style.MozTransform = 'rotate(' + angle +'deg) ';
+    if (Prototype.Browser.WebKit) {
+      element.style['-webkit-transform'] = 'rotate(' + angle +'deg) ';
+    } else if (Prototype.Browser.Gecko) {
+      element.style.MozTransform = 'rotate(' + angle +'deg) ';
+    } else {
+      element.style['transform'] = 'rotate(' + angle +'deg) ';
+    }
   },
   scale: function(element, scaleX, scaleY) {
     var x = scaleX;

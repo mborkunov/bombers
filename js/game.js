@@ -18,11 +18,10 @@ var Game = Class.create({
     add: function() {
       this.working = 0;
       this.element = new Element('div', {id: 'overlay'});
+      this.element.style.setProperty('opacity', 1, null);
       Game.instance.container.appendChild(this.element);
-      this.element.style.setProperty('opacity', 1);
     },
     appear: function(callback) {
-      console.info('appear');
       this.callback = callback;
       try {
         this.element.show();
@@ -31,21 +30,21 @@ var Game = Class.create({
       }
       this.opacity = 1;
       this.working = -1;
-      this.element.style.setProperty('opacity', 1);
+      this.element.style.setProperty('opacity', 1, null);
       clearTimeout(this.timeout);
       this.timeout = setTimeout(this.update.bind(this), 10);
     },
     fade: function(callback) {
-      console.info('fade');
       this.callback = callback;
       try {
         this.element.show();
       } catch (e) {
         this.add();
       }
+
       this.opacity = 0;
       this.working = 1;
-      this.element.style.setProperty('opacity', 0);
+      this.element.style.setProperty('opacity', 0, null);
       clearTimeout(this.timeout);
       this.timeout = setTimeout(this.update.bind(this), 10);
     },
@@ -53,15 +52,13 @@ var Game = Class.create({
       this.element.hide();
     },
     stop: function() {
-      console.info('stop');
-      this.working = 0; 
+      this.working = 0;
       clearTimeout(this.timeout);
       this.callback();
     },
     update: function() {
-      console.log(this.working, this.opacity);
       if (this.working != 0 && this.element) {
-        this.element.style.setProperty('opacity', this.opacity += this.working / 25);
+        this.element.style.setProperty('opacity', this.opacity += this.working / 25, null);
         this.working *= 1.1;
         if (this.working < 0 && this.opacity <= 0) {
           this.stop();
@@ -107,8 +104,6 @@ var Game = Class.create({
     document.body.addClassName(theme);
   },
   setScreen: function(screen) {
-    checkHashChange = false;
-    //console.info('set screen', new screen().name);
     var appear = function() {
       if (this.screen) {
         this.screen.setSleeping(false);
@@ -122,11 +117,16 @@ var Game = Class.create({
           this.container.observe(event, _screen.listeners[event]);
         }
       }
+
+      //window.hashChangeEnabled = false;
       this.container.removeClassName(this.screen ? this.screen.name.toLowerCase() : null).addClassName(_screen.name.toLowerCase());
       location.hash = '#' + _screen.name;
       this.screen = _screen;
       this.screen.setSleeping(true);
-      checkHashChange = true;
+
+      /*setTimeout(function() {
+        window.hashChangeEnabled = true;
+      }, 500);*/
 
       this.overlay.appear(function() {
         this.screen.setSleeping(false);

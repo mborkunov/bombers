@@ -16,6 +16,11 @@
       <value>snow</value>
     </enum>
   </property>
+  <property id="graphic.maxfps" type="number" default="50">
+    <name>Maximum FPS</name>
+    <description/>
+    <range min="5" max="100" step="5"/>
+  </property>
 
   <property id="game.random_maps" type="boolean" default="false">
     <name>Random maps</name>

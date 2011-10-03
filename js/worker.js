@@ -28,7 +28,7 @@ var Worker = Class.create({
 
 var Graphics = Class.create(Worker, {
   initialize: function() {
-    this.fps = 50;
+    this.fps = Config.getProperty('graphic.maxfps').getValue();
   },
   action: function(delay) {
     Game.instance.getScreen().render(delay);

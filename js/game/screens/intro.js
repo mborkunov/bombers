@@ -58,8 +58,8 @@ define('screens/intro', ['screens/screen'], function() {
           this.drawText = true;
         }
         if (this.timeout) {
-          this.logo.style.setProperty('margin-top', '-' + this.margin + 'px');
-          this.textElement.style.setProperty('margin-top', this.margin * 2 + 'px');
+          this.logo.style.setProperty('margin-top', '-' + this.margin + 'px', null);
+          this.textElement.style.setProperty('margin-top', this.margin * 2 + 'px', null);
           this.margin += 5;
         }
         this.opacity += 0.015;

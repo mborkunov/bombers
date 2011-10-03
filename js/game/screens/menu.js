@@ -13,41 +13,44 @@ define('screens/menu', ['screens/screen'], function() {
         .addChild(new Item("New Game", Type.Inner)
           .addChild(new Item("Start Game", Type.Screen, Game.Screen.Arena))
           .addChild(new Item("Player setup", Type.Screen, Game.Screen.Players))
-          .addChild(new Item("Random Positions", Type.Settings, "game.random_bombers_positions"))
-          .addChild(new Item("Random Maps", Type.Settings, "game.random_maps"))
-          .addChild(new Item("Points to win", Type.Settings, "game.win_points"))
-          .addChild(new Item("Round Time", Type.Settings, "game.round_time")))
+          .addChild(new Item(null, Type.Settings, "game.random_bombers_positions"))
+          .addChild(new Item(null, Type.Settings, "game.random_maps"))
+          .addChild(new Item(null, Type.Settings, "game.win_points"))
+          .addChild(new Item(null, Type.Settings, "game.round_time")))
         .addChild(new Item("Options", Type.Inner)
             .addChild(new Item("Start/Max Extras", Type.Inner)
-              .addChild(new Item("Start Bombs", Type.Settings, "start.bombs"))
-              .addChild(new Item("Start Power", Type.Settings, "start.power"))
-              .addChild(new Item("Start Skateboards", Type.Settings, "start.skateboards"))
-              .addChild(new Item("Start Kick", Type.Settings, "start.kick"))
-              .addChild(new Item("Start Glove", Type.Settings, "start.glove"))
-              .addChild(new Item("Max. Bombs", Type.Settings, "max.bombs"))
-              .addChild(new Item("Max. Power", Type.Settings, "max.power"))
-              .addChild(new Item("Max. Skateboards", Type.Settings, "max.skateboards")))
+              .addChild(new Item(null, Type.Settings, "start.bombs"))
+              .addChild(new Item(null, Type.Settings, "start.power"))
+              .addChild(new Item(null, Type.Settings, "start.skateboards"))
+              .addChild(new Item(null, Type.Settings, "start.kick"))
+              .addChild(new Item(null, Type.Settings, "start.glove"))
+              .addChild(new Item(null, Type.Settings, "max.bombs"))
+              .addChild(new Item(null, Type.Settings, "max.power"))
+              .addChild(new Item(null, Type.Settings, "max.skateboards")))
             .addChild(new Item("Extras", Type.Inner)
-              .addChild(new Item("Bombs", Type.Settings, "extras.bombs"))
-              .addChild(new Item("Power", Type.Settings, "extras.power"))
-              .addChild(new Item("Skateboard", Type.Settings, "extras.skateboard"))
-              .addChild(new Item("Kick", Type.Settings, "extras.kick"))
-              .addChild(new Item("Glove", Type.Settings, "extras.glove")))
+              .addChild(new Item(null, Type.Settings, "extras.bombs"))
+              .addChild(new Item(null, Type.Settings, "extras.power"))
+              .addChild(new Item(null, Type.Settings, "extras.skateboard"))
+              .addChild(new Item(null, Type.Settings, "extras.kick"))
+              .addChild(new Item(null, Type.Settings, "extras.glove")))
             .addChild(new Item("Diseases", Type.Inner)
-              .addChild(new Item("Joint", Type.Settings, "diseases.joint"))
-              .addChild(new Item("Viagra", Type.Settings, "diseases.viagra"))
-              .addChild(new Item("Cocaine", Type.Settings, "diseases.cocaine")))
+              .addChild(new Item(null, Type.Settings, "diseases.joint"))
+              .addChild(new Item(null, Type.Settings, "diseases.viagra"))
+              .addChild(new Item(null, Type.Settings, "diseases.cocaine")))
             .addChild(new Item("Timing &amp; Speed", Type.Inner)
-              .addChild(new Item("Bomb Countdown (1/10 s)", Type.Settings, 'timing.bombs.countdown'))
-              .addChild(new Item("Bomb Chain Reaction Delay (1/100 s)", Type.Settings, 'timing.bombs.chain_reaction'))
-              .addChild(new Item("Moving Bombs Speed", Type.Settings, 'timing.bombs.moving_speed')))
+              .addChild(new Item(null, Type.Settings, 'timing.bombs.countdown'))
+              .addChild(new Item(null, Type.Settings, 'timing.bombs.chain_reaction'))
+              .addChild(new Item(null, Type.Settings, 'timing.bombs.moving_speed')))
             .addChild(new Item("Graphic Options", Type.Inner)
-              .addChild(new Item("Theme", Type.Settings, "graphic.theme", function(theme) {
+              .addChild(new Item(null, Type.Settings, "graphic.theme", function(theme) {
                 Game.instance.setTheme(theme);
                }))
-              .addChild(new Item("Kidz Mode", Type.Settings, "graphic.kidz"))
-              .addChild(new Item("Corpse Parts", Type.Settings, "graphic.corpse_parts"))
-              .addChild(new Item("Shaky Explosions", Type.Settings, "graphic.shaky_explosions")))
+              .addChild(new Item(null, Type.Settings, "graphic.maxfps", function(fps) {
+                Game.instance.graphics.fps = fps;
+              }))
+              .addChild(new Item(null, Type.Settings, "graphic.kidz"))
+              .addChild(new Item(null, Type.Settings, "graphic.corpse_parts"))
+              .addChild(new Item(null, Type.Settings, "graphic.shaky_explosions")))
             .addChild(new Item("Sounds", Type.Settings, "sounds", function(value) {
               Sound.setEnabled(value);
             })))
@@ -185,9 +188,14 @@ define('screens/menu', ['screens/screen'], function() {
     li: null,
     parent: null,
     initialize: function(label, type) {
-      this.label = label;
       this.type = type;
       this.args = $A(arguments).slice(2);
+
+      if (type === Game.Screen.Menu.Item.Type.Settings) {
+        this.label = Config.getProperty(this.args[0]).getName();
+      } else {
+        this.label = label;
+      }
       this.clearChildren();
     },
     setDepth: function(depth) {

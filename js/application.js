@@ -15,26 +15,29 @@ if (!Object.isUndefined(window.applicationCache)) {
     }
   }, false);
 }
-var checkHashChange = true;
+
+if ('onhashchange' in window) {
+  //console.log('load', window, window.__proto__.onhashchange);
+
+  /*window.hashChangeHandler = function(e) {
+    if (window.hashChangeEnabled) {
+      var _screen = e.target.location.hash.substr(1).toLowerCase();
+      _screen = _screen.substr(0, 1).toUpperCase() + _screen.substr(1);
+      Game.instance.setScreen(Game.instance.getScreenByName(_screen));
+    }
+  };*/
+  //window.onhashchange = window.hashChangeHandler;
+}
+
 
 document.observe("dom:loaded", function() {
   document.onmousedown = function() {return false}; // disable text selection - chromium
   document.oncontextmenu = function() {return false}; // disable context menu
-  if ('onhashchange' in window) {
-    /*window.onhashchange = function(e) {
-      if (checkHashChange) {
-        var _screen = e.target.location.hash.substr(1).toLowerCase();
-        _screen = _screen.substr(0, 1).toUpperCase() + _screen.substr(1);
-        screen = Game.instance.getScreenByName(_screen);
-        Game.instance.setScreen(screen);
-      }
-    }*/
-  }
 
   require({
-      baseUrl: "js/game",
+      baseUrl: 'js/game',
       waitSeconds: 15,
-      locale: "ru-ru"
+      locale: 'ru-ru'
     }, [
       'js/util/common.js', 'js/util/point.js', 'js/util/square.js',
       'js/worker.js', 'js/sound.js', 'js/game.js', 'js/config.js',
@@ -42,6 +45,7 @@ document.observe("dom:loaded", function() {
     ], function() {
     Config.initialize({
       onSuccess: function() {
+        console.info('config was successfully loaded');
         new Game().start();
       },
       onFailure: function() {

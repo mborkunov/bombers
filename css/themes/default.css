@@ -95,7 +95,7 @@
   background: url("../../images/themes/default/bomb.png") 0 0 no-repeat;
 }
 
-.explosion {
+.arena .explosion {
   width: 30px;
   height: 30px;
   border: 1px solid black;
@@ -114,7 +114,7 @@
   background: url("../../images/light.png") 0 0 no-repeat;
 }
 
-.eyes {
+.bomber .eyes {
   /*position: absolute;
   top: 50%;
   left: 50%;
@@ -174,6 +174,30 @@
 }
 .arena .extra-viagra {
     background: url('../../images/themes/original/extras.png') -240px 0 no-repeat;
+}
+
+body #game-container.arena .dialog {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 300px;
+  height: 90px;
+  margin: 40% 0 0 -150px;
+  z-index: 301;
+  border: none;
+  border-radius: 0;
+}
+
+#game-container.arena .dialog .action {
+  background-color: #a87 !important;
+  height: 30px;
+  border: none;
+  margin: 5px;
+}
+
+#game-container.arena .dialog .action:hover {
+  background: #965 !important;
+  color: #000 !important;
 }
 
 
