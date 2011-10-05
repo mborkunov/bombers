@@ -12,6 +12,7 @@ define('screens/menu', ['screens/screen'], function() {
       this.menu = new Item("Root", Type.Inner)
         .addChild(new Item("New Game", Type.Inner)
           .addChild(new Item("Start Game", Type.Screen, Game.Screen.Arena))
+          .addChild(new Item("Map Selection", Type.Screen, Game.Screen.Levels))
           .addChild(new Item("Player setup", Type.Screen, Game.Screen.Players))
           .addChild(new Item(null, Type.Settings, "game.random_bombers_positions"))
           .addChild(new Item(null, Type.Settings, "game.random_maps"))
