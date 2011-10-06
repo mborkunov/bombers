@@ -286,3 +286,28 @@ div.clear {
   height: 40px;
   z-index: 11;
 }
+
+.arena .explosion-root {
+  width: 40px;
+  height: 40px;
+  border: 1px solid black;
+  position: absolute;
+  z-index: 15 !important;
+  background: orange;
+}
+
+.arena .beam {
+  position: absolute;
+  border: 1px solid red;
+  width: 40px;
+  height: 40px;
+  background: yellow;
+  z-index: 100;
+}
+
+.arena .beam .head {
+  border: 1px solid orange;
+}
+.arena .beam .body {
+  border: 1px solid green;
+}

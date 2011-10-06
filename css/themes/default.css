@@ -101,16 +101,6 @@
   background: url("../../images/themes/default/bomb.png") 0 0 no-repeat;
 }
 
-.arena .explosion {
-  width: 30px;
-  height: 30px;
-  border: 1px solid black;
-  position: absolute;
-  margin: 4px;
-  z-index: 15 !important;
-  background: orange;
-}
-
 .bomber {
   width: 36px;
   height: 36px;

@@ -6,6 +6,14 @@ var date = function() {
   return (this.ctrlKey || this.altKey || this.shiftKey || this.metaKey);
 };
 
+var Util = {
+  iterate: function(items, func) {
+    for (var i = 0, length = items.length; i < length; i++) {
+      func(items[i]);
+    }
+  }
+};
+
 Element.addMethods({
   rotate: function(element, angle) {
     if (Prototype.Browser.WebKit) {

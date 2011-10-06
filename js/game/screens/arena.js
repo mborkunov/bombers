@@ -21,16 +21,11 @@ define('screens/arena', ['screens/screen'], function() {
         explosions: [],
         arbiter:  new Game.Object.Arbiter(),
         extras: [],
-        iterate: function(items, func) {
-          for (var i = 0, length = items.length; i < length; i++) {
-            func(items[i]);
-          }
-        },
         each: function(call) {
-          this.iterate(this.bombers, call);
-          this.iterate(this.bombs, call);
-          this.iterate(this.extras, call);
-          this.iterate(this.explosions, call);
+          Util.iterate(this.bombers, call);
+          Util.iterate(this.bombs, call);
+          Util.iterate(this.extras, call);
+          Util.iterate(this.explosions, call);
 
           call(this.arbiter);
         }
@@ -210,9 +205,9 @@ define('screens/arena', ['screens/screen'], function() {
         this.container.appendChild(this.dialog);
       } else if (!this.paused && this.dialog) {
         $('field').removeClassName('filter');
-        this.container.removeChild(this.dialog);
+        this.dialog.remove();
         try {
-          this.container.removeChild(this.overlay);
+          this.overlay.remove();
         } catch (ignored) {}
         this.overlay = this.dialog = null;
       }

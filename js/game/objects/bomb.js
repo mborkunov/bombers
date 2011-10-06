@@ -23,14 +23,13 @@ define('objects/bomb', ['objects/object', 'objects/explosion'], function() {
       }
 
       if (this.isFlying()) {
-        this.element.style['z-index'] = 200;
+        this.element.style.setProperty('z-index', 200, null);
       } else {
         //this.element.style['z-index'] = Math.round(Math.abs(this.location.getY() + 0) * 10) + 11;
       }
       $super();
     },
-    dispatch: function($super) {
-      $super();
+    dispatch: function() {
     },
     update: function($super, delay, map) {
       if (!this.isFlying() && !this.isFalling()) {
@@ -53,7 +52,7 @@ define('objects/bomb', ['objects/object', 'objects/explosion'], function() {
       this.distance += this.getSpeed();
     },
     removeBomb: function() {
-      this.element.parentNode.removeChild(this.element);
+      this.element.remove();
       try {
         this.getScreen().objects.bombs = this.getScreen().objects.bombs.without(this);
         this.bomber.bombs = this.bomber.bombs.without(this);

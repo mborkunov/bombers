@@ -2,6 +2,7 @@ var Worker = Class.create({
   defaultFps: 30,
   lastCall: null,
   fps: null,
+  name: null,
   initialize: function() {
     this.fps = this.defaultFps;
     this.timeout = 0;
@@ -18,7 +19,7 @@ var Worker = Class.create({
         this.action(date() - this.lastCallEnd);
       }
     } catch (e) {
-      console.log(e);
+      console.log(e, this.name);
     }
     this.lastCallEnd = date();
     this.timeout = Math.abs(1000 / this.fps - (date() - this.lastCall));
@@ -27,6 +28,7 @@ var Worker = Class.create({
 });
 
 var Graphics = Class.create(Worker, {
+  name: 'graphics',
   initialize: function() {
     this.fps = Config.getProperty('graphic.maxfps').getValue();
   },
@@ -36,6 +38,7 @@ var Graphics = Class.create(Worker, {
 });
 
 var State = Class.create(Worker, {
+  name: 'state',
   initialize: function() {
     this.fps = 50;
   },

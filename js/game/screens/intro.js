@@ -65,7 +65,7 @@ define('screens/intro', ['screens/screen'], function() {
         this.opacity += 0.015;
       }
     },
-    render: function(time) {
+    render: function() {
       if (this.opacity <= 1) {
         this.logo.setStyle({opacity: this.opacity});
       }
