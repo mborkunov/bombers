@@ -1,7 +1,8 @@
 CACHE MANIFEST
 
 CACHE:
-/index.html
+
+/index.xhtml
 /favicon.ico
 
 /css/styles.css
@@ -21,7 +22,6 @@ CACHE:
 /js/sound.js
 /js/application.js
 /js/util/common.js
-/js/util/menu.js
 /js/util/point.js
 
 /js/game/controllers.js
@@ -51,14 +51,12 @@ CACHE:
 /js/game/screens/arena.js
 /js/game/screens/credits.js
 /js/game/screens/editor.js
-/js/game/screens/exit.js
 /js/game/screens/help.js
 /js/game/screens/intro.js
 /js/game/screens/menu.js
-/js/game/screens/options.js
 /js/game/screens/players.js
 /js/game/screens/screen.js
-/js/game/screens/status.js
+/js/game/screens/score.js
 /js/game/tiles.js
 /js/game/tiles/arrow.js
 /js/game/tiles/box.js
@@ -122,7 +120,7 @@ CACHE:
 /maps/FireWheels.map
 /maps/Football.map
 /maps/Four_Instance.map
-/maps/Ghostbear.map
+/maps/GhostBear.map
 /maps/Hard_Work.map
 /maps/Hole_Run.map
 /maps/Huge_Standard.map
