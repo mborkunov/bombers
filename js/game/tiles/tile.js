@@ -146,17 +146,18 @@ define('tiles/tile', [], function() {
       if (extra) {
         this.extra = new extra(this.location.clone());
         this.extra.tile = this;
-        screen.objects.extras.push(this.extra);
+        screen.add(this.extra);
 
       }
     },
-    spawnBomb: function() {
+    spawnBomb: function(bomber) {
       var screen = Game.instance.getScreen();
       if (screen.hasBomb(this.getLocation())) return;
 
-      var bomb = new Game.Object.Bomb(this.getLocation().clone(), this);
-      screen.objects.bombs.push(bomb);
+      var bomb = new Game.Object.Bomb(this.getLocation().clone(), bomber);
+      screen.add(bomb);
       Sound.play('putbomb');
+      return bomb;
     },
     render: function(container) {
       if (this.nextCoordinates.x != this.currentCoordinates.x || this.nextCoordinates.y != this.currentCoordinates.y) {

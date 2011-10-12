@@ -26,7 +26,6 @@ define('objects/bomber', ['objects/object'], function() {
       this.number = number;
 
       this.speed = .05 + Config.getProperty('start.skateboards').getValue() * Game.Object.Extra.Skateboard.getSpeed();
-      console.log(Config.getProperty('start.skateboards').getValue());
       this.maxBombs = Config.getProperty('start.bombs').getValue();
       this.power = Config.getProperty('start.power').getValue();
       this.canKick = Config.getProperty('start.kick').getValue();
@@ -190,7 +189,9 @@ define('objects/bomber', ['objects/object'], function() {
     spawnBomb: function() {
       if (this.isFlying() || this.isFalling()) return;
       if (this.bombs.length >= this.maxBombs) return;
-      this.getTile(this.getLocation()).spawnBomb();
+  
+      var bomb = this.getTile(this.getLocation()).spawnBomb(this);
+      this.bombs.push(bomb);
     },
     kill: function() {
       if (this.dead) return;

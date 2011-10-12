@@ -15,7 +15,7 @@ define('tiles/box', ['tiles/tile'], function() {
     },
     destroy: function($super) {
       this.next = new Game.Tile.Ground(this.getLocation().clone());
-      //this.next.spawnExtra(Extra.Object.Bomb);
+      this.next.spawnExtra();
       $super();
     },
     vanish: function() {
