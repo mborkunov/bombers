@@ -53,14 +53,22 @@ define('screens/arena', ['screens/screen'], function() {
         }.bind(this)
       };
       this.updateObjectsHandler = function(object) {
-        var delay = 20;
-        if (object instanceof Game.Object.Bomber) {
-          object.controller.update(this.keys, delay);
+        try {
+          var delay = 20;
+          if (object instanceof Game.Object.Bomber) {
+            object.controller.update(this.keys, delay);
+          }
+          object.update(delay, this.map);
+        } catch (e) {
+          console.error(e);
         }
-        object.update(delay, this.map);
       }.bind(this);
       this.renderObjectsHandler = function(item) {
-        item.render(this.battleField);
+        try {
+          item.render(this.battleField);
+        } catch (e) {
+          console.error(e);
+        }
       }.bind(this);
 
       var maps = $A(['Big_Standard','Blast_Matrix','Bloody_Ring','Boiling_Egg','Bomb_Attack',
@@ -144,7 +152,11 @@ define('screens/arena', ['screens/screen'], function() {
       this.battleField.appendChild(new Element('div', {id: 'logo'}));
 
       this.objects.each(function(object) {
-        object.render(this.battleField);
+        try {
+          object.render(this.battleField);
+        } catch (e) {
+          console.error(e);
+        }
       }.bind(this));
     },
     renderThemeSwitcher: function() {

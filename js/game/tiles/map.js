@@ -67,10 +67,14 @@ define('tiles/map', [], function() {
       this.tiles = [];
       this.playerPositions = [];
       this.renderHandler = function(tile, container) {
-        if (tile.next != null) {
-          tile = tile.next;
+        try {
+          if (tile.next != null) {
+            tile = tile.next;
+          }
+          tile.render(container);
+        } catch (e) {
+          console.error(e);
         }
-        tile.render(container);
       }.bind(this);
 
       var x = 0, y;
