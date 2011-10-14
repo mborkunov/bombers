@@ -35,13 +35,6 @@ Config.Property = Class.create({
   initialize: function(xmlConfig) {
     this.id = xmlConfig.getAttribute('id');
     this.name = xmlConfig.getElementsByTagName('name')[0].firstChild.nodeValue;
-
-    var description = xmlConfig.getElementsByTagName('description')[0];
-    if (description.childNodes.length > 0) {
-      this.description = description.firstChild.nodeValue;
-    } else {
-      this.description = '';
-    }
   },
   loadUserValue: function() {
     if (localStorage.getItem(this.id) !== null)  {
@@ -53,9 +46,6 @@ Config.Property = Class.create({
   },
   getName: function() {
     return this.name;
-  },
-  getDescription: function() {
-    return this.description;
   },
   getValue: function() {
     return this.value;

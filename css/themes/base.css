@@ -194,7 +194,7 @@
   float: left;
 }
 #game-container.arena #timer #counter {
-  margin-top: 10px;
+  margin-top: 3px;
 }
 
 #game-container.arena #timer #clock.expired {
@@ -209,4 +209,8 @@
   left: 0;
   background-color: #000;
   z-index: 999;
+}
+
+#game-container.arena.shadows .tile-wall,#game-container.arena.shadows .tile-box {
+  box-shadow: 3px 3px 10px #000;
 }

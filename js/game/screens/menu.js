@@ -46,6 +46,13 @@ define('screens/menu', ['screens/screen'], function() {
               .addChild(new Item(null, Type.Settings, "graphic.theme", function(theme) {
                 Game.instance.setTheme(theme);
                }))
+              .addChild(new Item(null, Type.Settings, "graphic.shadows", function(value) {
+                if (value) {
+                  Game.instance.container.addClassName('shadows');
+                } else {
+                  Game.instance.container.removeClassName('shadows');
+                }
+              }))
               .addChild(new Item(null, Type.Settings, "graphic.maxfps", function(fps) {
                 Game.instance.graphics.fps = fps;
               }))

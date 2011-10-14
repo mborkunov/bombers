@@ -71,12 +71,12 @@ define('screens/arena', ['screens/screen'], function() {
         }
       }.bind(this);
 
-      var maps = $A(['Big_Standard','Blast_Matrix','Bloody_Ring','Boiling_Egg','Bomb_Attack',
-        'Broken_Heart','Crammed','Death_Corridor','Dilemma','FearCircle',
+      var maps = $A([/*'Big_Standard','Blast_Matrix','Bloody_Ring','Boiling_Egg','Bomb_Attack',
+        'Broken_Heart','Crammed','Death_Corridor',*/'Dilemma',/*'FearCircle',
         'FearCircle_Remix','FireWheels','Football','Four_Instance','GhostBear',
         'Hard_Work','Hole_Run','Huge_Standard','Juicy_Lucy','Kitchen','Meeting',
         'MungoBane','Obstacle_Race','Overkill','Prison_Cells','Redirection',
-        'Sixty_Nine','Small_Standard','Snake_Race','Tiny_Standard','Whole_Mess']);
+        'Sixty_Nine','Small_Standard','Snake_Race','Tiny_Standard','Whole_Mess'*/]);
 
       var id = Math.floor(Math.random() * maps.length);
 
@@ -149,7 +149,9 @@ define('screens/arena', ['screens/screen'], function() {
       this.container.appendChild(this.battleField);
 
       this.renderThemeSwitcher();
-      this.battleField.appendChild(new Element('div', {id: 'logo'}));
+      this.battleField.appendChild(new Element('div', {id: 'logo'}).observe('click', function() {
+        this.paused = true;
+      }.bind(this)));
 
       this.objects.each(function(object) {
         try {

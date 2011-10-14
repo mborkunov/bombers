@@ -1,5 +1,5 @@
 if (Object.isUndefined(console)) {
-  console = {
+  window.console = {
     log: function() {},
     info: function() {}
   };
@@ -36,8 +36,7 @@ document.observe("dom:loaded", function() {
 
   require({
       baseUrl: 'js/game',
-      waitSeconds: 15,
-      locale: 'ru-ru'
+      waitSeconds: 15
     }, [
       'js/util/common.js', 'js/util/point.js', 'js/util/square.js',
       'js/worker.js', 'js/sound.js', 'js/game.js', 'js/config.js',

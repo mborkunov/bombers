@@ -10,6 +10,9 @@ var Game = Class.create({
     this.setScreen(this.getStartScreen());
     this.graphics = new Graphics();
     this.state = new State();
+    if (Config.getProperty("graphic.shadows").getValue()) {
+      this.container.addClassName('shadows');
+    }
   },
   overlay: {
     element: null,

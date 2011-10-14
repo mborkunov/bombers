@@ -28,6 +28,9 @@ define('tiles/map', [], function() {
     getPlayerStartupPositions: function() {
       return this.entry.getPlayerStartupPositions();
     },
+    findTilesByType: function(type) {
+      return this.entry.findTilesByType(type);
+    },
     getRandomTile: function() {
       return this.entry.getRandomTile();
     },
@@ -158,6 +161,16 @@ define('tiles/map', [], function() {
     },
     highlightTile: function(x, y) {
       this.getTile(x, y).highlight();
+    },
+    findTilesByType: function(type) {
+      var tiles = [];
+
+      this.each(function(tile, options) {
+        if (tile instanceof options.type) {
+          options.tiles.push(tile);
+        }
+      }.bind(this), {type:type, tiles: tiles});
+      return tiles;
     },
     getRandomTile: function() {
       var x = Math.floor(Math.random() * this.size.x);

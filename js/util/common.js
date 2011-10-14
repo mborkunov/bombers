@@ -23,8 +23,7 @@ Element.addMethods({
     }
   },
   scale: function(element, scaleX, scaleY) {
-    var x = scaleX;
-    var y = scaleY || x;
+    var x = scaleX, y = scaleY || x;
     if (Prototype.Browser.WebKit) {
       element.style['-webkit-transform'] = 'scale(' + x + ', ' + y + ')';
     } else if (Prototype.Browser.Opera) {

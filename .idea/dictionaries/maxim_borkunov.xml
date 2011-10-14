@@ -5,6 +5,7 @@
       <w>hashchange</w>
       <w>maxfps</w>
       <w>oncontextmenu</w>
+      <w>onhashchange</w>
     </words>
   </dictionary>
 </component>

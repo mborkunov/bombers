@@ -14,12 +14,14 @@ define('objects/extras/extra', [], function() {
           top: this.location.getY() * 40 + 'px',
           left: this.location.getX() * 40 + 'px'
         }).addClassName('extra').addClassName('extra-' + this.name);
+        this.element.observe('click', function() {
+          this.remove();
+        }.bind(this));
         Game.instance.screen.battleField.appendChild(this.element);
       }
       $super();
     },
-    act: function() {
-    },
+    act: function() {},
     remove: function() {
       this.tile.extra = null;
       this.tile = null;
