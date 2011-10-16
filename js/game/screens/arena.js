@@ -132,6 +132,17 @@ define('screens/arena', ['screens/screen'], function() {
         this.objects.bombs.push(object);
       }
     },
+    remove: function(object) {
+      if (object instanceof Game.Object.Bomber) {
+        this.objects.bombers = this.objects.bombers.without(object);
+      } else if (object instanceof Game.Object.Extra) {
+        this.objects.extras = this.objects.extras.without(object);
+      } else if (object instanceof Game.Object.Explosion) {
+        this.objects.explosions = this.objects.explosions.without(object);
+      } else if (object instanceof Game.Object.Bomb) {
+        this.objects.bombs = this.objects.bombs.without(object);
+      }
+    },
     hasBomb: function(location) {
       for (var i = 0; i < this.objects.bombs.length; i++) {
         var bomb = this.objects.bombs[i];

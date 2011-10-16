@@ -53,14 +53,11 @@ define('objects/bomb', ['objects/object', 'objects/explosion'], function() {
     },
     removeBomb: function() {
       this.element.remove();
-      try {
-        this.getScreen().objects.bombs = this.getScreen().objects.bombs.without(this);
-        this.bomber.bombs = this.bomber.bombs.without(this);
-      } catch (e) {}
+      Game.Screen.getCurrent().remove(this);
     },
     explode: function() {
       this.removeBomb();
-      //this.getScreen().objects.explosions.push(new Game.Object.Explosion(this.location.clone()));
+      this.getScreen().objects.explosions.push(new Game.Object.Explosion(this.location.clone()));
       this.getScreen().shakeIt();
       Sound.play("explode");
     }

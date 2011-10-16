@@ -32,4 +32,10 @@ define('screens/screen', [], function() {
       this.listeners = {};
     }
   });
+
+  Object.extend(Game.Screen, {
+    getCurrent: function() {
+      return Game.instance.getScreen();
+    }
+  });
 });

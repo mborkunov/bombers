@@ -35,11 +35,6 @@ define('objects/explosion', ['objects/object'], function() {
         Util.iterate(this.beams, function(beam) {
           beam.render();
         });
-
-        //this.location.increaseY(-0.01);
-
-        //this.element.style.top = (this.location.getY() * 40) + 'px';
-        //this.element.style.height = (parseInt(this.element.style.height) + 2) + 'px';
       }
       $super();
     },

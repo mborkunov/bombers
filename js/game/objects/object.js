@@ -8,6 +8,7 @@ define('objects/object', [], function() {
     direction: 2,
     destination: null,
     scaleFactor: null,
+    callback: null,
 
     initialize: function() {
       this.scaleFactor = 1;
@@ -69,9 +70,10 @@ define('objects/object', [], function() {
     },
     move: function(speed, direction) {
     },
-    flyTo: function(tile) {
+    flyTo: function(tile, callback) {
       this.destination = tile.getLocation();
       this.departure = this.location.clone();
+      this.callback = callback;
     },
     update: function() {
       if (this.isFalling()) {
@@ -88,9 +90,14 @@ define('objects/object', [], function() {
           if (this.destination && this instanceof Game.Object.Arbiter) {
             this.getTile(this.destination).vanish();
           }
+          var destinationTile = this.getTile(this.destination);
           this.destination = null;
           this.departure = null;
           this.scaleFactor = 1;
+
+          if (this.callback) {
+            this.callback(destinationTile, this);
+          }
         } else {
           this.location.setX(this.location.getX() + speedX);
           this.location.setY(this.location.getY() + speedY);
@@ -111,7 +118,8 @@ define('objects/object', [], function() {
         }
         if (!this.isFlying() && this instanceof Game.Object.Arbiter) {
           if (this.destination) {
-            this.getTile(this.destination).vanish();
+            var tile = this.getTile(this.destination);
+            tile.vanish();
           }
         }
       }

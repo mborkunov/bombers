@@ -14,6 +14,7 @@ define('objects/extras/extra', [], function() {
           top: this.location.getY() * 40 + 'px',
           left: this.location.getX() * 40 + 'px'
         }).addClassName('extra').addClassName('extra-' + this.name);
+
         this.element.observe('click', function() {
           this.remove();
         }.bind(this));
@@ -23,13 +24,12 @@ define('objects/extras/extra', [], function() {
     },
     act: function() {},
     remove: function() {
-      this.tile.extra = null;
-      this.tile = null;
-      var extras = Game.instance.screen.objects.extras;
-      extras = extras.without(this);
+      Game.Screen.getCurrent().remove(this);
       this.dispatch();
     },
     dispatch: function() {
+      this.tile.extra = null;
+      this.tile = null;
       this.element.remove();
     }
   });
