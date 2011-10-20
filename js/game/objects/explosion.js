@@ -8,11 +8,12 @@ define('objects/explosion', ['objects/object'], function() {
     beamUpdateHandler: function(beam) {
       beam.update(this.delay);
     },
-    initialize: function($super, location) {
+    initialize: function($super, location, bomber) {
       this.beams = [];
       this.rendered = false;
       this.growSpeed = .5;
       this.location = location;
+      this.power = bomber.getPower();
     },
     render: function($super, container) {
       if (!this.rendered && container) {
@@ -23,10 +24,10 @@ define('objects/explosion', ['objects/object'], function() {
         }).addClassName('explosion-root');
         container.appendChild(this.element);
 
-        this.beams.push(new Game.Object.Explosion.Beam(0, 5, this.location.clone(), container));
-        this.beams.push(new Game.Object.Explosion.Beam(1, 5, this.location.clone(), container));
-        this.beams.push(new Game.Object.Explosion.Beam(2, 5, this.location.clone(), container));
-        this.beams.push(new Game.Object.Explosion.Beam(3, 5, this.location.clone(), container));
+        this.beams.push(new Game.Object.Explosion.Beam(0, this.power, this.location.clone(), container));
+        this.beams.push(new Game.Object.Explosion.Beam(1, this.power, this.location.clone(), container));
+        this.beams.push(new Game.Object.Explosion.Beam(2, this.power, this.location.clone(), container));
+        this.beams.push(new Game.Object.Explosion.Beam(3, this.power, this.location.clone(), container));
 
         Util.iterate(this.beams, function(beam) {
           beam.prerender(container);
@@ -59,7 +60,6 @@ define('objects/explosion', ['objects/object'], function() {
 
   Game.Object.Explosion.Beam = Class.create({
     direction: null,
-    power: null,
     source: null,
     container: null,
     epicenter: null,
@@ -75,24 +75,32 @@ define('objects/explosion', ['objects/object'], function() {
       this.freeze = false;
       this.growSpeed = .05;
       this.size = 0;
-      this.power = 5;
       this.container = container;
       this.rendered = false;
       this.screen = Game.instance.getScreen();
+      this.renderedSize = 0;
+      this.emptyBeam = false;
+      console.log('epicenter', epicenter, 'direction', this.direction, 'source', this.source, "power - " + this.power);
     },
     update: function(delay) {
       // updating flame width
-
       if (this.freeze) return;
-      if (this.size >= this.power) return;
-      // checking source location
+      if (this.size + 1 >= this.power) {
+        this.freeze = true;
+        return;
+      }
 
+      // checking source location
       if (!this.sourceChecked) {
         this.sourceChecked = true;
         var sourceTile = this.screen.map.getTile(this.source.getX(), this.source.getY());
         if (sourceTile.name == 'wall' || sourceTile.name == 'box') {
           this.size = 0;
           this.freeze = true;
+          if (sourceTile.name == 'box') {
+            this.emptyBeam = true;
+            sourceTile.vanish();
+          }
           return;
         }
       }
@@ -106,19 +114,22 @@ define('objects/explosion', ['objects/object'], function() {
         case 'wall':
           this.freeze = true;
         break;
+        default:
+            this.size++;
+        break;
       }
     },
-    getGrowLocation: function() {
-      return this.source.clone().shift(this.size + 1, this.direction);
-    },
     getHeadLocation: function() {
-      return this.source.clone().shift(this.size, this.direction);
+      return this.source.shift(this.size, this.direction);
+    },
+    getGrowLocation: function() {
+      return this.source.shift(this.size + 1, this.direction);
     },
     dispatch: function() {
       this.element.remove();
     },
     prerender: function() {
-      this.element = new Element('div').addClassName('beam');
+      /*this.element = new Element('div').addClassName('beam');
 
       this.element.setStyle({
         top: this.source.getY() * 40 + 'px',
@@ -131,22 +142,33 @@ define('objects/explosion', ['objects/object'], function() {
       this.element.appendChild(this.head);
       this.element.appendChild(this.body);
 
-      this.container.appendChild(this.element);
+      this.container.appendChild(this.element);*/
     },
     render: function() {
       if (this.freeze) {
         if (this.size == 0) {
-          this.element.remove();
+          //this.element.remove();
         }
         return;
       }
 
-      var location = this.getGrowLocation();
-      this.size++;
-      this.container.appendChild(new Element('div').setStyle({
-        top: (location.getY() * 40) + 'px',
-        left: (location.getX() * 40) + 'px'
-      }).addClassName('explosion-root'));
+      if (!this.emptyBeam && !this.sourceElement) {
+        this.sourceElement = new Element('div').setStyle({
+          top: (this.source.getY() * 40) + 'px',
+          left: (this.source.getX() * 40) + 'px'
+        }).addClassName('explosion-root');
+
+        this.container.appendChild(this.sourceElement);
+      }
+
+      if (this.renderedSize != this.size) {
+        this.renderedSize = this.size;
+        var location = this.getHeadLocation();
+        this.container.appendChild(new Element('div').setStyle({
+          top: (location.getY() * 40) + 'px',
+          left: (location.getX() * 40) + 'px'
+        }).addClassName('explosion-root'));
+      }
     }
   })
 });

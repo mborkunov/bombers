@@ -114,7 +114,7 @@ define('objects/object', [], function() {
             x = this.location.getY() - offset;
           }
           var progress = x / Math.abs(x1 - x2);
-          this.scaleFactor = 1 + Math.sin(progress * Math.PI) * 3;
+          this.scaleFactor = 2 + Math.sin(progress * Math.PI) * 3;
         }
         if (!this.isFlying() && this instanceof Game.Object.Arbiter) {
           if (this.destination) {
@@ -138,6 +138,7 @@ define('objects/object', [], function() {
         this.element.style.top = (this.location.getY() * 40) + 'px';
         this.element.style.left = (this.location.getX() * 40) + 'px';
 
+        this.element.style.setProperty('z-index', Math.round(this.scaleFactor * 100), null);
         this.element.scale(this.scaleFactor);
 
         if (this.isFalling()) {

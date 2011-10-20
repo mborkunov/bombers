@@ -25,11 +25,11 @@ define('objects/bomber', ['objects/object'], function() {
       this.location = location;
       this.number = number;
 
-      this.speed = .05 + Config.getProperty('start.skateboards').getValue() * Game.Object.Extra.Skateboard.getSpeed();
-      this.maxBombs = Config.getProperty('start.bombs').getValue();
-      this.power = Config.getProperty('start.power').getValue();
-      this.canKick = Config.getProperty('start.kick').getValue();
-      this.canThrow = Config.getProperty('start.glove').getValue();
+      this.speed = .05 + Config.getValue('start.skateboards') * Game.Object.Extra.Skateboard.getSpeed();
+      this.maxBombs = Config.getValue('start.bombs');
+      this.power = Config.getValue('start.power');
+      this.canKick = Config.getValue('start.kick');
+      this.canThrow = Config.getValue('start.glove');
 
       controller.attach(this);
       this.controller = controller;
@@ -108,6 +108,9 @@ define('objects/bomber', ['objects/object'], function() {
       }
       $super(delay);
     },
+    getPower: function() {
+      return this.power;
+    },
     getAngleByDirection: function(direction) {
       switch (direction) {
         case 0: return 90;
@@ -135,6 +138,25 @@ define('objects/bomber', ['objects/object'], function() {
       Sound.play('wow');
       extra.act(this);
       extra.remove();
+    },
+    kill: function() {
+      if (this.dead) return;
+      this.dead = true;
+      this.controller.deactivate();
+      this.element.addClassName('bomber-dead');
+      this.element.setAttribute('title', "It's dead");
+      Sound.play('die');
+    },
+    spawnBomb: function() {
+      if (this.isFlying() || this.isFalling()) return;
+      if (this.bombs.length >= this.maxBombs) return;
+
+      var bomb = this.getTile(this.getLocation()).spawnBomb(this);
+      this.bombs.push(bomb);
+    },
+    throwBomb: function(bomb) {
+    },
+    kick: function(bomb) {
     },
     getNextLocation: function(direction) {
       var speed = this.getSpeed();
@@ -185,25 +207,6 @@ define('objects/bomber', ['objects/object'], function() {
         }
       }
       return nextLocation;
-    },
-    spawnBomb: function() {
-      if (this.isFlying() || this.isFalling()) return;
-      if (this.bombs.length >= this.maxBombs) return;
-  
-      var bomb = this.getTile(this.getLocation()).spawnBomb(this);
-      this.bombs.push(bomb);
-    },
-    kill: function() {
-      if (this.dead) return;
-      this.dead = true;
-      this.controller.deactivate();
-      this.element.addClassName('bomber-dead');
-      this.element.setAttribute('title', "It's dead");
-      Sound.play('die');
-    },
-    throwBomb: function() {
-    },
-    kick: function() {
     }
   });
 });

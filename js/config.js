@@ -1,10 +1,13 @@
 var Config = {
   properties: {},
-  getProperty: function(id) {
-    if (typeof (this.properties[id]) !== 'undefined') {
-      return this.properties[id];
+  getProperty: function(key) {
+    if (typeof (this.properties[key]) !== 'undefined') {
+      return this.properties[key];
     }
-    console.error('There is no property for id #' + id);
+    console.error('There is no property for id #' + key);
+  },
+  getValue: function(key) {
+    return Config.getProperty(key).getValue();
   },
   change: function(key) {
     var property = Config.getProperty(key);

@@ -34,21 +34,22 @@ var Point = Class.create({
     return new Point(this.x, Math.round(this.y));
   },
   shift: function(offset, direction) {
+    var point = this.clone();
     switch (direction) {
       case 0:
-          this.y -= offset;
+          point.y -= offset;
         break;
       case 1:
-          this.x += offset
+          point.x += offset
         break;
       case 2:
-          this.y += offset;
+          point.y += offset;
         break;
       case 3:
-          this.x -= offset;
+          point.x -= offset;
         break;
     }
-    return this;
+    return point;
   },
   round: function() {
     return new Point(Math.round(this.x), Math.round(this.y));

@@ -154,7 +154,7 @@ define('tiles/tile', [], function() {
       var screen = Game.instance.getScreen();
       if (screen.hasBomb(this.getLocation())) return;
 
-      var bomb = new Game.Object.Bomb(this.getLocation().clone(), bomber);
+      var bomb = new Game.Object.Bomb(this.getLocation().clone(), bomber || screen.objects.bombers[0]);
       screen.add(bomb);
       Sound.play('putbomb');
       return bomb;

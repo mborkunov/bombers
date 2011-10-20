@@ -12,15 +12,15 @@ define('tiles/trap', ['tiles/ground'], function() {
         if (tile instanceof Game.Tile.Trap) {
           var sources = Game.instance.screen.map.findTilesByType(Game.Tile.Trap);
           var randomSource = sources[Math.floor(Math.random() * sources.length)];
-          var targets = Game.instance.screen.map.findTilesByType(Game.Tile.Ground);
+          var targets = Game.instance.screen.map.findTilesByType(Game.Tile.Trap);
           var randomTarget = targets[Math.floor(Math.random() * targets.length)];
 
           if (randomSource === randomTarget) {
-            console.error('equals');
+            callback(tile, bomb);
+          } else {
+            bomb.setLocation(randomSource.getLocation().clone());
+            bomb.flyTo(randomTarget, callback);
           }
-
-          bomb.setLocation(randomSource.getLocation().clone());
-          bomb.flyTo(randomTarget, callback);
         }
       }
 

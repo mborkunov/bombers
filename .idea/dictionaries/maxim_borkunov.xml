@@ -2,10 +2,19 @@
   <dictionary name="maxim.borkunov">
     <words>
       <w>&amp;amp</w>
+      <w>aculo</w>
+      <w>dragdrop</w>
       <w>hashchange</w>
+      <w>keypress</w>
+      <w>khtml</w>
       <w>maxfps</w>
+      <w>mozilla</w>
+      <w>msxml</w>
       <w>oncontextmenu</w>
       <w>onhashchange</w>
+      <w>proto</w>
+      <w>requirecontext</w>
+      <w>xmlhttp</w>
     </words>
   </dictionary>
 </component>
