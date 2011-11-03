@@ -52,15 +52,6 @@ define('tiles/map', [], function() {
     }
   });
 
-  Game.Map.list = function() {
-    return $A(['Big_Standard','Blast_Matrix','Bloody_Ring','Boiling_Egg','Bomb_Attack',
-      'Broken_Heart','Crammed','Death_Corridor','Dilemma','FearCircle',
-      'FearCircle_Remix','FireWheels','Football','Four_Instance','GhostBear',
-      'Hard_Work','Hole_Run','Huge_Standard','Juicy_Lucy','Kitchen','Meeting',
-      'MungoBane','Obstacle_Race','Overkill','Prison_Cells','Redirection',
-      'Sixty_Nine','Small_Standard','Snake_Race','Tiny_Standard','Whole_Mess']);
-  };
-
   Game.Map.Entry = Class.create({
     tiles: null,
     data: null,
@@ -273,6 +264,20 @@ define('tiles/map', [], function() {
         }
       }
       return new Game.Map(name, author, maxPlayers, data);
+    },
+    list: function() {
+      return $A(['Big_Standard','Blast_Matrix','Bloody_Ring','Boiling_Egg','Bomb_Attack',
+      'Broken_Heart','Crammed','Death_Corridor','Dilemma','FearCircle',
+      'FearCircle_Remix','FireWheels','Football','Four_Instance','GhostBear',
+      'Hard_Work','Hole_Run','Huge_Standard','Juicy_Lucy','Kitchen','Meeting',
+      'MungoBane','Obstacle_Race','Overkill','Prison_Cells','Redirection',
+      'Sixty_Nine','Small_Standard','Snake_Race','Tiny_Standard','Whole_Mess']);
+    },
+    getNextMap: function(callback) {
+      var maps = Game.Map.list();
+      var id = Math.floor(Math.random() * maps.length);
+
+      Game.Map.load(maps[id], callback);
     }
   });
 });

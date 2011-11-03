@@ -82,11 +82,7 @@ define('screens/arena', ['screens/screen'], function() {
         }
       }.bind(this);
 
-      var maps = Game.Map.list();
-
-      var id = Math.floor(Math.random() * maps.length);
-
-      Game.Map.load(maps[id], function(map) {
+      Game.Map.getNextMap(function(map) {
         this.map = map;
 
         this.map.getPlayerStartupPositions().each(function(position, index) {
@@ -165,9 +161,6 @@ define('screens/arena', ['screens/screen'], function() {
       this.map.prerender(this.battleField);
       this.container.appendChild(this.battleField);
 
-      if (Config.getValue('debug')) {
-        this.renderThemeSwitcher();
-      }
       this.battleField.appendChild(new Element('div', {id: 'logo'}).addClassName('object').observe('click', function() {
         this.paused = true;
       }.bind(this)));
@@ -179,26 +172,6 @@ define('screens/arena', ['screens/screen'], function() {
           console.error(e);
         }
       }.bind(this));
-    },
-    renderThemeSwitcher: function() {
-      var themes = Config.getProperty('graphic.theme').getValues();
-      var themesElement = new Element('div').setStyle({position: 'absolute', top: 0, right: 0, zIndex: 10, height: '30px', width: (30 * themes.size()) + 'px'});
-      this.container.appendChild(themesElement);
-      var colors = ['green', 'yellow', 'silver'];
-
-      themes.each(function(theme, i) {
-        var themeEl = new Element('div', {title: theme, theme: theme}).setStyle({'float': 'left', background: colors[i], width: '30px', height: '30px'});
-        var input = new Element('input', {type: 'radio', name: 'theme', theme: theme}).setStyle({width: '30px', height: '30px'});
-        if (Config.getValue('graphic.theme') == theme) {
-          input.setAttribute('checked', 'checked');
-        }
-        themeEl.appendChild(input);
-        this.appendChild(themeEl);
-        input.observe('click', function(e) {
-          Config.getProperty("graphic.theme").setValue(e.element().getAttribute('theme'));
-          Game.instance.setTheme(Config.getProperty("graphic.theme").getValue());
-        });
-      }.bind(themesElement));
     },
     checkBombers: function() {
       if (!this.scoreScreenTimeout && this.objects.bombers.filter(this.checkBomberFilter).length == 0) {

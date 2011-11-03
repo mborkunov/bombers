@@ -226,33 +226,71 @@ div.clear {
       .next {
         float: right;
         color: #fff;
-        height: 150px;
-        width: 150px;
-        margin: -170px 0 0;
+        height: 300px;
+        width: 50%;
+        padding: 170px 0 0 ;
         font-size: 14px;
         font-weight: bold;
         text-align: center;
         .sign {
         }
         .preview {
-          height: 110px;
-          width: auto;
-          margin: 3px 0;
-          border: 1px solid #666;
-          background: #000;
+          width: 800px;
+          height: 600px;
+          -webkit-transform: scale(0.5);
+          margin: -150px 0 0 -170px;
+          background-color: transparent;
+          &.loading {
+          }
+          .map-name {
+            display: none;
+          }
+          .tile {
+            position:absolute;
+            z-index: 10;
+            width: 40px;
+            height: 40px;
+            background-color: #424242;
+            &:hover {
+              .opacity(.8);
+            }
+            &.ice {
+              background: #00bfff;
+            }
+            &.trap {
+              background: orange;
+            }
+            &.ground {
+              background: gray;
+            }
+            &.wall {
+              background: darkgray;
+            }
+            &.box {
+              background: silver;
+            }
+            &.wall,&.box {
+              z-index: 200 !important;
+            }
+            &.arrow {
+              /*&.east,&.west,&.north,$.south {
+                background: #faebd7;
+              }*/
+            }
+          }
         }
         .name {
         }
       }
 
       .list {
+        width: 50%;
+        float: left;
         margin: 170px 0 0;
-        border: 1px solid red;
 
         .player {
-          border: 1px solid yellow;
-          border-top: 0;
-          height: 48px;
+          border-top: 1px solid black;
+          height: 47px;
           background: red;
 
           &.winner {
@@ -275,6 +313,7 @@ div.clear {
         display: block;
         text-align: center;
         cursor: pointer;
+        clear: both;
 
         &:hover {
           color: #fff;

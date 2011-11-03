@@ -15,12 +15,8 @@ define('screens/score', ['screens/screen'], function() {
     },
     prerender: function() {
       this.layer = new Element('div');
+
       this.container.appendChild(this.layer);
-      var next = new Element("div").addClassName('next');
-      next.appendChild(new Element("div").addClassName('sign').update('Next Map'));
-      next.appendChild(new Element("div").addClassName('preview'));
-      next.appendChild(new Element("div").addClassName('name').update('Hello World'));
-      this.layer.appendChild(next);
 
       var players = [{
         number: 1,
@@ -64,13 +60,25 @@ define('screens/score', ['screens/screen'], function() {
 
         var playerElement = new Element('div').addClassName('player');
         if (player.winner) {
-          playerElement.addClassName('winner')
+          playerElement.addClassName('winner');
           playerElement.appendChild(new Element('div').addClassName('cup'));
         }
         playersList.appendChild(playerElement);
       }
 
       this.layer.appendChild(playersList);
+
+      var next = new Element("div").addClassName('next');
+      next.appendChild(new Element("div").addClassName('sign').update('Next Map: ---'));
+      next.appendChild(new Element('div').addClassName('preview').addClassName('loading'));
+
+      this.layer.appendChild(next);
+      Game.Map.getNextMap(function(next, map) {
+        var preview = next.select('.preview')[0];
+        map.prerender(preview);
+        next.select('.sign')[0].update('Next Map: ' +  map.getName().replace("_", " "));
+        preview.removeClassName('loading');
+      }.bind(this, next));
 
       var anyKey = new Element("span").addClassName("anykey").update("Press any key");
       anyKey.on('click', function() {
