@@ -166,7 +166,7 @@ define('screens/arena', ['screens/screen'], function() {
       this.container.appendChild(this.battleField);
 
       this.renderThemeSwitcher();
-      this.battleField.appendChild(new Element('div', {id: 'logo'}).observe('click', function() {
+      this.battleField.appendChild(new Element('div', {id: 'logo'}).addClassName('object').observe('click', function() {
         this.paused = true;
       }.bind(this)));
 
@@ -179,19 +179,20 @@ define('screens/arena', ['screens/screen'], function() {
       }.bind(this));
     },
     renderThemeSwitcher: function() {
-      var themes = $A([
-        {name: 'Default', id: 'default', color: 'gray'},
-        {name: 'Original', id: 'original', color: 'silver'},
-        {name: 'Debug', id: 'debug', color: 'red'},
-        {name: 'Snow', id: 'snow', color: 'snow'}
-      ]);
-      var themesElement = new Element('div').setStyle({position: 'absolute', top: 0, right: 0, zIndex: 10, height: '30px', width: (30 * themes.size()) + 'px'});
+      var themes = Config.getProperty('graphic.theme').getValues();
+      var themesElement = new Element('div', {id: 'theme-switcher'}).setStyle({position: 'absolute', top: 0, right: 0, zIndex: 10, height: '30px', width: (30 * themes.size()) + 'px'});
       this.container.appendChild(themesElement);
+      var colors = ['green', 'yellow', 'silver'];
 
-      themes.each(function(theme) {
-        var themeEl = new Element('div', {title: theme.name, theme: theme.id}).setStyle({'float': 'left', background: theme.color, width: '30px', height: '30px'});
+      themes.each(function(theme, i) {
+        var themeEl = new Element('div', {title: theme, theme: theme}).setStyle({'float': 'left', background: colors[i], width: '30px', height: '30px'});
+        var input = new Element('input', {type: 'radio', name: 'theme', theme: theme}).setStyle({width: '30px', height: '30px'});
+        if (Config.getValue('graphic.theme') == theme) {
+          input.setAttribute('checked', 'checked');
+        }
+        themeEl.appendChild(input);
         this.appendChild(themeEl);
-        themeEl.observe('mouseover', function(e) {
+        input.observe('click', function(e) {
           Config.getProperty("graphic.theme").setValue(e.element().getAttribute('theme'));
           Game.instance.setTheme(Config.getProperty("graphic.theme").getValue());
         });

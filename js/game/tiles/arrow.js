@@ -7,7 +7,7 @@ define('tiles/arrow', ['tiles/ground'], function() {
       this.direction = Game.Tile.Arrow.getDirection(direction);
     },
     getName: function() {
-      return this.name.toLowerCase() + '-' + Game.Tile.Arrow.getDirectionName(this.direction);
+      return this.name.toLowerCase() + ' ' + Game.Tile.Arrow.getDirectionName(this.direction);
     }
   });
 

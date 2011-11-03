@@ -42,7 +42,7 @@ define('objects/bomber', ['objects/object'], function() {
         this.element = new Element('div').setStyle({
           top: (this.location.getY() * 40) + 'px',
           left: (this.location.getX() * 40) + 'px'
-        }).addClassName('bomber').addClassName("bomber-" + this.number);
+        }).addClassName('object').addClassName('bomber').addClassName("bomber-" + this.number);
 
         var eyes = ["cyclope", "stereo", "alien"];
         this.eyes = new Element("div").addClassName("eyes object").addClassName(eyes[Math.floor(Math.random() * 3)]);
@@ -143,7 +143,7 @@ define('objects/bomber', ['objects/object'], function() {
       if (this.dead) return;
       this.dead = true;
       this.controller.deactivate();
-      this.element.addClassName('bomber-dead');
+      this.element.addClassName('dead');
       this.element.setAttribute('title', "It's dead");
       Sound.play('die');
     },

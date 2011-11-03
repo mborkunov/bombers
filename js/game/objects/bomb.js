@@ -17,7 +17,7 @@ define('objects/bomb', ['objects/object', 'objects/explosion'], function() {
         this.element = new Element('div').setStyle({
           top: (this.location.getY() * 40) + 'px',
           left: (this.location.getX() * 40) + 'px'
-        }).addClassName('bomb');
+        }).addClassName('bomb').addClassName('object');
         this.element.observe("click", this.explode.bind(this));
         container.appendChild(this.element);
       }

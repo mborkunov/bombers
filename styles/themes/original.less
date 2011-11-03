@@ -1,0 +1,268 @@
+body.original {
+  #game-container {
+    &.intro {
+      background: #000;
+      .logo {
+        background: url("../../images/themes/original/fischlustig_logo.png") no-repeat;
+        width: 600px;
+        height: 106px;
+        margin: 30% auto 0;
+        .text {
+          color: #cecece;
+          font-size: 26px;
+          margin: 10px 0 0;
+          text-transform: uppercase;
+        }
+      }
+    }
+
+    &.menu {
+      background-image: url('../../images/themes/original/title.png');
+      #menu {
+        .opacity(.7);
+        width: 30%;
+        padding: 0;
+  
+        li {
+          width: auto;
+          height: 30px;
+          background: #a87;
+          margin: 0 auto;
+          border: none;
+          -moz-border-radius: 0;
+          -webkit-border-radius: 0;
+          &.selected {
+            background: #965;
+          }
+        }
+      }
+    }
+    &.credits {
+      background: url('../../images/overlay.png'), url('../../images/themes/original/horst_evil.png');
+    }
+    &.editor {
+      background-image: url('../../images/themes/original/editor.png');
+    }
+    &.help {
+      background: url('../../images/overlay.png'), url('../../images/themes/original/title.png');
+      ul li {
+        &.bomb img {
+          background: url('../../images/themes/original/extras.png') 0 0 no-repeat;
+        }
+        &.power img {
+          background: url('../../images/themes/original/extras.png') -40px 0 no-repeat;
+        }
+        &.skateboard img {
+          background: url('../../images/themes/original/extras.png') -80px 0 no-repeat;
+        }
+        &.kick img {
+          background: url('../../images/themes/original/extras.png') -120px 0 no-repeat;
+        }
+        &.throw img {
+          background: url('../../images/themes/original/extras.png') -160px 0 no-repeat;
+        }
+        &.joint img {
+          background: url('../../images/themes/original/extras.png') -200px 0 no-repeat;
+        }
+        &.viagra img {
+          background: url('../../images/themes/original/extras.png') -240px 0 no-repeat;
+        }
+        &.cocaine img {
+          background: url('../../images/themes/original/extras.png') -280px 0 no-repeat;
+        }
+      }
+    }
+    &.arena {
+      .bomb {
+        width: 36px;
+        height: 36px;
+        position: absolute;
+        margin: 2px;
+        z-index: 200 !important;
+        background: url("../../images/themes/default/bomb.png") 0 0 no-repeat;
+      }
+      .bomber {
+        width: 40px;
+        height: 40px;
+
+        .eyes {
+          width: 40px;
+          height: 40px;
+        }
+        background-color: transparent;
+
+        &.bomber-1 .eyes {
+          background: transparent url('../../images/themes/original/bomber_green.png') 0 0;
+        }
+        &.bomber-2 .eyes {
+          background: url('../../images/themes/original/bomber_red.png') 0 0;
+        }
+        &.bomber-3 .eyes {
+          background: url('../../images/themes/original/bomber_yellow.png') 0 0;
+        }
+        &.bomber-4 .eyes {
+          background: url('../../images/themes/original/bomber_blue.png') 0 0;
+        }
+        &.bomber-5 .eyes {
+          background: url('../../images/themes/original/bomber_green.png') 0 0;
+        }
+        &.bomber-6 .eyes {
+          background: url('../../images/themes/original/bomber_red.png') 0 0;
+        }
+        &.bomber-7 .eyes {
+          background: url('../../images/themes/original/bomber_yellow.png') 0 0;
+        }
+        &.bomber-8 .eyes {
+          background: url('../../images/themes/original/bomber_blue.png') 0 0;
+        }
+      }
+      #arbiter {
+        background: url('../../images/themes/original/arbiter.png') 0 0 no-repeat;
+      }
+
+      .tile {
+        &.ice {
+          background: url('../../images/themes/original/tile_addons.png') 0 0, url('../../images/themes/original/tiles.png') 160px 0;
+        }
+        &.trap {
+          background: url('../../images/themes/original/tile_addons.png') 40px 0, url('../../images/themes/original/tiles.png') 160px 0;
+        }
+        &.ground {
+          background: url('../../images/themes/original/tiles.png') 160px 0;
+        }
+        &.box {
+          background: url('../../images/themes/original/tiles.png') 80px 0;
+        }
+        &.wall {
+          background: url('../../images/themes/original/tiles.png') 120px 0;
+        }
+        &.arrow {
+          &.east {
+            background: url('../../images/themes/original/tile_addons.png') 160px 0, url('../../images/themes/original/tiles.png') 160px 0;
+          }
+          &.south {
+            background: url('../../images/themes/original/tile_addons.png') 280px 0, url('../../images/themes/original/tiles.png') 160px 0;
+          }
+          &.west {
+            background: url('../../images/themes/original/tile_addons.png') 240px 0, url('../../images/themes/original/tiles.png') 160px 0;
+          }
+          &.north {
+            background: url('../../images/themes/original/tile_addons.png') 200px 0, url('../../images/themes/original/tiles.png') 160px 0;
+          }
+        }
+      }
+
+      .extra {
+        width: 40px;
+        height: 40px;
+        &.bomb {
+          background: url('../../images/themes/original/extras.png') 0 0 no-repeat;
+        }
+        &.power {
+          background: url('../../images/themes/original/extras.png') -40px 0 no-repeat;
+        }
+        &.kick {
+          background: url('../../images/themes/original/extras.png') -160px 0 no-repeat;
+        }
+        &.glove {
+          background: url('../../images/themes/original/extras.png') -160px 0 no-repeat;
+        }
+        &.skateboard {
+          background: url('../../images/themes/original/extras.png') -80px 0 no-repeat;
+        }
+        &.joint {
+          background: url('../../images/themes/original/extras.png') -120px 0 no-repeat;
+        }
+        &.cocaine {
+          background: url('../../images/themes/original/extras.png') -200px 0 no-repeat;
+        }
+        &.viagra {
+          background: url('../../images/themes/original/extras.png') -240px 0 no-repeat;
+        }
+      }
+      .dialog {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 300px;
+        height: 90px;
+        margin: 40% 0 0 -150px;
+        z-index: 301;
+        border: none;
+        .opacity(.9);
+        .action {
+          background-color: #a87 !important;
+          height: 30px;
+          border: none;
+          margin: 5px;
+          &:hover {
+            background: #965 !important;
+            color: #000 !important;
+          }
+        }
+      }
+      #logo {
+          position: absolute;
+          z-index: 9;
+          top: -40px;
+          left: 250px;
+          width: 146px;
+          height: 40px;
+          background-image: url('../../images/logo_small.png');
+      }
+
+      #timer #clock {
+        width: 40px;
+        height: 40px;
+        margin: 7px 20px 0 0;
+        background: url('../../images/themes/default/clock.png') 0 0 no-repeat;
+      }
+      #timer #counter {
+        margin-top: 3px;
+      }
+      #timer #clock, #timer #counter {
+        float: left;
+      }
+      #timer #clock.expired {
+        background: url('../../images/themes/default/clock.png') -40px 0 no-repeat;
+      }
+    }
+
+    &.score {
+      background: url('../../images/themes/default/score_bg.png') no-repeat;
+      .next {
+        float: right;
+        color: #fff;
+        height: 150px;
+        width: 150px;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+        .sign {
+        }
+        .preview {
+          height: 110px;
+          width: auto;
+          margin: 3px 0;
+          border: 1px solid #666;
+          background: #000;
+        }
+        .name {
+        }
+      }
+    }
+    &.levels {
+      background:  url('../../images/themes/default/level_selection.png') 0 0 no-repeat !important;
+    }
+
+    &.players {
+      background:  url('../../images/themes/default/playersetup.png') 0 0 no-repeat !important;
+      .list {
+        margin:  60px auto 0;
+        width: 80%;
+        color: #fff;
+        font-size: 20px;
+      }
+    }
+  }
+}

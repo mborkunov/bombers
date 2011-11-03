@@ -75,7 +75,7 @@ define('tiles/tile', [], function() {
     },
     prerender: function(container) {
       var id = 'tile-' + this.name + '-' + this.location.getX() + 'x' + this.location.getY();
-      var className = 'tile-' + this.getName();
+      var className = this.getName();
       this.left = this.location.getX() * 40;
       this.top = this.location.getY() * 40;
 
@@ -83,7 +83,7 @@ define('tiles/tile', [], function() {
         left: this.left + 'px',
         top: this.top + 'px'
       };
-      this.element = new Element('div', {id: id}).addClassName('tile').addClassName(className).setStyle(styles);
+      this.element = new Element('div', {id: id}).addClassName('object').addClassName('tile').addClassName(className).setStyle(styles);
       this.clickHandler = function(e) {
         switch (e.button) {
           case 0:

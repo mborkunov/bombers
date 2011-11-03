@@ -11,7 +11,6 @@
       <value>default</value>
       <value>original</value>
       <value>debug</value>
-      <value>snow</value>
     </enum>
   </property>
   <property id="graphic.maxfps" type="number" default="50">

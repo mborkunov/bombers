@@ -1,0 +1,302 @@
+@import "common.less";
+@import "themes/default.less";
+@import "themes/debug.less";
+@import "themes/original.less";
+
+* {
+  padding: 0;
+  margin: 0;
+  font-family: serif;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background: #222 url('../images/bg.png');
+  overflow: hidden;
+}
+
+div.clear {
+  clear: both;
+  font-size: 0;
+  margin: -1px 0 0;
+  padding: 0;
+  line-height: 0;
+}
+
+#game-container {
+  background: #000;
+  border: 1px solid #222;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 800px;
+  height: 600px;
+  margin: -300px 0 0 -400px;
+  box-shadow: 0 0 10px #000;
+  -moz-box-shadow: 0 0 10px #000;
+  -webkit-box-shadow: 0 0 10px #000;
+  overflow: hidden;
+
+  #arena-overlay {
+    position: absolute;
+    background: #000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: .5;
+    z-index: 300;
+  }
+
+  .dialog {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 300px;
+    height: 160px;
+    margin: 30% 0 0 -150px;
+    background: #aaa;
+    z-index: 301;
+
+    .action {
+      display: block;
+      padding: 3px 5px;
+      margin: 30px;
+      background: #fff;
+      cursor: pointer;
+      font-weight: bold;
+      text-align: center;
+      &:hover {
+        background: #eee;
+      }
+    }
+  }
+
+  &.intro div {
+    text-align: center;
+    font-size: 46px;
+    font-weight: bold;
+    margin: 30% 0;
+  }
+
+  &.credits div {
+    color: #fff;
+    padding: 0 200px;
+  }
+
+  #menu {
+    list-style: none;
+    margin: 20% auto 0;
+    width: auto;
+    text-align: center;
+    li {
+      font-size: 22px;
+      display: block;
+      width: 30%;
+      margin: 5px auto;
+      padding: 5px;
+      background: #fff;
+      font-weight: bold;
+      text-align: center;
+      /*border: 2px groove #555;*/
+      &.selected, &:hover {
+        cursor: pointer;
+        background: #ccc;
+      }
+      &.value-off {
+        color: #644 !important;
+        text-decoration: line-through;
+      }
+    }
+  }
+
+  &.arena {
+    background: #000;
+    .field {
+      margin: 50px 0 0 60px;
+    }
+
+    .object {
+      position: absolute;
+    }
+    .falling {
+      z-index: 1 !important;
+    }
+
+    #arbiter {
+      width: 40px;
+      height: 40px;
+      z-index: 666;
+      background: yellow;
+    }
+    #timer {
+      top: -50px;
+      left: 450px;
+      z-index: 1000;
+      color: #cba;
+      font-weight: bold;
+      font-size: 35px;
+    }
+    .bomber {
+      z-index: 200;
+      width: 40px;
+      height: 40px;
+      background: red;
+    }
+    .tile {
+      z-index: 10;
+      width: 40px;
+      height: 40px;
+      background-color: #424242;
+      &:hover {
+        .opacity(.8);
+      }
+      &.ice {
+        background: #00bfff;
+      }
+      &.trap {
+        background: orange;
+      }
+      &.ground {
+        background: gray;
+      }
+      &.wall {
+        background: darkgray;
+      }
+      &.box {
+        background: silver;
+      }
+      &.wall,&.box {
+        z-index: 200 !important;
+      }
+      &.arrow {
+        /*&.east,&.west,&.north,$.south {
+          background: #faebd7;
+        }*/
+      }
+    }
+    .explosion {
+      * {
+        background: orange;
+      }
+      &.root {
+        width: 40px;
+        height: 40px;
+      }
+      &.beam {
+      }
+    }
+
+    .bomb {
+      width: 36px;
+      height: 36px;
+      margin: 2px;
+      z-index: 200 !important;
+      background: #000;
+    }
+
+    .extra {
+      width: 40px;
+      height: 40px;
+      background: blue;
+      z-index: 11;
+      &.bomb {
+      }
+    }
+
+    #overlay {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: #000;
+      z-index: 999;
+    }
+    &.shadows .tile.wall, &.shadows .tile.box {
+      box-shadow: 3px 3px 10px #000;
+    }
+  }
+
+  &.help {
+    h1 {
+      font-size: 28px;
+      color: #fff;
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    ul {
+      display: block;
+      margin: 0 auto;
+      padding: 0 20px;
+      li {
+        color: #ccc;
+        font-size: 18px;
+        font-weight: bold;
+        list-style: none;
+        line-height: 40px;
+        text-align: left;
+        padding: 5px;
+        &:hover {
+          color: #fff;
+        }
+        img {
+          width: 40px;
+          height: 40px;
+          margin: 0 10px 0 0;
+          float: left;
+          background: gray;
+        }
+        span {
+          display: block;
+          float: left;
+          width: 80px;
+          &.text {
+            width: auto;
+            display: block;
+            margin: 0 0 0 50px;
+          }
+        }
+      }
+    }
+
+    .anykey {
+      color: #eee;
+      font-size: 24px;
+      font-weight: bold;
+      display: block;
+      text-align: center;
+      margin: 40px 0 0;
+      cursor: pointer;
+
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
+
+  #theme-switcher div {
+    &:first-child {
+      border-radius: 5px 0 0 5px;
+    }
+    &:last-child {
+      border-radius: 0 5px 5px 0;
+    }
+  }
+}
+
+#overlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #000;
+  z-index: 999;
+}
+

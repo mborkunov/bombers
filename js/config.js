@@ -86,6 +86,9 @@ Config.Property.Enum = Class.create(Config.Property, {
       this.value = this.values[0];
     }
   },
+  getValues: function() {
+    return this.values;
+  },
   setValue: function($super, value) {
     if (this.values.indexOf(value) >= 0) {
       this.value = value;

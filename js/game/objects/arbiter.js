@@ -20,13 +20,13 @@ define('objects/arbiter', ['objects/object'], function() {
         this.element = new Element('div', {id: 'arbiter'}).setStyle({
           top: (this.location.getY() * 40) + 'px',
           left: (this.location.getX() * 40) + 'px'
-        }).addClassName('arbiter');
+        }).addClassName('arbiter').addClassName('object');
 
         this.element.observe('click', function() {
           this.run();
         }.bind(this));
 
-        this.timerElement = new Element('div', {id: 'timer'});
+        this.timerElement = new Element('div', {id: 'timer'}).addClassName('object');
         this.clockElement = new Element('div', {id: 'clock'});
         this.clockElement.observe('click', function() {
           this.run();

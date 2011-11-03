@@ -13,7 +13,7 @@ define('objects/extras/extra', [], function() {
         this.element = new Element('div').setStyle({
           top: this.location.getY() * 40 + 'px',
           left: this.location.getX() * 40 + 'px'
-        }).addClassName('extra').addClassName('extra-' + this.name);
+        }).addClassName('extra').addClassName(this.name).addClassName('object');
 
         this.element.observe('click', function() {
           this.remove();

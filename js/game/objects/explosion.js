@@ -21,7 +21,7 @@ define('objects/explosion', ['objects/object'], function() {
         this.element = new Element('div').setStyle({
           top: (this.location.getY() * 40) + 'px',
           left: (this.location.getX() * 40) + 'px'
-        }).addClassName('explosion-root');
+        }).addClassName('explosion-root').addClassName('object');
         container.appendChild(this.element);
 
         this.beams.push(new Game.Object.Explosion.Beam(0, this.power, this.location.clone(), container));
