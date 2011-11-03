@@ -96,7 +96,9 @@ define('tiles/tile', [], function() {
         }
       }.bind(this);
 
-      this.element.observe('click', this.clickHandler);
+      if (Config.getValue('debug')) {
+        this.element.observe('click', this.clickHandler);
+      }
       container.appendChild(this.element);
     },
     highlight: function() {

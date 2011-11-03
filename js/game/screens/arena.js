@@ -165,7 +165,9 @@ define('screens/arena', ['screens/screen'], function() {
       this.map.prerender(this.battleField);
       this.container.appendChild(this.battleField);
 
-      this.renderThemeSwitcher();
+      if (Config.getValue('debug')) {
+        this.renderThemeSwitcher();
+      }
       this.battleField.appendChild(new Element('div', {id: 'logo'}).addClassName('object').observe('click', function() {
         this.paused = true;
       }.bind(this)));
@@ -180,7 +182,7 @@ define('screens/arena', ['screens/screen'], function() {
     },
     renderThemeSwitcher: function() {
       var themes = Config.getProperty('graphic.theme').getValues();
-      var themesElement = new Element('div', {id: 'theme-switcher'}).setStyle({position: 'absolute', top: 0, right: 0, zIndex: 10, height: '30px', width: (30 * themes.size()) + 'px'});
+      var themesElement = new Element('div').setStyle({position: 'absolute', top: 0, right: 0, zIndex: 10, height: '30px', width: (30 * themes.size()) + 'px'});
       this.container.appendChild(themesElement);
       var colors = ['green', 'yellow', 'silver'];
 

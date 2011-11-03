@@ -222,6 +222,66 @@ div.clear {
     }
   }
 
+  &.score {
+      .next {
+        float: right;
+        color: #fff;
+        height: 150px;
+        width: 150px;
+        margin: -170px 0 0;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+        .sign {
+        }
+        .preview {
+          height: 110px;
+          width: auto;
+          margin: 3px 0;
+          border: 1px solid #666;
+          background: #000;
+        }
+        .name {
+        }
+      }
+
+      .list {
+        margin: 170px 0 0;
+        border: 1px solid red;
+
+        .player {
+          border: 1px solid yellow;
+          border-top: 0;
+          height: 48px;
+          background: red;
+
+          &.winner {
+            background: green;
+
+            .cup {
+              width: 35px;
+              height: 35px;
+              padding: 5px;
+              background: url('../images/themes/default/cup.png') 5px 5px no-repeat;
+            }
+          }
+        }
+      }
+
+      .anykey {
+        color: #eee;
+        font-size: 24px;
+        font-weight: bold;
+        display: block;
+        text-align: center;
+        cursor: pointer;
+
+        &:hover {
+          color: #fff;
+        }
+      }
+    }
+
   &.help {
     h1 {
       font-size: 28px;
@@ -288,6 +348,8 @@ div.clear {
       border-radius: 0 5px 5px 0;
     }
   }
+
+
 }
 
 #overlay {

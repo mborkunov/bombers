@@ -5,6 +5,10 @@
     <name>Sound</name>
   </property>
 
+  <property id="debug" type="boolean" default="true">
+    <name>Debug</name>
+  </property>
+
   <property id="graphic.theme" type="enum" default="default">
     <name>Theme</name>
     <enum>

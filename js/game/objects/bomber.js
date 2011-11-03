@@ -53,7 +53,9 @@ define('objects/bomber', ['objects/object'], function() {
         }.bind(this.eyes));
 
         this.element.appendChild(this.eyes);
-        this.element.observe("click", this.kill.bind(this));
+        if (Config.getValue('debug')) {
+          this.element.observe("click", this.kill.bind(this));
+        }
         container.appendChild(this.element);
       }
 

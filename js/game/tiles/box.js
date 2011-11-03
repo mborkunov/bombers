@@ -7,11 +7,15 @@ define('tiles/box', ['tiles/tile'], function() {
     prerender: function($super, container) {
       this.container = container;
       $super(container);
-      this.element.stopObserving("click", this.clickHandler);
-      this.element.on("click", function() {
-        Sound.play("crunch");
-        this.destroy();
-      }.bind(this));
+
+      if (Config.getValue('debug')) {
+        this.element.stopObserving("click", this.clickHandler);
+
+        this.element.on("click", function() {
+          Sound.play("crunch");
+          this.destroy();
+        }.bind(this));
+      }
     },
     destroy: function($super) {
       this.next = new Game.Tile.Ground(this.getLocation().clone());

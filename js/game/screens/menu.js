@@ -9,68 +9,69 @@ define('screens/menu', ['screens/screen'], function() {
       var Type = Game.Screen.Menu.Item.Type;
       var Item = Game.Screen.Menu.Item;
 
-      this.menu = new Item("Root", Type.Inner)
-        .addChild(new Item("New Game", Type.Inner)
-          .addChild(new Item("Start Game", Type.Screen, Game.Screen.Arena))
-          .addChild(new Item("Map Selection", Type.Screen, Game.Screen.Levels))
-          .addChild(new Item("Player setup", Type.Screen, Game.Screen.Players))
-          .addChild(new Item(null, Type.Settings, "game.random_bombers_positions"))
-          .addChild(new Item(null, Type.Settings, "game.random_maps"))
-          .addChild(new Item(null, Type.Settings, "game.win_points"))
-          .addChild(new Item(null, Type.Settings, "game.round_time")))
-        .addChild(new Item("Options", Type.Inner)
-            .addChild(new Item("Start/Max Extras", Type.Inner)
-              .addChild(new Item(null, Type.Settings, "start.bombs"))
-              .addChild(new Item(null, Type.Settings, "start.power"))
-              .addChild(new Item(null, Type.Settings, "start.skateboards"))
-              .addChild(new Item(null, Type.Settings, "start.kick"))
-              .addChild(new Item(null, Type.Settings, "start.glove"))
-              .addChild(new Item(null, Type.Settings, "max.bombs"))
-              .addChild(new Item(null, Type.Settings, "max.power"))
-              .addChild(new Item(null, Type.Settings, "max.skateboards")))
-            .addChild(new Item("Extras", Type.Inner)
-              .addChild(new Item(null, Type.Settings, "extras.bombs"))
-              .addChild(new Item(null, Type.Settings, "extras.power"))
-              .addChild(new Item(null, Type.Settings, "extras.skateboard"))
-              .addChild(new Item(null, Type.Settings, "extras.kick"))
-              .addChild(new Item(null, Type.Settings, "extras.glove")))
-            .addChild(new Item("Diseases", Type.Inner)
-              .addChild(new Item(null, Type.Settings, "diseases.joint"))
-              .addChild(new Item(null, Type.Settings, "diseases.viagra"))
-              .addChild(new Item(null, Type.Settings, "diseases.cocaine")))
-            .addChild(new Item("Timing &amp; Speed", Type.Inner)
+      this.menu = new Item('Root', Type.Inner)
+        .addChild(new Item('New Game', Type.Inner)
+          .addChild(new Item('Start Game', Type.Screen, Game.Screen.Arena))
+          .addChild(new Item('Map Selection', Type.Screen, Game.Screen.Levels))
+          .addChild(new Item('Player setup', Type.Screen, Game.Screen.Players))
+          .addChild(new Item(null, Type.Settings, 'game.random_bombers_positions'))
+          .addChild(new Item(null, Type.Settings, 'game.random_maps'))
+          .addChild(new Item(null, Type.Settings, 'game.win_points'))
+          .addChild(new Item(null, Type.Settings, 'game.round_time')))
+        .addChild(new Item('Options', Type.Inner)
+            .addChild(new Item('Start/Max Extras', Type.Inner)
+              .addChild(new Item(null, Type.Settings, 'start.bombs'))
+              .addChild(new Item(null, Type.Settings, 'start.power'))
+              .addChild(new Item(null, Type.Settings, 'start.skateboards'))
+              .addChild(new Item(null, Type.Settings, 'start.kick'))
+              .addChild(new Item(null, Type.Settings, 'start.glove'))
+              .addChild(new Item(null, Type.Settings, 'max.bombs'))
+              .addChild(new Item(null, Type.Settings, 'max.power'))
+              .addChild(new Item(null, Type.Settings, 'max.skateboards')))
+            .addChild(new Item('Extras', Type.Inner)
+              .addChild(new Item(null, Type.Settings, 'extras.bombs'))
+              .addChild(new Item(null, Type.Settings, 'extras.power'))
+              .addChild(new Item(null, Type.Settings, 'extras.skateboard'))
+              .addChild(new Item(null, Type.Settings, 'extras.kick'))
+              .addChild(new Item(null, Type.Settings, 'extras.glove')))
+            .addChild(new Item('Diseases', Type.Inner)
+              .addChild(new Item(null, Type.Settings, 'diseases.joint'))
+              .addChild(new Item(null, Type.Settings, 'diseases.viagra'))
+              .addChild(new Item(null, Type.Settings, 'diseases.cocaine')))
+            .addChild(new Item('Timing &amp; Speed', Type.Inner)
               .addChild(new Item(null, Type.Settings, 'timing.bombs.countdown'))
               .addChild(new Item(null, Type.Settings, 'timing.bombs.chain_reaction'))
               .addChild(new Item(null, Type.Settings, 'timing.bombs.moving_speed')))
-            .addChild(new Item("Graphic Options", Type.Inner)
-              .addChild(new Item(null, Type.Settings, "graphic.theme", function(theme) {
+            .addChild(new Item('Graphic Options', Type.Inner)
+              .addChild(new Item(null, Type.Settings, 'graphic.theme', function(theme) {
                 Game.instance.setTheme(theme);
                }))
-              .addChild(new Item(null, Type.Settings, "graphic.shadows", function(value) {
+              .addChild(new Item(null, Type.Settings, 'graphic.shadows', function(value) {
                 if (value) {
                   Game.instance.container.addClassName('shadows');
                 } else {
                   Game.instance.container.removeClassName('shadows');
                 }
               }))
-              .addChild(new Item(null, Type.Settings, "graphic.maxfps", function(fps) {
+              .addChild(new Item(null, Type.Settings, 'graphic.maxfps', function(fps) {
                 Game.instance.graphics.fps = fps;
               }))
-              .addChild(new Item(null, Type.Settings, "graphic.kidz"))
-              .addChild(new Item(null, Type.Settings, "graphic.corpse_parts"))
-              .addChild(new Item(null, Type.Settings, "graphic.shaky_explosions")))
-            .addChild(new Item("Sounds", Type.Settings, "sounds", function(value) {
+              .addChild(new Item(null, Type.Settings, 'graphic.kidz'))
+              .addChild(new Item(null, Type.Settings, 'graphic.corpse_parts'))
+              .addChild(new Item(null, Type.Settings, 'graphic.shaky_explosions')))
+            .addChild(new Item(null, Type.Settings, 'sounds', function(value) {
               Sound.setEnabled(value);
-            })))
-        .addChild(new Item("Editor", Type.Screen, Game.Screen.Editor))
-        .addChild(new Item("Credits", Type.Screen, Game.Screen.Credits))
-        .addChild(new Item("Help", Type.Screen, Game.Screen.Help))
-        .addChild(new Item("Quit Game", Type.Inner)
-          .addChild(new Item("Yes", Type.Custom, function() {
+            }))
+            .addChild(new Item(null, Type.Settings, 'debug')))
+        .addChild(new Item('Editor', Type.Screen, Game.Screen.Editor))
+        .addChild(new Item('Credits', Type.Screen, Game.Screen.Credits))
+        .addChild(new Item('Help', Type.Screen, Game.Screen.Help))
+        .addChild(new Item('Quit Game', Type.Inner)
+          .addChild(new Item('Yes', Type.Custom, function() {
             window.open('', '_self', '');
             window.close();
           }))
-          .addChild(new Item("No", Type.Custom, function(item) {
+          .addChild(new Item('No', Type.Custom, function(item) {
             this.changeMenu(item.getParent().getParent());
           }.bind(this)))
         );
@@ -130,7 +131,7 @@ define('screens/menu', ['screens/screen'], function() {
       }
     },
     renderMenu: function(menu, container) {
-      this.list = new Element("ul", {id: "menu"});
+      this.list = new Element('ul', {id: 'menu'});
       menu.getChildren().each(function(list, item) {
         item.render(list);
       }.bind(this, this.list));
@@ -214,12 +215,12 @@ define('screens/menu', ['screens/screen'], function() {
     },
     setSelected: function(selected) {
       if (selected) {
-        if (!this.li.hasClassName("selected")) {
+        if (!this.li.hasClassName('selected')) {
           Sound.play('break');
-          this.li.addClassName("selected");
+          this.li.addClassName('selected');
         }
       } else {
-        this.li.removeClassName("selected");
+        this.li.removeClassName('selected');
       }
       this.selected = selected;
     },
@@ -229,7 +230,7 @@ define('screens/menu', ['screens/screen'], function() {
         if (property.type == 'boolean') {
           this.label;
         } else {
-          return this.label + " - " + property.getScreenValue();
+          return this.label + ' - ' + property.getScreenValue();
         }
       }
       return this.label;
@@ -269,39 +270,39 @@ define('screens/menu', ['screens/screen'], function() {
       if (Object.isUndefined(list)) {
         this.li.update(this.getLabel());
       } else {
-        this.li = new Element("li").update(this.getLabel());
-        this.li.observe("click", function() {
+        this.li = new Element('li').update(this.getLabel());
+        this.li.observe('click', function() {
           this.execute();
         }.bind(this));
-        this.li.observe("mouseover", function() {
+        this.li.observe('mouseover', function() {
           this.setSelected(true);
         }.bind(this));
-        this.li.observe("mousemove", function() {
+        this.li.observe('mousemove', function() {
           this.setSelected(true);
         }.bind(this));
-        this.li.observe("mouseout", function() {
+        this.li.observe('mouseout', function() {
           this.setSelected(false);
         }.bind(this));
 
         if (this.getType() === Game.Screen.Menu.Item.Type.Inner) {
-          this.li.addClassName("submenu");
+          this.li.addClassName('submenu');
         }
 
         if (this.isSelected()) {
-          this.li.addClassName("selected");
+          this.li.addClassName('selected');
         }
         list.appendChild(this.li);
       }
       if (this.type === Game.Screen.Menu.Item.Type.Settings) {
-        this.li.className = "";
+        this.li.className = '';
         if (this.isSelected()) {
-          this.li.addClassName("selected");
+          this.li.addClassName('selected');
         }
-        this.li.addClassName("value-" + Config.getProperty(this.args[0]).getScreenValue());
+        this.li.addClassName('value-' + Config.getProperty(this.args[0]).getScreenValue());
       }
     },
     toString: function() {
-      return "Menu item {" + this.label + ", " + this.depth + "}";
+      return 'Menu item {' + this.label + ', ' + this.depth + '}';
     },
     execute: function() {
       this.type(this, this.args);

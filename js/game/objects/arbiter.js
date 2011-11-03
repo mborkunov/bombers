@@ -22,15 +22,20 @@ define('objects/arbiter', ['objects/object'], function() {
           left: (this.location.getX() * 40) + 'px'
         }).addClassName('arbiter').addClassName('object');
 
-        this.element.observe('click', function() {
-          this.run();
-        }.bind(this));
+        if (Config.getValue('debug')) {
+          this.element.observe('click', function() {
+            this.run();
+          }.bind(this));
+        }
 
         this.timerElement = new Element('div', {id: 'timer'}).addClassName('object');
         this.clockElement = new Element('div', {id: 'clock'});
-        this.clockElement.observe('click', function() {
-          this.run();
-        }.bind(this));
+
+        if (Config.getValue('debug')) {
+          this.clockElement.observe('click', function() {
+            this.run();
+          }.bind(this));
+        }
 
         this.counterElement = new Element('div', {id: 'counter'}).update(this.getRemainingTime());
         this.timerElement.appendChild(this.clockElement);
