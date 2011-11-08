@@ -88,9 +88,7 @@ define('screens/arena', ['screens/screen'], function() {
 
         var players = Config.Players.getActivePlayers();
         var positions = this.map.getPlayerStartupPositions();
-        console.log(players, positions)
 
-            //{number: data[x][y] | 0, point: point}
         var x = this.map.entry.size.x - 1, y = this.map.entry.size.y - 1;
         var defaultLocation = new Point(Math.floor(x / 2), Math.floor(y / 2));
         for (var i = 0, length = positions.length; i < length; i++) {
@@ -216,10 +214,10 @@ define('screens/arena', ['screens/screen'], function() {
         this.dialog.appendChild(new Element('a').addClassName('action').update('Resume').observe('click', function() {
           this.paused = false;
         }.bind(this)));
-        var adblock = new Element('div').addClassName('adblock')
+        var adblock = new Element('div').addClassName('adblock');
         adblock.appendChild(new Element('script', {
           type: 'application/javascript',
-          src: 'http://pagead2.googlesyndication.com/pagead/show_ads.js'
+          src: 'http://pagead2.googlesyndication.com/pagead/show_ads.js?' + Math.random()
         }));
         this.dialog.appendChild(adblock);
         this.container.appendChild(this.overlay);
@@ -242,7 +240,7 @@ define('screens/arena', ['screens/screen'], function() {
           try {
             this.container.removeChild(this.overlay);
           } catch (ignored) {}
-        }
+        } 
       } catch (ignored) {}
     }
   });

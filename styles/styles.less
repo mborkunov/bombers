@@ -15,7 +15,7 @@ html, body {
 }
 
 body {
-  background: #222 url('../images/bg.png');
+  background: url('../images/alpha.png') 0 0 no-repeat,  #222 url('../images/bg.png');
   overflow: hidden;
 }
 
@@ -40,6 +40,21 @@ div.clear {
   -moz-box-shadow: 0 0 10px #000;
   -webkit-box-shadow: 0 0 10px #000;
   overflow: hidden;
+
+  .anykey {
+     color: #eee;
+     font-size: 24px;
+     font-weight: bold;
+     display: block;
+     text-align: center;
+     cursor: pointer;
+     clear: both;
+     margin: 40px 0 0;
+
+     &:hover {
+       color: #fff;
+     }
+   }
 
   #arena-overlay {
     position: absolute;
@@ -87,7 +102,10 @@ div.clear {
     text-align: center;
     font-size: 46px;
     font-weight: bold;
-    margin: 30% 0;
+    //margin: 30% 0;
+    .text {
+      color: #fff;
+    }
   }
 
   &.credits div {
@@ -312,36 +330,26 @@ div.clear {
         }
       }
     }
-
-    .anykey {
-      color: #eee;
-      font-size: 24px;
-      font-weight: bold;
-      display: block;
-      text-align: center;
-      cursor: pointer;
-      clear: both;
-
-      &:hover {
-        color: #fff;
-      }
-    }
   }
 
   &.players {
     .list {
       margin: 20px auto 0;
       width: 90%;
-      border: 1px solid yellow;
       .player {
-        &.selected {
-          .opacity(.5);
-
+        .opacity(.5);
+        text-decoration: line-through;
+        &.active {
+          text-decoration: none;
+          .opacity(1);
+          td {
+            border: 1px solid silver;
+          }
         }
         td {
           height: 55px;
           width: 25%;
-          border: 1px solid cyan;
+          border: 1px solid gray;
           &.preview {
             width: 10%;
           }
@@ -353,22 +361,30 @@ div.clear {
           }
           &.controller {
             background-color: red;
-            &.ijkl {
+            width: 15%;
+            &.ijkl::before {
+              content: 'ijkl';
             }
-
-            &.wasd {
+            &.wasd::before {
+              content: 'wasd';
             }
-            &.arrows {
-
+            &.arrows::before {
+              content: 'arrows';
             }
-            &.ai {
-
+            &.ai::before {
+              content: 'ai';
             }
+          }
+        }
+        &.selected td {
+          border: 1px solid white;
+          background: gray;
+          &.selected {
+            border: 1px solid red !important;
           }
         }
       }
     }
-
   }
 
 
@@ -413,20 +429,6 @@ div.clear {
             margin: 0 0 0 50px;
           }
         }
-      }
-    }
-
-    .anykey {
-      color: #eee;
-      font-size: 24px;
-      font-weight: bold;
-      display: block;
-      text-align: center;
-      margin: 40px 0 0;
-      cursor: pointer;
-
-      &:hover {
-        color: #fff;
       }
     }
   }

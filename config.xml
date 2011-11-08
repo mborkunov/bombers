@@ -54,7 +54,7 @@
     <username>Daniel</username>
     <color>cyan</color>
     <eyes>stereo</eyes>
-    <active>true</active>
+    <active>false</active>
     <controller>ai</controller>
   </property>
   <property id="game.player.6" type="complex">
@@ -70,7 +70,7 @@
     <username>Kenny</username>
     <color>orange</color>
     <eyes>cyclope</eyes>
-    <active>true</active>
+    <active>false</active>
     <controller>ai</controller>
   </property>
   <property id="game.player.8" type="complex">

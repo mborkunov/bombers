@@ -48,18 +48,19 @@ define('controllers/keyboard', ['controllers/controller'], function() {
         action: Event.KEY_ENTER || 13
       },
       WASD: {
-        left: 65,
-        right: 68,
-        up: 87,
-        down: 83,
-        action: 9
+        left: 65,  // a
+        right: 68, // d
+        up: 87,    // w
+        down: 83,  // s
+        action: 9  // tab todo: should be replaced with another key.
+                   // it's working incorrect
       },
       IJKL: {
-        left: 74,
-        right: 76,
-        up: 73,
-        down: 75,
-        action: 32
+        left: 74,  // j
+        right: 76, // l
+        up: 73,    // i
+        down: 75,  // k
+        action: 32 // space
       }
     }});
 });

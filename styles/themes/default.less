@@ -301,6 +301,31 @@ body.default {
         width: 80%;
         color: #fff;
         font-size: 20px;
+        .player {
+          td {
+            &.controller {
+              &::before {
+                content: '';
+              }
+              &.ijkl {
+                background: transparent url('../../images/themes/default/controllers.png') 0 -165px no-repeat;
+              }
+              &.wasd {
+                background: transparent url('../../images/themes/default/controllers.png') 0 -110px no-repeat;
+              }
+              &.arrows {
+                background: transparent url('../../images/themes/default/controllers.png') 0 -54px no-repeat;
+              }
+              &.ai {
+                background: transparent url('../../images/themes/default/controllers.png') 0 0 no-repeat;
+              }
+            }
+          }
+          &.selected td {
+            border: 1px solid white;
+            background: gray;
+          }
+        }
       }
     }
   }
