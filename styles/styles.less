@@ -56,16 +56,17 @@ div.clear {
     position: absolute;
     top: 0;
     left: 50%;
-    width: 300px;
-    height: 160px;
-    margin: 30% 0 0 -150px;
+    margin: 30% 0 0 -234px;
+    padding: 15px;
     background: #aaa;
     z-index: 301;
 
     .action {
       display: block;
+      float: left;
       padding: 3px 5px;
-      margin: 30px;
+      width: 150px;
+      margin: 30px 0 30px 50px;
       background: #fff;
       cursor: pointer;
       font-weight: bold;
@@ -73,6 +74,12 @@ div.clear {
       &:hover {
         background: #eee;
       }
+    }
+    .adblock {
+      width: 468px;
+      height: 60px;
+      border: 1px solid black;
+      clear: both;
     }
   }
 
@@ -223,103 +230,148 @@ div.clear {
   }
 
   &.score {
-      .next {
-        float: right;
-        color: #fff;
-        height: 300px;
-        width: 50%;
-        padding: 170px 0 0 ;
-        font-size: 14px;
-        font-weight: bold;
-        text-align: center;
-        .sign {
-        }
-        .preview {
-          width: 800px;
-          height: 600px;
-          -webkit-transform: scale(0.5);
-          margin: -150px 0 0 -170px;
-          background-color: transparent;
-          &.loading {
-          }
-          .map-name {
-            display: none;
-          }
-          .tile {
-            position:absolute;
-            z-index: 10;
-            width: 40px;
-            height: 40px;
-            background-color: #424242;
-            &:hover {
-              .opacity(.8);
-            }
-            &.ice {
-              background: #00bfff;
-            }
-            &.trap {
-              background: orange;
-            }
-            &.ground {
-              background: gray;
-            }
-            &.wall {
-              background: darkgray;
-            }
-            &.box {
-              background: silver;
-            }
-            &.wall,&.box {
-              z-index: 200 !important;
-            }
-            &.arrow {
-              /*&.east,&.west,&.north,$.south {
-                background: #faebd7;
-              }*/
-            }
-          }
-        }
-        .name {
-        }
+    .next {
+      float: right;
+      color: #fff;
+      height: 300px;
+      width: 50%;
+      padding: 170px 0 0 ;
+      font-size: 14px;
+      font-weight: bold;
+      text-align: center;
+      .sign {
       }
-
-      .list {
-        width: 50%;
-        float: left;
-        margin: 170px 0 0;
-
-        .player {
-          border-top: 1px solid black;
-          height: 47px;
-          background: red;
-
-          &.winner {
-            background: green;
-
-            .cup {
-              width: 35px;
-              height: 35px;
-              padding: 5px;
-              background: url('../images/themes/default/cup.png') 5px 5px no-repeat;
-            }
+      .preview {
+        width: 800px;
+        height: 600px;
+        -webkit-transform: scale(0.5);
+        margin: -150px 0 0 -170px;
+        background-color: transparent;
+        &.loading {
+        }
+        .map-name {
+          display: none;
+        }
+        .tile {
+          position:absolute;
+          z-index: 10;
+          width: 40px;
+          height: 40px;
+          background-color: #424242;
+          &:hover {
+            .opacity(.8);
+          }
+          &.ice {
+            background: #00bfff;
+          }
+          &.trap {
+            background: orange;
+          }
+          &.ground {
+            background: gray;
+          }
+          &.wall {
+            background: darkgray;
+          }
+          &.box {
+            background: silver;
+          }
+          &.wall,&.box {
+            z-index: 200 !important;
+          }
+          &.arrow {
+            /*&.east,&.west,&.north,$.south {
+              background: #faebd7;
+            }*/
           }
         }
       }
+      .name {
+      }
+    }
 
-      .anykey {
-        color: #eee;
-        font-size: 24px;
-        font-weight: bold;
-        display: block;
-        text-align: center;
-        cursor: pointer;
-        clear: both;
+    .list {
+      width: 50%;
+      float: left;
+      margin: 170px 0 0;
 
-        &:hover {
-          color: #fff;
+      .player {
+        border-top: 1px solid black;
+        height: 47px;
+        background: red;
+
+        &.winner {
+          background: green;
+
+          .cup {
+            width: 35px;
+            height: 35px;
+            padding: 5px;
+            background: url('../images/themes/default/cup.png') 5px 5px no-repeat;
+          }
         }
       }
     }
+
+    .anykey {
+      color: #eee;
+      font-size: 24px;
+      font-weight: bold;
+      display: block;
+      text-align: center;
+      cursor: pointer;
+      clear: both;
+
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
+
+  &.players {
+    .list {
+      margin: 20px auto 0;
+      width: 90%;
+      border: 1px solid yellow;
+      .player {
+        &.selected {
+          .opacity(.5);
+
+        }
+        td {
+          height: 55px;
+          width: 25%;
+          border: 1px solid cyan;
+          &.preview {
+            width: 10%;
+          }
+          &.name {
+            padding: 0 0 0 10px;
+          }
+          &.team {
+            background-color: silver;
+          }
+          &.controller {
+            background-color: red;
+            &.ijkl {
+            }
+
+            &.wasd {
+            }
+            &.arrows {
+
+            }
+            &.ai {
+
+            }
+          }
+        }
+      }
+    }
+
+  }
+
+
 
   &.help {
     h1 {

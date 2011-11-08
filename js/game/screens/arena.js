@@ -85,40 +85,35 @@ define('screens/arena', ['screens/screen'], function() {
       Game.Map.getNextMap(function(map) {
         this.map = map;
 
-        this.map.getPlayerStartupPositions().each(function(position, index) {
-          var x = this.map.entry.size.x - 1, y = this.map.entry.size.y - 1;
 
+        var players = Config.Players.getActivePlayers();
+        var positions = this.map.getPlayerStartupPositions();
+        console.log(players, positions)
 
-          var controllerType;
-          var keyboard = Game.Controller.Keyboard;
-          switch (Math.floor(Math.random() * 4)) {
-            case 0:
-              controllerType = keyboard.Type.ARROWS;
-              break;
-            case 1:
-              controllerType = keyboard.Type.WASD;
-              break;
-            case 2:
-              controllerType = keyboard.Type.IJKL;
-              break;
-            case 3:
-              controllerType = keyboard.Type.ARROWS;
-              break;
-          }
-
-          var location = new Point(Math.floor(x / 2), Math.floor(y / 2));
+            //{number: data[x][y] | 0, point: point}
+        var x = this.map.entry.size.x - 1, y = this.map.entry.size.y - 1;
+        var defaultLocation = new Point(Math.floor(x / 2), Math.floor(y / 2));
+        for (var i = 0, length = positions.length; i < length; i++) {
+          var player = players[i];
 
           var controller;
-          if (Math.random() * 10 < 5) {
-            controller = new Game.Controller.Ai();
-          } else {
-            controller = new keyboard(controllerType);
+          switch (player.getValue('controller')) {
+            case 'ai':
+              controller = new Game.Controller.Ai();
+              break;
+            default:
+              var type = Game.Controller.Keyboard.Type[player.getValue('controller').toUpperCase()];
+              controller = new Game.Controller.Keyboard(type);
+              break;
           }
-          var bomber = new Game.Object.Bomber(controller, index + 1, location);
+          var position = positions[i % positions.length];
 
+          console.log(position, controller, player.getValue('controller'))
+
+          var bomber = new Game.Object.Bomber(controller, i + 1, defaultLocation.clone(), player.getConfig());
           bomber.flyTo(this.map.entry.tiles[position.point.getX()][position.point.getY()]);
           this.objects.bombers.push(bomber);
-        }.bind(this));
+        }
         this.prerender();
       }.bind(this));
     },
@@ -221,6 +216,12 @@ define('screens/arena', ['screens/screen'], function() {
         this.dialog.appendChild(new Element('a').addClassName('action').update('Resume').observe('click', function() {
           this.paused = false;
         }.bind(this)));
+        var adblock = new Element('div').addClassName('adblock')
+        adblock.appendChild(new Element('script', {
+          type: 'application/javascript',
+          src: 'http://pagead2.googlesyndication.com/pagead/show_ads.js'
+        }));
+        this.dialog.appendChild(adblock);
         this.container.appendChild(this.overlay);
         this.container.appendChild(this.dialog);
       } else if (!this.paused && this.dialog) {

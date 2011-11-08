@@ -17,6 +17,108 @@
       <value>debug</value>
     </enum>
   </property>
+  <property id="game.player.1" type="complex">
+    <name>Player 1</name>
+    <username>John</username>
+    <color>#fff000</color>
+    <eyes>cyclope</eyes>
+    <active>true</active>
+    <controller>ai</controller>
+  </property>
+  <property id="game.player.2" type="complex">
+    <name>Player 2</name>
+    <username>Jimmy</username>
+    <color>green</color>
+    <eyes>stereo</eyes>
+    <active>true</active>
+    <controller>wasd</controller>
+  </property>
+  <property id="game.player.3" type="complex">
+    <name>Player 3</name>
+    <username>Dexter</username>
+    <color>blue</color>
+    <eyes>alien</eyes>
+    <active>true</active>
+    <controller>ai</controller>
+  </property>
+  <property id="game.player.4" type="complex">
+    <name>Player 4</name>
+    <username>Casper</username>
+    <color>teal</color>
+    <eyes>olimpian</eyes>
+    <active>true</active>
+    <controller>ai</controller>
+  </property>
+  <property id="game.player.5" type="complex">
+    <name>Player 5</name>
+    <username>Daniel</username>
+    <color>cyan</color>
+    <eyes>stereo</eyes>
+    <active>true</active>
+    <controller>ai</controller>
+  </property>
+  <property id="game.player.6" type="complex">
+    <name>Player 6</name>
+    <username>Bill</username>
+    <color>yellow</color>
+    <eyes>stereo</eyes>
+    <active>true</active>
+    <controller>ijkl</controller>
+  </property>
+  <property id="game.player.7" type="complex">
+    <name>Player 7</name>
+    <username>Kenny</username>
+    <color>orange</color>
+    <eyes>cyclope</eyes>
+    <active>true</active>
+    <controller>ai</controller>
+  </property>
+  <property id="game.player.8" type="complex">
+    <name>Player 8</name>
+    <username>Jack</username>
+    <color>silver</color>
+    <eyes>alien</eyes>
+    <active>true</active>
+    <controller>arrows</controller>
+  </property>
+
+
+  <!--<property id="game.map_list" type="list" immutable="true">
+    <name>Theme</name>
+    <list>
+      <item>Big_Standard</item>
+      <item>Blast_Matrix</item>
+      <item>Bloody_Ring</item>
+      <item>Boiling_Egg</item>
+      <item>Bomb_Attack</item>
+      <item>Broken_Heart</item>
+      <item>Crammed</item>
+      <item>Death_Corridor</item>
+      <item>Dilemma</item>
+      <item>FearCircle</item>
+      <item>FearCircle_Remix</item>
+      <item>FireWheels</item>
+      <item>Football</item>
+      <item>Four_Instance</item>
+      <item>GhostBear</item>
+      <item>Hard_Work</item>
+      <item>Hole_Run</item>
+      <item>Huge_Standard</item>
+      <item>Juicy_Lucy</item>
+      <item>Kitchen</item>
+      <item>Meeting</item>
+      <item>MungoBane</item>
+      <item>Obstacle_Race</item>
+      <item>Overkill</item>
+      <item>Prison_Cells</item>
+      <item>Redirection</item>
+      <item>Sixty_Nine</item>
+      <item>Small_Standard</item>
+      <item>Snake_Race</item>
+      <item>Tiny_Standard</item>
+      <item>Whole_Mess</item>
+    </list>
+  </property>-->
   <property id="graphic.maxfps" type="number" default="50">
     <name>Maximum FPS</name>
     <range min="5" max="100" step="5"/>

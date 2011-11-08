@@ -99,6 +99,9 @@ body.default {
           &.alien {
             background: url('../../images/themes/default/alien-eyes.png') 0 0 no-repeat;
           }
+          &.olimpian {
+            background: url('../../images/themes/default/olimpian-eyes.png') 0 0 no-repeat;
+          }
         }
         &.dead .eyes {
           &.stereo {
@@ -108,6 +111,9 @@ body.default {
             background: url('../../images/themes/default/stereo-eyes-dead.png') 0 0 no-repeat;
           }
           &.cyclope {
+            background: url('../../images/themes/default/cyclope-eyes-dead.png') 0 0 no-repeat;
+          }
+          &.olimpian {
             background: url('../../images/themes/default/cyclope-eyes-dead.png') 0 0 no-repeat;
           }
         }
@@ -204,17 +210,17 @@ body.default {
         position: absolute;
         top: 0;
         left: 50%;
-        width: 300px;
-        height: 90px;
-        margin: 40% 0 0 -150px;
+        margin: 30% 0 0 -234px;
         z-index: 301;
         border: none;
         .opacity(.9);
         .action {
+          float: left;
+          width: 150px;
+          margin: 30px 0 30px 50px;
           background-color: #a87 !important;
           height: 30px;
           border: none;
-          margin: 5px;
           &:hover {
             background: #965 !important;
             color: #000 !important;

@@ -13,7 +13,7 @@ define('objects/bomber', ['objects/object'], function() {
     angle: null,
     rollAngle: null,
     rollingAngle: null,
-    initialize: function($super, controller, number, location) {
+    initialize: function($super, controller, number, location, config) {
       this.backgroundPosition = {x: 0, y: 0};
       this.bombs = [];
       this.distance = 0;
@@ -24,6 +24,7 @@ define('objects/bomber', ['objects/object'], function() {
       this.dead = false;
       this.location = location;
       this.number = number;
+      this.config = config;
 
       this.speed = .05 + Config.getValue('start.skateboards') * Game.Object.Extra.Skateboard.getSpeed();
       this.maxBombs = Config.getValue('start.bombs');
@@ -42,19 +43,12 @@ define('objects/bomber', ['objects/object'], function() {
         this.element = new Element('div').setStyle({
           top: (this.location.getY() * 40) + 'px',
           left: (this.location.getX() * 40) + 'px'
-        }).addClassName('object').addClassName('bomber').addClassName("bomber-" + this.number);
-
-        var eyes = ["cyclope", "stereo", "alien"];
-        this.eyes = new Element("div").addClassName("eyes object").addClassName(eyes[Math.floor(Math.random() * 3)]);
-        ["first", "second", "third"].each(function(eye) {
-          var eye = new Element("div").addClassName(eye + "-eye eye");
-          eye.appendChild(new Element("div").addClassName("pupil"));
-          this.appendChild(eye);
-        }.bind(this.eyes));
-
+        }).addClassName('object').addClassName('bomber').addClassName('bomber-' + this.number);
+        this.element.setStyle({'background-color': this.config['color']});
+        this.eyes = new Element('div').addClassName('eyes object').addClassName(this.config['eyes']);
         this.element.appendChild(this.eyes);
         if (Config.getValue('debug')) {
-          this.element.observe("click", this.kill.bind(this));
+          this.element.observe('click', this.kill.bind(this));
         }
         container.appendChild(this.element);
       }

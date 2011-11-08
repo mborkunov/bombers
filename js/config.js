@@ -35,11 +35,16 @@ var Config = {
 Config.Property = Class.create({
   value: null,
   defaultValue: null,
+  immutable: null,
   initialize: function(xmlConfig) {
     this.id = xmlConfig.getAttribute('id');
     this.name = xmlConfig.getElementsByTagName('name')[0].firstChild.nodeValue;
+    this.immutable = xmlConfig.hasAttribute('immutable') && xmlConfig.getAttribute('immutable').toLowerCase() == 'true';
   },
   loadUserValue: function() {
+    if (this.immutable) {
+      return;
+    }
     if (localStorage.getItem(this.id) !== null)  {
       this.setValue(localStorage.getItem(this.id));
     }
@@ -57,6 +62,9 @@ Config.Property = Class.create({
     return this.value;
   },
   setValue: function() {
+    if (this.immutable) {
+      throw 'Cannot change immutable property';
+    }
     localStorage.setItem(this.id, this.value);
   },
   getNextValue: null,
@@ -64,6 +72,79 @@ Config.Property = Class.create({
   toString: function() {
     return '(' + this.type + ') #' + this.id + ' ' + this.value + ' <' + this.getPreviousValue() + '|' + this.getNextValue() + '>' + ' - ' + this.name;
   }
+});
+
+/*Config.Property.Group = Class.create({
+  initialize: function(xmlConfig) {
+
+  }
+});*/
+
+Config.Players = {
+  getAllPlayers: function() {
+    var players = [];
+    for (var i = 1; i <= 8; i++) {
+      var player = Config.getProperty('game.player.' + i);
+      players.push(player);
+    }
+    return players;
+  },
+  getActivePlayers: function() {
+    var players = [];
+    for (var i = 1; i <= 8; i++) {
+      var player = Config.getProperty('game.player.' + i);
+      var active = player.getValue('active').toLowerCase();
+      if (active == 'true' || active == '1' || active == 'yes') {
+        players.push(player);
+      }
+    }
+    return players;
+  },
+  getAiPlayers: function() {
+
+  },
+  getHumanPlayer: function() {
+    
+  }
+};
+
+Config.Property.Complex = Class.create(Config.Property, {
+  type: 'complex',
+  map: null,
+  initialize: function($super, xmlConfig) {
+    $super(xmlConfig);
+    this.map = {};
+
+    var children  = xmlConfig.childNodes;
+
+    for (var i = 0, length = children.length; i < length; i++) {
+      var node = children[i];
+      if (node.nodeType == 1) {
+        try {
+          var key = node.tagName;
+          this.map[key] = node.firstChild.nodeValue;
+        } catch (ignored) {}
+      }
+    }
+  },
+  getConfig: function() {
+    return this.map;
+  },
+  /*getNextValue: function() {
+    //return !this.value;
+  },*/
+  setValue: function($super, key, value) {
+    this.map[key] = value;
+  },
+  getValue: function($super, key) {
+    return this.map[key];
+  },
+  getScreenValue: function(key) {
+    return this.map[key];
+  }
+  /*getPreviousValue: function() {
+    return this.getNextValue();
+  }*/
 });
 
 
@@ -249,6 +330,9 @@ Object.extend(Config.Property, {
         break;
       case 'number':
           property = new Config.Property.Number(xmlProperty);
+        break;
+     case 'complex':
+          property = new Config.Property.Complex(xmlProperty);
         break;
     }
 

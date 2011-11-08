@@ -41,7 +41,10 @@ define('objects/bomb', ['objects/object', 'objects/explosion'], function() {
         if (time - this.lastUpdate > 10) {
           this.lastUpdate = time;
           var scale = 1 + Math.abs(Math.sin(this.scaleCounter+=3 * Math.PI / 180)) / 7;
-          this.element.scale(scale, scale);
+          if (this.element) {
+            this.element.scale(scale, scale);
+          }
+  
         }
       }
       $super(delay);
