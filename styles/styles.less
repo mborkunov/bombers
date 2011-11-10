@@ -15,7 +15,7 @@ html, body {
 }
 
 body {
-  background: url('../images/alpha.png') 0 0 no-repeat,  #222 url('../images/bg.png');
+  background: url('../images/draft.png') 0 0 no-repeat,  #222 url('../images/bg.png');
   overflow: hidden;
 }
 
@@ -25,6 +25,15 @@ div.clear {
   margin: -1px 0 0;
   padding: 0;
   line-height: 0;
+}
+
+#author {
+  color: #fff;
+  display: block;
+  padding-left: 3px;
+  &:hover {
+    text-decoration: none;
+  }
 }
 
 #game-container {
@@ -336,6 +345,10 @@ div.clear {
     .list {
       margin: 20px auto 0;
       width: 90%;
+      thead td {
+        color: #fff;
+        text-align: center;
+      }
       .player {
         .opacity(.5);
         text-decoration: line-through;
@@ -348,20 +361,48 @@ div.clear {
         }
         td {
           height: 55px;
-          width: 25%;
           border: 1px solid gray;
+          text-align: center;
+          color: #fff;
           &.preview {
+            width: 10%;
+            .bomber {
+              width: 40px;
+              height: 40px;
+              border: 1px solid #000;
+              margin: 0 auto;
+            }
+          }
+          &.eyes {
+            width: 10%;
+          }
+          &.color {
             width: 10%;
           }
           &.name {
             padding: 0 0 0 10px;
           }
           &.team {
-            background-color: silver;
+            width: 20%;
+            &.team-0::before {
+              content: '-';
+            }
+            &.team-1::before {
+              content: '1';
+            }
+            &.team-2::before {
+              content: '2';
+            }
+            &.team-3::before {
+              content: '3';
+            }
+            &.team-4::before {
+              content: '4';
+            }
           }
           &.controller {
-            background-color: red;
-            width: 15%;
+            color: #fff;
+            width: 20%;
             &.ijkl::before {
               content: 'ijkl';
             }
@@ -378,7 +419,7 @@ div.clear {
         }
         &.selected td {
           border: 1px solid white;
-          background: gray;
+          background-color: gray;
           &.selected {
             border: 1px solid red !important;
           }
@@ -386,8 +427,6 @@ div.clear {
       }
     }
   }
-
-
 
   &.help {
     h1 {

@@ -20,10 +20,11 @@
   <property id="game.player.1" type="complex">
     <name>Player 1</name>
     <username>John</username>
-    <color>#fff000</color>
+    <color>#3550f0</color>
     <eyes>cyclope</eyes>
     <active>true</active>
     <controller>ai</controller>
+    <team>0</team>
   </property>
   <property id="game.player.2" type="complex">
     <name>Player 2</name>
@@ -32,6 +33,7 @@
     <eyes>stereo</eyes>
     <active>true</active>
     <controller>wasd</controller>
+    <team>0</team>
   </property>
   <property id="game.player.3" type="complex">
     <name>Player 3</name>
@@ -40,6 +42,7 @@
     <eyes>alien</eyes>
     <active>true</active>
     <controller>ai</controller>
+    <team>4</team>
   </property>
   <property id="game.player.4" type="complex">
     <name>Player 4</name>
@@ -48,14 +51,16 @@
     <eyes>olimpian</eyes>
     <active>true</active>
     <controller>ai</controller>
+    <team>0</team>
   </property>
   <property id="game.player.5" type="complex">
     <name>Player 5</name>
     <username>Daniel</username>
     <color>cyan</color>
     <eyes>stereo</eyes>
-    <active>false</active>
+    <active>true</active>
     <controller>ai</controller>
+    <team>4</team>
   </property>
   <property id="game.player.6" type="complex">
     <name>Player 6</name>
@@ -64,14 +69,16 @@
     <eyes>stereo</eyes>
     <active>true</active>
     <controller>ijkl</controller>
+    <team>1</team>
   </property>
   <property id="game.player.7" type="complex">
     <name>Player 7</name>
     <username>Kenny</username>
     <color>orange</color>
     <eyes>cyclope</eyes>
-    <active>false</active>
+    <active>true</active>
     <controller>ai</controller>
+    <team>2</team>
   </property>
   <property id="game.player.8" type="complex">
     <name>Player 8</name>
@@ -80,6 +87,7 @@
     <eyes>alien</eyes>
     <active>true</active>
     <controller>arrows</controller>
+    <team>3</team>
   </property>
 
 

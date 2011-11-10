@@ -54,10 +54,6 @@ define('screens/arena', ['screens/screen'], function() {
             this.keys = this.keys.without(e.keyCode);
           }
 
-          if (this.keys.indexOf(e.keyCode) !== -1) {
-            this.keys = this.keys.without(e.keyCode);
-          }
-
           if (e.keyCode == 27 || e.keyCode == 19) {
             this.paused = !this.paused;
           }
@@ -85,7 +81,6 @@ define('screens/arena', ['screens/screen'], function() {
       Game.Map.getNextMap(function(map) {
         this.map = map;
 
-
         var players = Config.Players.getActivePlayers();
         var positions = this.map.getPlayerStartupPositions();
 
@@ -106,7 +101,7 @@ define('screens/arena', ['screens/screen'], function() {
           }
           var position = positions[i % positions.length];
 
-          console.log(position, controller, player.getValue('controller'))
+          console.log(position, controller, player.getValue('controller'));
 
           var bomber = new Game.Object.Bomber(controller, i + 1, defaultLocation.clone(), player.getConfig());
           bomber.flyTo(this.map.entry.tiles[position.point.getX()][position.point.getY()]);

@@ -303,29 +303,94 @@ body.default {
         font-size: 20px;
         .player {
           td {
+            &.preview {
+              .bomber {
+                .border-radius(20px);
+                .hotspot {
+                  background: url("../../images/light.png") 0 0 no-repeat;
+                  width: 40px;
+                  height: 40px;
+                  .eyes {
+                    width: 40px;
+                    height: 40px;
+                    &.stereo {
+                      background: url('../../images/themes/default/stereo-eyes.png') 2px 0 no-repeat;
+                    }
+                    &.cyclope {
+                      background: url('../../images/themes/default/cyclope-eyes.png') 2px 0 no-repeat;
+                    }
+                    &.alien {
+                      background: url('../../images/themes/default/alien-eyes.png') 2px 0 no-repeat;
+                    }
+                    &.olimpian {
+                      background: url('../../images/themes/default/olimpian-eyes.png') 2px 0 no-repeat;
+                    }
+                  }
+                }
+              }
+            }
             &.controller {
               &::before {
                 content: '';
               }
               &.ijkl {
-                background: transparent url('../../images/themes/default/controllers.png') 0 -165px no-repeat;
+                background: url('../../images/themes/default/controllers.png') 0 -165px no-repeat;
               }
               &.wasd {
-                background: transparent url('../../images/themes/default/controllers.png') 0 -110px no-repeat;
+                background: url('../../images/themes/default/controllers.png') 0 -110px no-repeat;
               }
               &.arrows {
-                background: transparent url('../../images/themes/default/controllers.png') 0 -54px no-repeat;
+                background: url('../../images/themes/default/controllers.png') 0 -54px no-repeat;
               }
               &.ai {
-                background: transparent url('../../images/themes/default/controllers.png') 0 0 no-repeat;
+                background: url('../../images/themes/default/controllers.png') 0 0 no-repeat;
+              }
+            }
+
+            &.eyes {
+              &.stereo {
+                background: url('../../images/themes/default/stereo-eyes.png') 13px 15px no-repeat;
+              }
+              &.cyclope {
+                background: url('../../images/themes/default/cyclope-eyes.png') 13px 15px no-repeat;
+              }
+              &.alien {
+                background: url('../../images/themes/default/alien-eyes.png') 13px 15px no-repeat;
+              }
+              &.olimpian {
+                background: url('../../images/themes/default/olimpian-eyes.png') 13px 15px no-repeat;
+              }
+            }
+
+            &.team {
+              &::before {
+                content: '';
+              }
+              &.team-0 {
+                background: url('../../images/themes/default/teams.jpg') 0 0 no-repeat;
+              }
+              &.team-1 {
+                background: url('../../images/themes/default/teams.jpg') 0 -56px no-repeat;
+              }
+              &.team-2 {
+                background: url('../../images/themes/default/teams.jpg') 0 -112px no-repeat;
+              }
+              &.team-3 {
+                background: url('../../images/themes/default/teams.jpg') 0 -167px no-repeat;
+              }
+              &.team-4 {
+                background: url('../../images/themes/default/teams.jpg') 0 -224px no-repeat;
               }
             }
           }
           &.selected td {
             border: 1px solid white;
-            background: gray;
+            background-color: gray;
           }
         }
+      }
+      .anykey.escape {
+        margin-top: 0;
       }
     }
   }

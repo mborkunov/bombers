@@ -44,6 +44,7 @@ define('objects/bomber', ['objects/object'], function() {
           top: (this.location.getY() * 40) + 'px',
           left: (this.location.getX() * 40) + 'px'
         }).addClassName('object').addClassName('bomber').addClassName('bomber-' + this.number);
+        this.element.setAttribute('title', this.config['username']);
         this.element.setStyle({'background-color': this.config['color']});
         this.eyes = new Element('div').addClassName('eyes object').addClassName(this.config['eyes']);
         this.element.appendChild(this.eyes);

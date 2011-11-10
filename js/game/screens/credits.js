@@ -6,6 +6,7 @@ define('screens/credits', ['screens/screen'], function() {
     rendered: false,
     text: null,
     stop: null,
+    margin: null,
     init: function() {
       this.stop = false;
       this.listeners = {
