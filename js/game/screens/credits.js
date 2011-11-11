@@ -39,7 +39,7 @@ define('screens/credits', ['screens/screen'], function() {
       };
 
       this.margin = $('game-container').getHeight();
-      this.text = '<h1>Happy Bombers Credits</h1><br/>' +
+      this.text = '<h1>ClanBomber Credits (Original)</h1><br/>' +
           '<h2>Game Design</h2>' +
           'Andreas Hundt<br/>' +
           'Denis Oliver Kropp<br/>' +

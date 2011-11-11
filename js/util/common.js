@@ -7,6 +7,32 @@ var Util = {
     for (var i = 0, length = items.length; i < length; i++) {
       func(items[i]);
     }
+  },
+  Location: {
+    params: null,
+    getParam: function(name) {
+      if (Util.Location.params == null) {
+        Util.Location.params = {};
+
+        if (window.location.search.length > 1) {
+          var params = window.location.search.substring(1).split('&');
+          for (var i = 0; i < params.length; i++) {
+            var param = params[i];
+            if (param.indexOf('=') >= 0) {
+              var values = param.split('=');
+              Util.Location.params[values[0]] = values[1];
+            } else {
+              Util.Location.params[param] = true;
+            }
+          }
+        }
+      }
+
+      if (!Object.isUndefined(Util.Location.params[name])) {
+        return Util.Location.params[name];
+      }
+      return null;
+    }
   }
 };
 
@@ -30,6 +56,8 @@ Element.addMethods({
       element.style.setProperty('-o-transform', 'scale(' + x + ', ' + y + ')', null);
     } else if (Prototype.Browser.Gecko) {
       element.style.setProperty('-moz-transform', 'scale(' + x + ', ' + y + ')', null);
+    } else {
+      element.style.setProperty('transform', 'scale(' + x + ', ' + y + ')', null);
     }
   }
 });

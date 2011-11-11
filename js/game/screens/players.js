@@ -149,7 +149,7 @@ define('screens/players', ['screens/screen'], function() {
         this.playersTable.appendChild(tbody);
         this.container.appendChild(this.playersTable);
 
-        this.escapeKeyElement = new Element("span").addClassName("anykey").addClassName('escape').update("Press escape key to return to menu");
+        this.escapeKeyElement = new Element("span").addClassName("anykey").addClassName('escape').update("Press escape key to return to exit");
         this.escapeKeyElement.on('click', function() {
           Game.instance.setScreen(Game.Screen.Menu)
         });

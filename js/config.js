@@ -1,5 +1,6 @@
 var Config = {
   properties: {},
+  types: {},
   getProperty: function(key) {
     if (typeof (this.properties[key]) !== 'undefined') {
       return this.properties[key];
@@ -19,7 +20,35 @@ var Config = {
     new Ajax.Request('config.xml', {
       method: 'get',
       onSuccess: function(t) {
-        var properties = t.responseXML.getElementsByTagName('property');
+        var xml = t.responseXML;
+        var types = xml.querySelectorAll('types > type');
+        console.log(types);
+
+        var nodeToObject = function(node) {
+          var data = {};
+          for (var x = 0, length = node.childNodes.length; x < length; x++) {
+            var child = type.childNodes[x];
+            console.log(child);
+            if (child.nodeType == 1) {
+              if (child.childNodes.length == 1) {
+                data[child.nodeName] = child.firstChild.nodeValue;
+              } else {
+                data[child.nodeName] = nodeToObject(child);
+              }
+            }
+          }
+          return data;
+        };
+
+        for (var x = 0, length = types.length; x < length; x++) {
+          var type = types[x];
+          var id = type.getAttribute('id');
+          //Config.types[id] = nodeToObject(type);
+        }
+        //console.log(t.responseXML.firstChild, types);
+        //console.log(xml.firstChild.querySelectorAll('types > type'));
+
+        var properties = xml.getElementsByTagName('property');
         for (var i = 0; i < properties.length; i++) {
           var property = Config.Property.create(properties[i]);
           property.loadUserValue();
@@ -48,6 +77,11 @@ Config.Property = Class.create({
     if (localStorage.getItem(this.id) !== null)  {
       this.setValue(localStorage.getItem(this.id));
     }
+
+    var value = Util.Location.getParam(this.id);
+    if (value !== null) {
+      this.setValue(value);
+    }
   },
   getId: function() {
     return this.id;
@@ -74,12 +108,6 @@ Config.Property = Class.create({
   }
 });
 
-/*Config.Property.Group = Class.create({
-  initialize: function(xmlConfig) {
-
-  }
-});*/
-
 Config.Players = {
   getAllPlayers: function() {
     var players = [];
@@ -101,10 +129,24 @@ Config.Players = {
     return players;
   },
   getAiPlayers: function() {
-
+    var players = [];
+    for (var i = 1; i <= 8; i++) {
+      var player = Config.getProperty('game.player.' + i);
+      if (player.getValue('controller').toLowerCase() == 'ai') {
+        players.push(player);
+      }
+    }
+    return players;
   },
   getHumanPlayer: function() {
-    
+    var players = [];
+    for (var i = 1; i <= 8; i++) {
+      var player = Config.getProperty('game.player.' + i);
+      if (player.getValue('controller').toLowerCase() != 'ai') {
+        players.push(player);
+      }
+    }
+    return players;
   }
 };
 
@@ -122,6 +164,7 @@ Config.Property.Complex = Class.create(Config.Property, {
       if (node.nodeType == 1) {
         try {
           var key = node.tagName;
+          //console.log(node.hasAttribute('ref'), node.getAttribute('ref'));
           this.map[key] = node.firstChild.nodeValue;
         } catch (ignored) {}
       }
@@ -262,7 +305,11 @@ Config.Property.Boolean = Class.create(Config.Property, {
   initialize: function($super, xmlConfig) {
     $super(xmlConfig);
 
-    this.value = this._getBoolean(xmlConfig.getAttribute('default').toLowerCase());
+    if (xmlConfig.hasAttribute('default')) {
+      this.value = this._getBoolean(xmlConfig.getAttribute('default').toLowerCase());
+    } else {
+      this.value = false;
+    }
     this.defaultValue = this.value;
   },
   getNextValue: function() {

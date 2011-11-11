@@ -151,15 +151,12 @@ var Game = Class.create({
         }
       }
 
-      //window.hashChangeEnabled = false;
       this.container.removeClassName(this.screen ? this.screen.name.toLowerCase() : null).addClassName(_screen.name.toLowerCase());
-      location.hash = '#' + _screen.name;
+
+      history.pushState({page: 1}, _screen.name + ' | Happy Bombers', "#" + _screen.name);
+
       this.screen = _screen;
       this.screen.setSleeping(true);
-
-      /*setTimeout(function() {
-        window.hashChangeEnabled = true;
-      }, 500);*/
 
       this.overlay.appear(function() {
         this.screen.setSleeping(false);

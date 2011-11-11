@@ -1,3 +1,5 @@
+"use strict";
+
 if (Object.isUndefined(console)) {
   window.console = {
     log: function() {},
@@ -16,7 +18,10 @@ if (!Object.isUndefined(window.applicationCache)) {
   }, false);
 }
 
-if ('onhashchange' in window) {
+
+//if ('onhashchange' in window) {
+  // Unfortunately, there is a strange behavior in chrome
+
   //console.log('load', window, window.__proto__.onhashchange);
 
   /*window.hashChangeHandler = function(e) {
@@ -27,13 +32,10 @@ if ('onhashchange' in window) {
     }
   };*/
   //window.onhashchange = window.hashChangeHandler;
-}
+//}
 
 
 document.observe("dom:loaded", function() {
-  document.onmousedown = function() {return false}; // disable text selection - chromium
-  document.oncontextmenu = function() {return false}; // disable context menu
-
   var controllers = ['mouse', 'keyboard', 'ai'].map(function(controller) {
     return 'controllers/' + controller;
   });
@@ -52,8 +54,6 @@ document.observe("dom:loaded", function() {
       'js/worker.js', 'js/sound.js', 'js/game.js', 'js/config.js'
     ].concat(screens).concat(tiles).concat(objects).concat(controllers);
 
-  console.log(dependencies);
-
   require({
       baseUrl: 'js/game',
       waitSeconds: 15
@@ -61,6 +61,12 @@ document.observe("dom:loaded", function() {
     Config.initialize({
       onSuccess: function() {
         console.info('config was successfully loaded');
+
+        if (!Config.getValue('debug')) {
+          document.onmousedown = function() {return false}; // disable text selection - chromium
+          document.oncontextmenu = function() {return false}; // disable context menu
+        }
+
         new Game().start();
       },
       onFailure: function() {

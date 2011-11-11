@@ -9,11 +9,14 @@ define('tiles/wall', ['tiles/tile'], function() {
     prerender: function($super, container) {
       this.container = container;
       $super(container);
-      this.element.stopObserving("click", this.clickHandler);
-      this.element.on("click", function() {
-        this.destroy();
-        Sound.play("crunch");
-      }.bind(this));
+
+      if (Config.getValue('debug')) {
+        this.element.stopObserving("click", this.clickHandler);
+        this.element.on("click", function() {
+          this.destroy();
+          Sound.play("crunch");
+        }.bind(this));
+      }
     },
     destroy: function($super) {
       this.next = new Game.Tile.Ground(this.getLocation().clone());

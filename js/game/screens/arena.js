@@ -100,9 +100,6 @@ define('screens/arena', ['screens/screen'], function() {
               break;
           }
           var position = positions[i % positions.length];
-
-          console.log(position, controller, player.getValue('controller'));
-
           var bomber = new Game.Object.Bomber(controller, i + 1, defaultLocation.clone(), player.getConfig());
           bomber.flyTo(this.map.entry.tiles[position.point.getX()][position.point.getY()]);
           this.objects.bombers.push(bomber);
@@ -171,7 +168,7 @@ define('screens/arena', ['screens/screen'], function() {
     update: function(delay) {
       if (this.map == null) return;
       if (this.paused) return;
-      if (this.keys.indexOf(Event.KEY_HOME) != -1) {
+      if (Config.getValue('debug') && this.keys.indexOf(Event.KEY_HOME) != -1) {
         this.shakeIt();
       }
 
@@ -209,14 +206,24 @@ define('screens/arena', ['screens/screen'], function() {
         this.dialog.appendChild(new Element('a').addClassName('action').update('Resume').observe('click', function() {
           this.paused = false;
         }.bind(this)));
+        window.google_ad_client = "ca-pub-8348571392367855";
+        window.google_ad_slot = "9307338421";
+        window.google_ad_width = 468;
+        window.google_ad_height = 60;
+        google_ad_client = "ca-pub-8348571392367855";
+        google_ad_slot = "9307338421";
+        google_ad_width = 468;
+        google_ad_height = 60;
+
         var adblock = new Element('div').addClassName('adblock');
         adblock.appendChild(new Element('script', {
-          type: 'application/javascript',
-          src: 'http://pagead2.googlesyndication.com/pagead/show_ads.js?' + Math.random()
+          type: 'text/javascript',
+          src: 'http://pagead2.googlesyndication.com/pagead/show_ads.js'
         }));
         this.dialog.appendChild(adblock);
         this.container.appendChild(this.overlay);
         this.container.appendChild(this.dialog);
+        console.log(window)
       } else if (!this.paused && this.dialog) {
         $('field').removeClassName('filter');
         this.dialog.remove();

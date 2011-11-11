@@ -3,17 +3,24 @@
     <words>
       <w>&amp;amp</w>
       <w>aculo</w>
+      <w>borkunov</w>
       <w>dragdrop</w>
+      <w>gmail</w>
       <w>hashchange</w>
+      <w>hotspot</w>
       <w>keypress</w>
       <w>khtml</w>
+      <w>mailto</w>
       <w>maxfps</w>
       <w>mozilla</w>
       <w>msxml</w>
+      <w>olimpian</w>
       <w>oncontextmenu</w>
       <w>onhashchange</w>
+      <w>popstate</w>
       <w>proto</w>
       <w>requirecontext</w>
+      <w>thead</w>
       <w>xmlhttp</w>
     </words>
   </dictionary>
