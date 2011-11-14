@@ -80,7 +80,7 @@ define('screens/score', ['screens/screen'], function() {
         preview.removeClassName('loading');
       }.bind(this, next));
 
-      var anyKey = new Element("span").addClassName("anykey").update("Press any key");
+      var anyKey = new Element("span").addClassName("anykey").update("Press enter or escape");
       anyKey.on('click', function() {
         Game.instance.setScreen(Game.Screen.Arena)
       });

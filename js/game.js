@@ -116,25 +116,12 @@ var Game = Class.create({
   },
   setTheme: function(theme) {
     if (theme == null) return;
-    //Config.getProperty("graphic.theme").setValue(theme);
-    /*var themeLink = $('theme');
-    if (!themeLink) {
-      themeLink = new Element('link', {id: 'theme', rel: 'stylesheet', type: 'text/css', name: theme});
-      document.head.appendChild(themeLink);
-    } else {
-      document.body.removeClassName(themeLink.getAttribute('name'));
-    }*/
-
     if (document.body.hasClassName(this.currentTheme)) {
       document.body.removeClassName(this.currentTheme);
     }
 
     document.body.addClassName(theme);
     this.currentTheme = theme;
-
-    /*themeLink.setAttribute('href', 'css/themes/' + theme +'.css');
-    themeLink.setAttribute('name', theme);*/
-    //document.body.addClassName(theme);
   },
   setScreen: function(screen) {
     var appear = function() {
@@ -153,7 +140,7 @@ var Game = Class.create({
 
       this.container.removeClassName(this.screen ? this.screen.name.toLowerCase() : null).addClassName(_screen.name.toLowerCase());
 
-      history.pushState({page: 1}, _screen.name + ' | Happy Bombers', "#" + _screen.name);
+      history.pushState({}, _screen.name + ' | Happy Bombers', "#" + _screen.name);
 
       this.screen = _screen;
       this.screen.setSleeping(true);

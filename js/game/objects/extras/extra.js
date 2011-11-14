@@ -18,9 +18,18 @@ define('objects/extras/extra', [], function() {
         this.element.observe('click', function() {
           this.remove();
         }.bind(this));
-        Game.instance.screen.battleField.appendChild(this.element);
+        Game.instance.getScreen().battleField.appendChild(this.element);
       }
       $super();
+    },
+    update: function($super, delay) {
+      if (!this.isFalling()) {
+        var tile = Game.instance.getScreen().map.getTile(this.location.getX(), this.location.getY());
+        if (tile.getName() == 'none' || tile.isDestroyed()) {
+          this.fall();
+        }
+      }
+      $super(delay);
     },
     act: function() {},
     remove: function() {
