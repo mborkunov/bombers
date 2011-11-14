@@ -206,24 +206,24 @@ define('screens/arena', ['screens/screen'], function() {
         this.dialog.appendChild(new Element('a').addClassName('action').update('Resume').observe('click', function() {
           this.paused = false;
         }.bind(this)));
-        window.google_ad_client = "ca-pub-8348571392367855";
+        /*window.google_ad_client = "ca-pub-8348571392367855";
         window.google_ad_slot = "9307338421";
         window.google_ad_width = 468;
         window.google_ad_height = 60;
         google_ad_client = "ca-pub-8348571392367855";
         google_ad_slot = "9307338421";
         google_ad_width = 468;
-        google_ad_height = 60;
+        google_ad_height = 60;*/
 
-        var adblock = new Element('div').addClassName('adblock');
-        adblock.appendChild(new Element('script', {
+        //var adblock = new Element('div').addClassName('adblock');
+        /*adblock.appendChild(new Element('script', {
           type: 'text/javascript',
           src: 'http://pagead2.googlesyndication.com/pagead/show_ads.js'
-        }));
-        this.dialog.appendChild(adblock);
+        }));*/
+        //adblock.appendChild($('adblock'));
+        //this.dialog.appendChild(adblock);
         this.container.appendChild(this.overlay);
         this.container.appendChild(this.dialog);
-        console.log(window)
       } else if (!this.paused && this.dialog) {
         $('field').removeClassName('filter');
         this.dialog.remove();

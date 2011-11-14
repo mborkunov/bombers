@@ -78,7 +78,7 @@ define('screens/credits', ['screens/screen'], function() {
       this.div = new Element('div').update(this.text).setStyle({
         position: 'absolute',
         marginTop: this.margin + "px"
-      });
+      }).addClassName('content');
       this.container.appendChild(this.div);
     },
     dispatch: function($super) {

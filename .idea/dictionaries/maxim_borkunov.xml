@@ -3,6 +3,7 @@
     <words>
       <w>&amp;amp</w>
       <w>aculo</w>
+      <w>bomberman</w>
       <w>borkunov</w>
       <w>dragdrop</w>
       <w>gmail</w>
@@ -17,10 +18,15 @@
       <w>olimpian</w>
       <w>oncontextmenu</w>
       <w>onhashchange</w>
+      <w>paypal</w>
+      <w>paypalobjects</w>
+      <w>pkcs</w>
       <w>popstate</w>
       <w>proto</w>
       <w>requirecontext</w>
       <w>thead</w>
+      <w>webscr</w>
+      <w>xclick</w>
       <w>xmlhttp</w>
     </words>
   </dictionary>

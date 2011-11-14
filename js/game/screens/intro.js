@@ -8,10 +8,10 @@ define('screens/intro', ['screens/screen'], function() {
     drawText: false,
     speed: 9,
     lastCall: 0,
-    margin: 0,
+    padding: 0,
     text: "A world domination project",
     init: function() {
-      this.margin = 10;
+      this.padding = 0;
       this.listeners = {
         click: function(e) {
           if (this.timeout) clearTimeout(this.timeout);
@@ -51,16 +51,17 @@ define('screens/intro', ['screens/screen'], function() {
           this.timeout = setTimeout(function() {
             console.log('intro set screen');
             Game.instance.setScreen(Game.Screen.Menu);
-          }, 1500);
+          }, 1000);
         }
       } else {
         if (this.opacity >= 1) {
           this.drawText = true;
         }
         if (this.timeout) {
-          this.logo.style.setProperty('margin-top', '-' + this.margin + 'px', null);
-          this.textElement.style.setProperty('margin-top', this.margin * 2 + 'px', null);
-          this.margin += 5;
+          this.logo.style.setProperty('padding-bottom', this.padding + 'px', null);
+          this.logo.style.setProperty('opacity', Math.max(0, 1 - this.padding * .01), null);
+          this.textElement.style.setProperty('padding-top', this.padding + 'px', null);
+          this.padding += 5;
         }
         this.opacity += 0.015;
       }
