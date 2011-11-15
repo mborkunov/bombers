@@ -19,20 +19,25 @@ body.original {
     &.menu {
       background-image: url('../../images/themes/original/title.png');
       #menu {
-        .opacity(.7);
         width: 30%;
         padding: 0;
   
         li {
+          color: #d6d7ce;
+          font-weight: bold;
+          .opacity(.7);
           width: auto;
           height: 30px;
-          background: #a87;
+          background: #00109c;
           margin: 0 auto;
           border: none;
           .border-radius(0);
           &.selected {
-            background: #965;
+            .opacity(1);
           }
+          &.value-off {
+            color: #446 !important;
+          } 
         }
       }
     }

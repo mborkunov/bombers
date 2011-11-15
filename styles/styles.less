@@ -39,12 +39,14 @@ div.clear {
 .addthis_toolbox {
   position: absolute;
   right: 20px;
+  z-index: 0;
 }
 
 #game-container {
   background: #000;
   border: 1px solid #222;
   position: absolute;
+  z-index: 1;
   top: 50%;
   left: 50%;
   width: 800px;
@@ -477,6 +479,99 @@ div.clear {
       }
     }
   }
+  &.editor {
+    .preview, .toolbox {
+      height: 93%;
+      margin: 7% 0 0 0;
+      .opacity(.8);
+    }
+    .preview {
+      background: gray;
+      position: relative;
+
+      width: 75%;
+      float: right;
+
+      .tile {
+        position: absolute;
+        width: 37px;
+        height: 37px;
+        border: 1px solid red;
+        &.none {
+            background: #000;
+        }
+        &.ice {
+            background: #00bfff;
+        }
+        &.trap {
+         background: orange;
+        }
+        &.ground {
+          background: gray;
+        }
+        &.wall {
+          background: darkgray;
+        }
+        &.box {
+          background: silver;
+        }
+      }
+    }
+    .toolbox {
+      float: left;
+      background: blue;
+      width: 25%;
+
+      .title {
+        font-size: 15px;
+        margin: 0 0 10px;
+        text-align: center;
+        background: white;
+        color: #000;
+      }
+
+      .properties {
+        label {
+          color: #fff;
+        }
+        input {
+        }
+        select {
+        }
+      }
+
+      .tiles {
+        .tile {
+          border: 1px solid black;
+          width: 38px;
+          height: 38px;
+          float: left;
+          margin: 5px;
+          &.selected {
+            border: 1px solid red;
+          }
+          &.ice {
+            background: #00bfff;
+          }
+          &.trap {
+           background: orange;
+          }
+          &.ground {
+            background: gray;
+          }
+          &.wall {
+            background: darkgray;
+          }
+          &.box {
+            background: silver;
+          }
+          &.none {
+             background: black;
+          }
+        }
+      }
+    }
+  }
 
   #theme-switcher div {
     &:first-child {
@@ -486,8 +581,6 @@ div.clear {
       border-radius: 0 5px 5px 0;
     }
   }
-
-
 }
 
 #overlay {
