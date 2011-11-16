@@ -40,11 +40,11 @@ var Config = {
           return data;
         };
 
-        for (var x = 0, length = types.length; x < length; x++) {
+        /*for (var x = 0, length = types.length; x < length; x++) {
           var type = types[x];
           var id = type.getAttribute('id');
           //Config.types[id] = nodeToObject(type);
-        }
+        }*/
         //console.log(t.responseXML.firstChild, types);
         //console.log(xml.firstChild.querySelectorAll('types > type'));
 

@@ -25,7 +25,7 @@ define('screens/intro', ['screens/screen'], function() {
         }.bind(this)
       };
       Sound.play('winlevel');
-      this.div = new Element('div');
+      this.div = new Element('div').addClassName('content');
       this.div.appendChild(this.logo = new Element("div").addClassName("logo").setStyle({opacity: 0}));
       this.div.appendChild(this.textElement = new Element("div").addClassName("text").update(" "));
 
@@ -61,6 +61,7 @@ define('screens/intro', ['screens/screen'], function() {
           this.logo.style.setProperty('padding-bottom', this.padding + 'px', null);
           this.logo.style.setProperty('opacity', Math.max(0, 1 - this.padding * .01), null);
           this.textElement.style.setProperty('padding-top', this.padding + 'px', null);
+          this.textElement.style.setProperty('opacity', Math.max(0, 1 - this.padding * .01), null);
           this.padding += 5;
         }
         this.opacity += 0.015;

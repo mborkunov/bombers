@@ -43,6 +43,7 @@ body.default {
     &.editor {
       background-image: url('../../images/themes/original/editor.png');
       .preview, .toolbox {
+        background: #333;
         .tile {
           width: 39px;
           height: 39px;
@@ -57,12 +58,40 @@ body.default {
           }
           &.ground {
             background: url('../../images/themes/default/tiles.png') 160px 0;
+            text-aling: center;
+            &.spawn {
+              background: red;
+            }
           }
           &.box {
             background: url('../../images/themes/default/tiles.png') 80px 0;
           }
           &.wall {
             background: url('../../images/themes/default/tiles.png') 120px 0;
+            &.player-1::before{
+              content:'1';
+            }
+            &.player-2::before{
+              content:'2';
+            }
+            &.player-3::before{
+              content:'3';
+            }
+            &.player-4::before{
+              content:'4';
+            }
+            &.player-5::before{
+              content:'5';
+            }
+            &.player-6::before{
+              content:'6';
+            }
+            &.player-7::before{
+              content:'7';
+            }
+            &.player-8::before{
+              content:'8';
+            }
           }
           &.arrow {
             &.east {
@@ -81,11 +110,9 @@ body.default {
         }
       }
       .preview {
-        background: gray;
         .opacity(1);
       }
       .toolbox {
-        background: #444;
         .tile {
           border: 1px solid black;
           &.selected {

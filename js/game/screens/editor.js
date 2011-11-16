@@ -7,6 +7,7 @@ define('screens/editor', ['screens/screen'], function() {
     mapName: null,
     author: null,
     playersNumber: null,
+    spawnedPlayers: null,
     size: null,
     data: null,
     init: function() {
@@ -26,6 +27,7 @@ define('screens/editor', ['screens/screen'], function() {
       this.mapName = '_';
       this.author = 'Guest';
       this.playersNumber = 4;
+      this.spawnedPlayers = 0;
       this.initData(10, 12);
     },
     initData: function(x, y) {
@@ -123,6 +125,7 @@ define('screens/editor', ['screens/screen'], function() {
       this.tiles.push('arrow south');
       this.tiles.push('arrow east');
       this.tiles.push('none');
+      this.tiles.push('ground spawn');
 
       this.tiles.each(function(item) {
         var element = new Element('div').addClassName('tile').addClassName(item);
@@ -175,51 +178,102 @@ define('screens/editor', ['screens/screen'], function() {
 
       for (var i = 0; i < this.size.y; i++) {
         for (var j = 0; j < this.size.x; j++) {
-          var tile = new Element('div', {id: i + 'x' + j}).addClassName('tile none');
-          tile.observe('mousedown', function(e) {
-            this.pressed = true;
-            if (this.selected) {
-              var loc = e.element().getAttribute('id').split('x');
-              this.setTile(loc[1], loc[0], this.selected);
-            }
-          }.bind(this));
-          tile.observe('mouseup', function(e) {
-            this.pressed = false;
-          }.bind(this));
-          tile.observe('mouseover', function(e) {
-            if (this.pressed && this.selected) {
-              var loc = e.element().getAttribute('id').split('x');
-              this.setTile(loc[1], loc[0], this.selected);
-            }
-          }.bind(this));
-
-          tile.observe('mouseout', function(e) {
-          }.bind(this));
-
-          tile.setStyle({
-            top: (i * 40) + 15 + 'px',
-            left: (j * 40) + 15 + 'px'
-          });
+          var tile = this.createTile(i, j);
           this.preview.appendChild(tile);
         }
       }
+    },
+    createTile: function(x, y) {
+      var tile = new Element('div', {id: y + 'x' + x}).addClassName('tile none');
+      tile.observe('mousedown', function(e) {
+        this.pressed = true;
+        if (this.selected) {
+          var loc = e.element().getAttribute('id').split('x');
+          this.setTile(loc[1], loc[0], this.selected);
+        }
+      }.bind(this));
+      tile.observe('mouseup', function(e) {
+        this.pressed = false;
+      }.bind(this));
+      tile.observe('mouseover', function(e) {
+        if (this.pressed && this.selected) {
+          var loc = e.element().getAttribute('id').split('x');
+          this.setTile(loc[1], loc[0], this.selected);
+        }
+      }.bind(this));
+
+      tile.observe('mouseout', function(e) {
+      }.bind(this));
+
+      tile.setStyle({
+        top: (y * 40) + 15 + 'px',
+        left: (x * 40) + 15 + 'px'
+      });
+      return tile;
     },
     setTile: function(x, y, tile) {
       var element = $(y + 'x' + x);
       element.className = 'tile';
       element.addClassName(tile);
-      this.data[y][x] = tile.charAt(0);
+
+      if (tile.indexOf('arrow') == 0) {
+        switch (tile.split(' ')[1]) {
+          case 'west':
+              this.data[y][x] = '<';
+          break;
+          case 'east':
+              this.data[y][x] = '>';
+          break;
+          case 'north':
+              this.data[y][x] = '^';
+          break;
+          case 'south':
+              this.data[y][x] = 'v';
+          break;
+        }
+      } else {
+        var currentValue = this.data[y][x];
+        var newValue = tile.charAt(0);
+        if (parseInt(currentValue) == 0) {
+          if (parseInt(newValue) > 0) {
+            this.spawnedPlayers++;
+          }
+        } else {
+          if (parseInt(newValue) == 0) {
+            this.spawnedPlayers--;
+          }
+        }
+        this.data[y][x] = newValue;
+      }
     },
     onPropertyChanged: function() {
       console.log('changed');
       this.mapName = '_';
       this.author = '';
       this.playersNumber = 5;
+      this.clearPreview();
+      this.resize(this.xAxis.value, this.yAxis.value);
+      console.log(this.xAxis.value, this.yAxis.value);
 
-      this.initData(10, 12);
+      //this.initData(10, 12);
+    },
+    clearPreview: function() {
+      this.eachTile(function(tile) {
+        if (tile) {
+          tile.remove();
+        }
+      });
     },
     resize: function(x, y) {
-      
+      console.log(x, y);
+      this.clearPreview();
+      this.size = {x:x, y:y};
+      for (var i = 0; i < y; i++) {
+        for (var j = 0; j < x; j++) {
+          var tile = this.createTile(j, i);
+          this.preview.appendChild(tile);
+        }
+      }
     },
     clear: function() {
       console.log('clear');
@@ -289,6 +343,7 @@ define('screens/editor', ['screens/screen'], function() {
     },
     save: function() {
       console.log('save');
+      localStorage.setItem('map.' + this.getMapName(), this.serialize());
     },
     play: function() {
 
@@ -298,4 +353,3 @@ define('screens/editor', ['screens/screen'], function() {
     }
   })
 });
-
