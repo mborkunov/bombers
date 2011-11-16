@@ -21,8 +21,8 @@ var Config = {
       method: 'get',
       onSuccess: function(t) {
         var xml = t.responseXML;
-        var types = xml.querySelectorAll('types > type');
-        console.log(types);
+        //var types = xml.querySelectorAll('types > type');
+        //console.log(types);
 
         var nodeToObject = function(node) {
           var data = {};

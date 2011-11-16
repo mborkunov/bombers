@@ -6,7 +6,7 @@ define('screens/editor', ['screens/screen'], function() {
     pressed: null,
     mapName: null,
     author: null,
-    players: null,
+    playersNumber: null,
     size: null,
     data: null,
     init: function() {
@@ -23,6 +23,9 @@ define('screens/editor', ['screens/screen'], function() {
         document.onmousedown = function() {return true}; // enable text selection - chromium
         document.oncontextmenu = function() {return true}; // enable context menu
       }
+      this.mapName = '_';
+      this.author = 'Guest';
+      this.playersNumber = 4;
       this.initData(10, 12);
     },
     initData: function(x, y) {
@@ -55,155 +58,163 @@ define('screens/editor', ['screens/screen'], function() {
     },
     prerender: function() {
       this.preview = new Element('div').addClassName('preview');
-        this.toolbox = new Element('div').addClassName('toolbox');
+      this.toolbox = new Element('div').addClassName('toolbox');
 
-        this.properties = new Element('div').addClassName('properties');
-        this.tilesBox = new Element('div').addClassName('tiles');
-        this.properties.appendChild(new Element('h2').addClassName('title').update('Properties'));
+      this.properties = new Element('div').addClassName('properties');
+      this.tilesBox = new Element('div').addClassName('tiles');
+      this.properties.appendChild(new Element('h2').addClassName('title').update('Properties'));
 
-        this.properties.appendChild(new Element('label').addClassName('name').update('Map name:'));
-        this.properties.appendChild(new Element('br'));
-        this.properties.appendChild(new Element('input').addClassName('name'));
-        this.properties.appendChild(new Element('br'));
-        this.properties.appendChild(new Element('label').addClassName('name').update('Author:'));
-        this.properties.appendChild(new Element('br'));
-        this.properties.appendChild(new Element('input').addClassName('author'));
-        this.properties.appendChild(new Element('br'));
+      this.properties.appendChild(new Element('label').addClassName('name').update('Map name:'));
+      this.properties.appendChild(new Element('br'));
+      this.mapNameElement = new Element('input').addClassName('name');
+      this.properties.appendChild(this.mapNameElement);
+      this.properties.appendChild(new Element('br'));
+      this.properties.appendChild(new Element('label').addClassName('name').update('Author:'));
+      this.properties.appendChild(new Element('br'));
+      this.authorElement = new Element('input', {value: this.author}).addClassName('author');
+      this.properties.appendChild(this.authorElement);
+      this.properties.appendChild(new Element('br'));
 
-        this.properties.appendChild(new Element('label').addClassName('name').update('Players'));
-        this.properties.appendChild(new Element('br'));
-        this.players = new Element('select');
-        this.properties.appendChild(this.players);
-        for (var p = 2; p <= 8; p++) {
-          this.players.appendChild(new Element('option').update(p));
-        }
-        this.properties.appendChild(new Element('br'));
+      this.properties.appendChild(new Element('label').addClassName('name').update('Players'));
+      this.properties.appendChild(new Element('br'));
+      this.players = new Element('select');
+      this.properties.appendChild(this.players);
+      for (var p = 2; p <= 8; p++) {
+        this.players.appendChild(new Element('option').update(p));
+      }
+      this.properties.appendChild(new Element('br'));
 
-        this.properties.appendChild(new Element('label').addClassName('name').update('Map size'));
-        this.properties.appendChild(new Element('br'));
-        this.xAxis = new Element('select');
-        this.properties.appendChild(this.xAxis);
-        for (var x = 4; x <= 16; x++) {
-          this.xAxis.appendChild(new Element('option').update(x));
-        }
+      this.properties.appendChild(new Element('label').addClassName('name').update('Map size'));
+      this.properties.appendChild(new Element('br'));
+      this.xAxis = new Element('select');
+      this.properties.appendChild(this.xAxis);
+      for (var x = 4; x <= 16; x++) {
+        this.xAxis.appendChild(new Element('option').update(x));
+      }
 
-        this.yAxis = new Element('select');
-        this.properties.appendChild(this.yAxis);
-        for (var y = 4; y <= 16; y++) {
-          this.yAxis.appendChild(new Element('option').update(y));
-        }
-        document.body.observe('mousedown', function() {
-          this.pressed = true;
-        }.bind(this));
-        document.body.observe('mouseup', function() {
-          this.pressed = false;
-        }.bind(this));
+      this.yAxis = new Element('select');
+      this.properties.appendChild(this.yAxis);
+      for (var y = 4; y <= 16; y++) {
+        this.yAxis.appendChild(new Element('option').update(y));
+      }
+      document.body.observe('mousedown', function() {
+        this.pressed = true;
+      }.bind(this));
+      document.body.observe('mouseup', function() {
+        this.pressed = false;
+      }.bind(this));
 
-        this.properties.appendChild(new Element('br'));
-        this.properties.appendChild(new Element('br'));
+      this.properties.appendChild(new Element('br'));
+      this.properties.appendChild(new Element('br'));
 
-        this.properties.appendChild(new Element('button').update('Apply').observe('click', this.onPropertyChanged.bind(this)));
-        this.properties.appendChild(new Element('br'));
+      this.properties.appendChild(new Element('button').update('Apply').observe('click', this.onPropertyChanged.bind(this)));
+      this.properties.appendChild(new Element('br'));
 
-        this.tilesBox.appendChild(new Element('h2').addClassName('title').update('Tiles'));
+      this.tilesBox.appendChild(new Element('h2').addClassName('title').update('Tiles'));
 
-        this.tiles = $A();
-        this.tiles.push('wall');
-        this.tiles.push('box');
-        this.tiles.push('ice');
-        this.tiles.push('trap');
-        this.tiles.push('arrow north');
-        this.tiles.push('ground');
-        this.tiles.push('arrow west');
-        this.tiles.push('arrow south');
-        this.tiles.push('arrow east');
-        this.tiles.push('none');
+      this.tiles = $A();
+      this.tiles.push('wall');
+      this.tiles.push('box');
+      this.tiles.push('ice');
+      this.tiles.push('trap');
+      this.tiles.push('arrow north');
+      this.tiles.push('ground');
+      this.tiles.push('arrow west');
+      this.tiles.push('arrow south');
+      this.tiles.push('arrow east');
+      this.tiles.push('none');
 
-        this.tiles.each(function(item) {
-          var element = new Element('div').addClassName('tile').addClassName(item);
-          element.observe('click', function(e) {
-            if (this.selected !== null) {
-              if (this.selected.indexOf(' ') >= 0) {
-                var classes = this.selected.split(' ').join('.');
-                this.tilesBox.select('.' + classes)[0].removeClassName('selected');
-              } else {
-                this.tilesBox.select('.' + this.selected)[0].removeClassName('selected');
-              }
-
+      this.tiles.each(function(item) {
+        var element = new Element('div').addClassName('tile').addClassName(item);
+        element.observe('click', function(e) {
+          if (this.selected !== null) {
+            if (this.selected.indexOf(' ') >= 0) {
+              var classes = this.selected.split(' ').join('.');
+              this.tilesBox.select('.' + classes)[0].removeClassName('selected');
+            } else {
+              this.tilesBox.select('.' + this.selected)[0].removeClassName('selected');
             }
-            this.selected = item;
-            e.element().addClassName('selected');
+
+          }
+          this.selected = item;
+          e.element().addClassName('selected');
+        }.bind(this));
+
+        this.tilesBox.appendChild(element);
+      }.bind(this));
+
+      this.tilesBox.appendChild(new Element('div').addClassName('clear'));
+
+      this.tilesBox.appendChild(new Element('button').addClassName('action').update('Fill').observe('click', this.fill.bind(this)));
+      this.tilesBox.appendChild(new Element('button').addClassName('action').update('Clear').observe('click', this.clear.bind(this)));
+
+      this.preview.observe('mouseover', function() {
+        document.onmousedown = function() {return false}; // enable text selection - chromium
+        document.getSelection().removeAllRanges();
+      });
+      this.preview.observe('mouseout', function() {
+        document.onmousedown = function() {return true}; // enable text selection - chromium
+      });
+
+      this.toolbox.appendChild(this.properties);
+      this.toolbox.appendChild(this.tilesBox);
+
+      this.actionsBox  = new Element('div').addClassName('actions');
+      this.actionsBox.appendChild(new Element('h2').addClassName('title').update('Actions'));
+
+      this.actionsBox.appendChild(new Element('button').addClassName('action').update('Save').observe('click', this.save.bind(this)));
+      this.actionsBox.appendChild(new Element('button').addClassName('action').update('Download').observe('click', this.download.bind(this)));
+      this.actionsBox.appendChild(new Element('button').addClassName('action').update('Upload').observe('click', this.upload.bind(this)));
+      this.actionsBox.appendChild(new Element('button').addClassName('action').update('Email').observe('click', this.email.bind(this)));
+
+
+      this.toolbox.appendChild(this.actionsBox);
+      this.container.appendChild(this.preview);
+      this.container.appendChild(this.toolbox);
+
+
+      for (var i = 0; i < this.size.y; i++) {
+        for (var j = 0; j < this.size.x; j++) {
+          var tile = new Element('div', {id: i + 'x' + j}).addClassName('tile none');
+          tile.observe('mousedown', function(e) {
+            this.pressed = true;
+            if (this.selected) {
+              var loc = e.element().getAttribute('id').split('x');
+              this.setTile(loc[1], loc[0], this.selected);
+            }
+          }.bind(this));
+          tile.observe('mouseup', function(e) {
+            this.pressed = false;
+          }.bind(this));
+          tile.observe('mouseover', function(e) {
+            if (this.pressed && this.selected) {
+              var loc = e.element().getAttribute('id').split('x');
+              this.setTile(loc[1], loc[0], this.selected);
+            }
           }.bind(this));
 
-          this.tilesBox.appendChild(element);
-        }.bind(this));
+          tile.observe('mouseout', function(e) {
+          }.bind(this));
 
-        this.tilesBox.appendChild(new Element('div').addClassName('clear'));
-
-        this.tilesBox.appendChild(new Element('button').addClassName('action').update('Fill').observe('click', this.fill.bind(this)));
-        this.tilesBox.appendChild(new Element('button').addClassName('action').update('Clear').observe('click', this.clear.bind(this)));
-
-        this.preview.observe('mouseover', function() {
-          document.onmousedown = function() {return false}; // enable text selection - chromium
-          document.getSelection().removeAllRanges();
-        });
-        this.preview.observe('mouseout', function() {
-          document.onmousedown = function() {return true}; // enable text selection - chromium
-        });
-
-        this.toolbox.appendChild(this.properties);
-        this.toolbox.appendChild(this.tilesBox);
-
-        this.actionsBox  = new Element('div').addClassName('actions');
-        this.actionsBox.appendChild(new Element('h2').addClassName('title').update('Actions'));
-
-        this.actionsBox.appendChild(new Element('button').addClassName('action').update('Save').observe('click', this.save.bind(this)));
-        this.actionsBox.appendChild(new Element('button').addClassName('action').update('Download').observe('click', this.download.bind(this)));
-        this.actionsBox.appendChild(new Element('button').addClassName('action').update('Upload').observe('click', this.upload.bind(this)));
-        this.actionsBox.appendChild(new Element('button').addClassName('action').update('Email').observe('click', this.email.bind(this)));
-
-
-        this.toolbox.appendChild(this.actionsBox);
-        this.container.appendChild(this.preview);
-        this.container.appendChild(this.toolbox);
-
-
-        for (var i = 0; i < this.size.y; i++) {
-          for (var j = 0; j < this.size.x; j++) {
-            var tile = new Element('div', {id: i + 'x' + j}).addClassName('tile none');
-            tile.observe('mousedown', function(e) {
-              this.pressed = true;
-              if (this.selected) {
-                e.element().className = 'tile';
-                e.element().addClassName(this.selected);
-              }
-            }.bind(this));
-            tile.observe('mouseup', function(e) {
-              this.pressed = false;
-            }.bind(this));
-            tile.observe('mouseover', function(e) {
-              if (this.pressed && this.selected) {
-                e.element().className = 'tile';
-                e.element().addClassName(this.selected);
-              }
-            }.bind(this));
-
-            tile.observe('mouseout', function(e) {
-            }.bind(this));
-
-            tile.setStyle({
-              top: (i * 40) + 15 + 'px',
-              left: (j * 40) + 15 + 'px'
-            });
-            this.preview.appendChild(tile);
-          }
+          tile.setStyle({
+            top: (i * 40) + 15 + 'px',
+            left: (j * 40) + 15 + 'px'
+          });
+          this.preview.appendChild(tile);
         }
+      }
+    },
+    setTile: function(x, y, tile) {
+      var element = $(y + 'x' + x);
+      element.className = 'tile';
+      element.addClassName(tile);
+      this.data[y][x] = tile.charAt(0);
     },
     onPropertyChanged: function() {
       console.log('changed');
-      this.mapName = '';
+      this.mapName = '_';
       this.author = '';
-      this.players = 5;
+      this.playersNumber = 5;
 
       this.initData(10, 12);
     },
@@ -242,17 +253,48 @@ define('screens/editor', ['screens/screen'], function() {
       console.log('upload');
     },
     download: function() {
-      // FileSaver api
-      console.log('download');
+      var bb = new BlobBuilder;
+      bb.append(this.serialize());
+      saveAs(bb.getBlob('text/plain;charset=utf-8'), this.getMapName() + '.map');
+    },
+    getMapName: function() {
+      this.mapName = this.mapNameElement.value;
+      return this.mapName;
+    },
+    getAuthor: function() {
+      this.author = this.authorElement.value;
+      return this.author;
     },
     email: function() {
-      window.location.href = 'mailto:Maxim Borkunov<maxim.borkunov@gmail.com>?subject=Please add this map&body=' + this.serialize();
+      if (this.validate()) {
+        window.location.href = 'mailto:Maxim Borkunov<maxim.borkunov@gmail.com>?subject=Please add this map&body=' + this.serialize();
+      } else {
+        alert('The map isn\'t valid');
+      }
     },
     serialize: function() {
-      return 'Hello\n World';
+      var result = '';
+      result += this.getAuthor() + '\n';
+      result += this.playersNumber + '\n';
+
+      for (var y = 0; y < this.size.y; y++) {
+        for (var x = 0; x < this.size.x; x++) {
+          result += this.data[y][x];
+        }
+        if (y + 1 < this.size.y) {
+          result+= '\n';
+        }
+      }
+      return result;
     },
     save: function() {
       console.log('save');
+    },
+    play: function() {
+
+    },
+    validate: function() {
+      return true;
     }
   })
 });
