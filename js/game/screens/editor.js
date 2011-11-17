@@ -151,6 +151,7 @@ define('screens/editor', ['screens/screen'], function() {
       this.tilesBox.appendChild(new Element('button').addClassName('action').update('Fill').observe('click', this.fill.bind(this)));
       this.tilesBox.appendChild(new Element('button').addClassName('action').update('Clear').observe('click', this.clear.bind(this)));
 
+
       this.preview.observe('mouseover', function() {
         document.onmousedown = function() {return false}; // enable text selection - chromium
         document.getSelection().removeAllRanges();
@@ -165,9 +166,9 @@ define('screens/editor', ['screens/screen'], function() {
       this.actionsBox  = new Element('div').addClassName('actions');
       this.actionsBox.appendChild(new Element('h2').addClassName('title').update('Actions'));
 
-      this.actionsBox.appendChild(new Element('button').addClassName('action').update('Save').observe('click', this.save.bind(this)));
+      this.actionsBox.appendChild(new Element('button').addClassName('action').update('todo:').observe('click', this.save.bind(this)));
       this.actionsBox.appendChild(new Element('button').addClassName('action').update('Download').observe('click', this.download.bind(this)));
-      this.actionsBox.appendChild(new Element('button').addClassName('action').update('Upload').observe('click', this.upload.bind(this)));
+      this.actionsBox.appendChild(new Element('button').addClassName('action').update('todo:').observe('click', this.upload.bind(this)));
       this.actionsBox.appendChild(new Element('button').addClassName('action').update('Email').observe('click', this.email.bind(this)));
 
 
@@ -175,21 +176,26 @@ define('screens/editor', ['screens/screen'], function() {
       this.container.appendChild(this.preview);
       this.container.appendChild(this.toolbox);
 
+      this.area = new Element('div').addClassName('area');
+      if (Config.getValue('graphic.shadows')) {
+        this.area.addClassName('shadows');
+      }
+      this.preview.appendChild(this.area);
 
       for (var i = 0; i < this.size.y; i++) {
         for (var j = 0; j < this.size.x; j++) {
-          var tile = this.createTile(i, j);
-          this.preview.appendChild(tile);
+          this.area.appendChild(this.createTile(j, i));
         }
       }
+      this.alignArea();
     },
     createTile: function(x, y) {
-      var tile = new Element('div', {id: y + 'x' + x}).addClassName('tile none');
+      var tile = new Element('div', {id: x + 'x' + y}).addClassName('tile none');
       tile.observe('mousedown', function(e) {
         this.pressed = true;
         if (this.selected) {
           var loc = e.element().getAttribute('id').split('x');
-          this.setTile(loc[1], loc[0], this.selected);
+          this.setTile(parseInt(loc[0]), parseInt(loc[1]), this.selected);
         }
       }.bind(this));
       tile.observe('mouseup', function(e) {
@@ -198,7 +204,7 @@ define('screens/editor', ['screens/screen'], function() {
       tile.observe('mouseover', function(e) {
         if (this.pressed && this.selected) {
           var loc = e.element().getAttribute('id').split('x');
-          this.setTile(loc[1], loc[0], this.selected);
+          this.setTile(parseInt(loc[0]), parseInt(loc[1]), this.selected);
         }
       }.bind(this));
 
@@ -206,13 +212,13 @@ define('screens/editor', ['screens/screen'], function() {
       }.bind(this));
 
       tile.setStyle({
-        top: (y * 40) + 15 + 'px',
-        left: (x * 40) + 15 + 'px'
+        top: (y * 40) + 'px',
+        left: (x * 40) + 'px'
       });
       return tile;
     },
     setTile: function(x, y, tile) {
-      var element = $(y + 'x' + x);
+      var element = $(x + 'x' + y);
       element.className = 'tile';
       element.addClassName(tile);
 
@@ -271,8 +277,22 @@ define('screens/editor', ['screens/screen'], function() {
       for (var i = 0; i < y; i++) {
         for (var j = 0; j < x; j++) {
           var tile = this.createTile(j, i);
-          this.preview.appendChild(tile);
+          this.area.appendChild(tile);
         }
+      }
+      this.alignArea();
+    },
+    alignArea: function() {
+      this.area.setStyle({
+        'margin-top': '-' + this.size.y * 20 + 'px',
+        'margin-left': '-' + this.size.x * 20 + 'px',
+        width: this.size.x * 40 + 'px',
+        height: this.size.y * 40 + 'px'
+      });
+      if (this.size.x >= 14 || this.size.y >= 14) {
+        this.area.scale(.8);
+      } else {
+        this.area.scale(1);
       }
     },
     clear: function() {
@@ -295,7 +315,7 @@ define('screens/editor', ['screens/screen'], function() {
     eachTile: function(callback) {
       for (var y = 0; y < this.size.y; y++) {
         for (var x = 0; x < this.size.x; x++) {
-          callback($(y +'x' + x));
+          callback($(x +'x' + y));
         }
       }
     },

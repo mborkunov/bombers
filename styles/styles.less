@@ -30,6 +30,7 @@ div.clear {
 #author {
   color: #fff;
   display: block;
+  width: 110px;
   padding-left: 3px;
   &:hover {
     text-decoration: none;
@@ -41,12 +42,24 @@ div.clear {
   right: 20px;
   z-index: 0;
 }
+.addthis_overlay {
+  position: absolute;
+  width: 400px;
+  height: 50px;
+  right: 20px;
+  z-index: 1;
+  color: #f00;
+  padding: 10px 0 0;
+  font-size: 20px;
+  text-align: center;
+  text-shadow: 0 0  1px black;
+}
 
 #game-container {
   background: #000;
   border: 1px solid #222;
   position: absolute;
-  z-index: 1;
+  z-index: 2;
   top: 50%;
   left: 50%;
   width: 800px;
@@ -490,34 +503,43 @@ div.clear {
       padding: 1px 3px;
     }
     .preview {
-      background: gray;
       position: relative;
-
+      background: black;
+      padding: 0;
       width: 75%;
       float: right;
-
-      .tile {
+      .area {
         position: absolute;
-        width: 37px;
-        height: 37px;
-        border: 1px solid red;
-        &.none {
-            background: #000;
+        top: 50%;
+        left: 50%;
+
+        .tile {
+          position: absolute;
+          width: 37px;
+          height: 37px;
+          border: 1px solid red;
+          &.none {
+              background: #000;
+          }
+          &.ice {
+              background: #00bfff;
+          }
+          &.trap {
+           background: orange;
+          }
+          &.ground {
+            background: gray;
+          }
+          &.wall {
+            background: darkgray;
+          }
+          &.box {
+            background: silver;
+          }
         }
-        &.ice {
-            background: #00bfff;
-        }
-        &.trap {
-         background: orange;
-        }
-        &.ground {
-          background: gray;
-        }
-        &.wall {
-          background: darkgray;
-        }
-        &.box {
-          background: silver;
+        &.shadows .tile.wall,&.shadows .tile.box {
+          box-shadow: 3px 3px 10px #000;
+          z-index: 1;
         }
       }
     }
@@ -535,6 +557,10 @@ div.clear {
       }
 
       .properties {
+        padding: 0 10px 5px;
+        .title {
+          margin: 0 -10px;
+        }
         label {
           color: #fff;
         }
