@@ -62,7 +62,17 @@ define('screens/menu', ['screens/screen'], function() {
             .addChild(new Item(null, Type.Settings, 'sounds', function(value) {
               Sound.setEnabled(value);
             }))
-            .addChild(new Item(null, Type.Settings, 'debug')))
+            .addChild(new Item(null, Type.Settings, 'debug', function(value) {
+              if (value) {
+                document.onmousedown = function() {return true}; // disable text selection - chromium
+                document.oncontextmenu = function() {return true}; // disable context menu
+                Game.instance.drawThemesSwitcher();
+              } else {
+                $('theme-switcher').remove();
+                document.onmousedown = function() {return false}; // disable text selection - chromium
+                document.oncontextmenu = function() {return false}; // disable context menu
+              }
+            })))
         .addChild(new Item('Editor', Type.Screen, Game.Screen.Editor))
         .addChild(new Item('Credits', Type.Screen, Game.Screen.Credits))
         .addChild(new Item('Help', Type.Screen, Game.Screen.Help))

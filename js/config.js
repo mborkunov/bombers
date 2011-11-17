@@ -224,7 +224,7 @@ Config.Property.Enum = Class.create(Config.Property, {
     if (currentIndex < 0) {
       return this.values[0];
     } else {
-      if (currentIndex + 1 >= this.value.length) {
+      if (currentIndex + 1 >= this.values.length) {
         return this.values[0];
       } else {
         return this.values[currentIndex + 1];
