@@ -6,6 +6,7 @@ define('screens/menu', ['screens/screen'], function() {
     rendered: false,
     changed: false,
     init: function() {
+      Game.Screen.Menu.instance = this;
       var Type = Game.Screen.Menu.Item.Type;
       var Item = Game.Screen.Menu.Item;
 
@@ -19,72 +20,72 @@ define('screens/menu', ['screens/screen'], function() {
           .addChild(new Item(null, Type.Settings, 'game.win_points'))
           .addChild(new Item(null, Type.Settings, 'game.round_time')))
         .addChild(new Item('Options', Type.Inner)
-            .addChild(new Item('Start/Max Extras', Type.Inner)
-              .addChild(new Item(null, Type.Settings, 'start.bombs'))
-              .addChild(new Item(null, Type.Settings, 'start.power'))
-              .addChild(new Item(null, Type.Settings, 'start.skateboards'))
-              .addChild(new Item(null, Type.Settings, 'start.kick'))
-              .addChild(new Item(null, Type.Settings, 'start.glove'))
-              .addChild(new Item(null, Type.Settings, 'max.bombs'))
-              .addChild(new Item(null, Type.Settings, 'max.power'))
-              .addChild(new Item(null, Type.Settings, 'max.skateboards')))
-            .addChild(new Item('Extras', Type.Inner)
-              .addChild(new Item(null, Type.Settings, 'extras.bombs'))
-              .addChild(new Item(null, Type.Settings, 'extras.power'))
-              .addChild(new Item(null, Type.Settings, 'extras.skateboard'))
-              .addChild(new Item(null, Type.Settings, 'extras.kick'))
-              .addChild(new Item(null, Type.Settings, 'extras.glove')))
-            .addChild(new Item('Diseases', Type.Inner)
-              .addChild(new Item(null, Type.Settings, 'diseases.joint'))
-              .addChild(new Item(null, Type.Settings, 'diseases.viagra'))
-              .addChild(new Item(null, Type.Settings, 'diseases.cocaine')))
-            .addChild(new Item('Timing &amp; Speed', Type.Inner)
-              .addChild(new Item(null, Type.Settings, 'timing.bombs.countdown'))
-              .addChild(new Item(null, Type.Settings, 'timing.bombs.chain_reaction'))
-              .addChild(new Item(null, Type.Settings, 'timing.bombs.moving_speed')))
-            .addChild(new Item('Graphic Options', Type.Inner)
-              .addChild(new Item(null, Type.Settings, 'graphic.theme', function(theme) {
-                Game.instance.setTheme(theme);
-               }))
-              .addChild(new Item(null, Type.Settings, 'graphic.shadows', function(value) {
-                if (value) {
-                  Game.instance.container.addClassName('shadows');
-                } else {
-                  Game.instance.container.removeClassName('shadows');
-                }
-              }))
-              .addChild(new Item(null, Type.Settings, 'graphic.maxfps', function(fps) {
-                Game.instance.graphics.fps = fps;
-              }))
-              .addChild(new Item(null, Type.Settings, 'graphic.kidz'))
-              .addChild(new Item(null, Type.Settings, 'graphic.corpse_parts'))
-              .addChild(new Item(null, Type.Settings, 'graphic.shaky_explosions')))
-            .addChild(new Item(null, Type.Settings, 'sounds', function(value) {
-              Sound.setEnabled(value);
-            }))
-            .addChild(new Item(null, Type.Settings, 'debug', function(value) {
+          .addChild(new Item('Start/Max Extras', Type.Inner)
+            .addChild(new Item(null, Type.Settings, 'start.bombs'))
+            .addChild(new Item(null, Type.Settings, 'start.power'))
+            .addChild(new Item(null, Type.Settings, 'start.skateboards'))
+            .addChild(new Item(null, Type.Settings, 'start.kick'))
+            .addChild(new Item(null, Type.Settings, 'start.glove'))
+            .addChild(new Item(null, Type.Settings, 'max.bombs'))
+            .addChild(new Item(null, Type.Settings, 'max.power'))
+            .addChild(new Item(null, Type.Settings, 'max.skateboards')))
+          .addChild(new Item('Extras', Type.Inner)
+            .addChild(new Item(null, Type.Settings, 'extras.bombs'))
+            .addChild(new Item(null, Type.Settings, 'extras.power'))
+            .addChild(new Item(null, Type.Settings, 'extras.skateboard'))
+            .addChild(new Item(null, Type.Settings, 'extras.kick'))
+            .addChild(new Item(null, Type.Settings, 'extras.glove')))
+          .addChild(new Item('Diseases', Type.Inner)
+            .addChild(new Item(null, Type.Settings, 'diseases.joint'))
+            .addChild(new Item(null, Type.Settings, 'diseases.viagra'))
+            .addChild(new Item(null, Type.Settings, 'diseases.cocaine')))
+          .addChild(new Item('Timing &amp; Speed', Type.Inner)
+            .addChild(new Item(null, Type.Settings, 'timing.bombs.countdown'))
+            .addChild(new Item(null, Type.Settings, 'timing.bombs.chain_reaction'))
+            .addChild(new Item(null, Type.Settings, 'timing.bombs.moving_speed')))
+          .addChild(new Item('Graphic Options', Type.Inner)
+            .addChild(new Item(null, Type.Settings, 'graphic.theme', function(theme) {
+              Game.instance.setTheme(theme);
+             }))
+            .addChild(new Item(null, Type.Settings, 'graphic.shadows', function(value) {
               if (value) {
-                document.onmousedown = function() {return true}; // disable text selection - chromium
-                document.oncontextmenu = function() {return true}; // disable context menu
-                Game.instance.drawThemesSwitcher();
+                Game.instance.container.addClassName('shadows');
               } else {
-                $('theme-switcher').remove();
-                document.onmousedown = function() {return false}; // disable text selection - chromium
-                document.oncontextmenu = function() {return false}; // disable context menu
+                Game.instance.container.removeClassName('shadows');
               }
-            })))
-        .addChild(new Item('Editor', Type.Screen, Game.Screen.Editor))
-        .addChild(new Item('Credits', Type.Screen, Game.Screen.Credits))
-        .addChild(new Item('Help', Type.Screen, Game.Screen.Help))
-        .addChild(new Item('Quit Game', Type.Inner)
-          .addChild(new Item('Yes', Type.Custom, function() {
-            window.open('', '_self', '');
-            window.close();
+            }))
+            .addChild(new Item(null, Type.Settings, 'graphic.maxfps', function(fps) {
+              Game.instance.graphics.fps = fps;
+            }))
+            .addChild(new Item(null, Type.Settings, 'graphic.kidz'))
+            .addChild(new Item(null, Type.Settings, 'graphic.corpse_parts'))
+            .addChild(new Item(null, Type.Settings, 'graphic.shaky_explosions')))
+          .addChild(new Item(null, Type.Settings, 'sounds', function(value) {
+            Sound.setEnabled(value);
           }))
-          .addChild(new Item('No', Type.Custom, function(item) {
-            this.changeMenu(item.getParent().getParent());
-          }.bind(this)))
-        );
+          .addChild(new Item(null, Type.Settings, 'debug', function(value) {
+            if (value) {
+              document.onmousedown = function() {return true}; // disable text selection - chromium
+              document.oncontextmenu = function() {return true}; // disable context menu
+              Game.instance.drawThemesSwitcher();
+            } else {
+              $('theme-switcher').remove();
+              document.onmousedown = function() {return false}; // disable text selection - chromium
+              document.oncontextmenu = function() {return false}; // disable context menu
+            }
+          })))
+      .addChild(new Item('Editor', Type.Screen, Game.Screen.Editor))
+      .addChild(new Item('Credits', Type.Screen, Game.Screen.Credits))
+      .addChild(new Item('Help', Type.Screen, Game.Screen.Help))
+      .addChild(new Item('Quit Game', Type.Inner)
+        .addChild(new Item('Yes', Type.Custom, function() {
+          window.open('', '_self', '');
+          window.close();
+        }))
+        .addChild(new Item('No', Type.Custom, function(item) {
+          this.changeMenu(item.getParent().getParent());
+        }.bind(this)))
+      );
 
       this.listeners = {
         mousemove: function(e) {
@@ -99,8 +100,17 @@ define('screens/menu', ['screens/screen'], function() {
             case Event.KEY_UP:
               this.selectPrev();
               break;
+            case Event.KEY_LEFT:
+              this.act(null, false);
+              break;
+            case Event.KEY_RIGHT:
+              this.act(null, true);
+              break;
             case Event.KEY_ENTER || 13:
-              this.act();
+              this.act(null, true);
+              break;
+            case Event.KEY_BACKSPACE:
+              this.act(null, false);
               break;
             case Event.KEY_ESC:
               this.changeMenu(this.menu.getParent());
@@ -114,6 +124,7 @@ define('screens/menu', ['screens/screen'], function() {
     dispatch: function($super) {
       if (this.list) {
         this.list.remove();
+        this.rendered = false;
       }
     },
     changeMenu: function(item) {
@@ -188,12 +199,12 @@ define('screens/menu', ['screens/screen'], function() {
       });
       return rs;
     },
-    act: function(item) {
+    act: function(item, direct) {
       try {
-        (item || this.getSelected()).execute();
+        (item || this.getSelected()).execute(direct);
       } catch (e) {
         this.selectNext();
-        this.act();
+        this.act(null, direct);
       }
     }
   });
@@ -282,7 +293,7 @@ define('screens/menu', ['screens/screen'], function() {
       } else {
         this.li = new Element('li').update(this.getLabel());
         this.li.observe('click', function() {
-          this.execute();
+          this.execute(true);
         }.bind(this));
         this.li.observe('mouseover', function() {
           this.setSelected(true);
@@ -314,8 +325,8 @@ define('screens/menu', ['screens/screen'], function() {
     toString: function() {
       return 'Menu item {' + this.label + ', ' + this.depth + '}';
     },
-    execute: function() {
-      this.type(this, this.args);
+    execute: function(direct) {
+      this.type(this, direct, this.args);
     },
     size: function() {
       return this.children.length;
@@ -323,23 +334,23 @@ define('screens/menu', ['screens/screen'], function() {
   });
 
   Game.Screen.Menu.Item.Type = {
-    Screen: function(item, args) {
+    Screen: function(item, direct, args) {
       Sound.play('clear');
       Game.instance.setScreen(args[0]);
     },
     Inner: function(item) {
       Game.instance.getScreen().changeMenu(item);
     },
-    Settings: function(item, args) {
+    Settings: function(item, direct,  args) {
       Sound.play('break');
       var key = args[0];
-      var value = Config.change(key);
+      var value = Config.change(key, direct);
       if (Object.isFunction(args[1])) {
         args[1](value);
       }
       item.render();
     },
-    Custom: function(item, args) {
+    Custom: function(item, direct, args) {
       args[0](item);
     }
   };

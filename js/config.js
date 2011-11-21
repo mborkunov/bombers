@@ -10,9 +10,10 @@ var Config = {
   getValue: function(key) {
     return Config.getProperty(key).getValue();
   },
-  change: function(key) {
+  change: function(key, direct) {
     var property = Config.getProperty(key);
-    property.setValue(property.getNextValue());
+    var nextValue = direct ? property.getNextValue() : property.getPreviousValue();
+    property.setValue(nextValue);
     localStorage.setItem(key, property.getValue());
     return property.getValue();
   },

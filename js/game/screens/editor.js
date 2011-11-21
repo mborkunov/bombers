@@ -10,15 +10,25 @@ define('screens/editor', ['screens/screen'], function() {
     spawnedPlayers: null,
     size: null,
     data: null,
+    keys: null,
     init: function() {
+      this.keys = [];
       this.listeners = {
-        click: function(e) {
+        click: function() {
         },
         keydown: function(e) {
           if (e.keyCode == 27 || e.keyCode == 13) {
             Game.instance.setScreen(Game.Screen.Menu);
           }
-        }
+          if (this.keys.indexOf(e.keyCode) < 0) {
+            this.keys.push(e.keyCode);
+          }
+        }.bind(this),
+        keyup: function(e) {
+          if (this.keys.indexOf(e.keyCode) !== -1) {
+            this.keys = this.keys.without(e.keyCode);
+          }
+        }.bind(this)
       };
       if (!Config.getValue('debug')) {
         document.onmousedown = function() {return true}; // enable text selection - chromium
@@ -66,20 +76,20 @@ define('screens/editor', ['screens/screen'], function() {
       this.tilesBox = new Element('div').addClassName('tiles');
       this.properties.appendChild(new Element('h2').addClassName('title').update('Properties'));
 
-      this.properties.appendChild(new Element('label').addClassName('name').update('Map name:'));
+      this.properties.appendChild(new Element('label', {'for': 'map_name'}).addClassName('name').update('Map name:'));
       this.properties.appendChild(new Element('br'));
-      this.mapNameElement = new Element('input').addClassName('name');
+      this.mapNameElement = new Element('input', {id: 'map_name'}).addClassName('name');
       this.properties.appendChild(this.mapNameElement);
       this.properties.appendChild(new Element('br'));
-      this.properties.appendChild(new Element('label').addClassName('name').update('Author:'));
+      this.properties.appendChild(new Element('label', {'for': 'map_author'}).addClassName('name').update('Author:'));
       this.properties.appendChild(new Element('br'));
-      this.authorElement = new Element('input', {value: this.author}).addClassName('author');
+      this.authorElement = new Element('input', {value: this.author, id: 'map_author'}).addClassName('author');
       this.properties.appendChild(this.authorElement);
       this.properties.appendChild(new Element('br'));
 
-      this.properties.appendChild(new Element('label').addClassName('name').update('Players'));
+      this.properties.appendChild(new Element('label', {'for': 'map_players'}).addClassName('name').update('Players'));
       this.properties.appendChild(new Element('br'));
-      this.players = new Element('select');
+      this.players = new Element('select', {id: 'map_players'});
       this.properties.appendChild(this.players);
       for (var p = 2; p <= 8; p++) {
         this.players.appendChild(new Element('option').update(p));
@@ -129,7 +139,7 @@ define('screens/editor', ['screens/screen'], function() {
 
       this.tiles.each(function(item) {
         var element = new Element('div').addClassName('tile').addClassName(item);
-        element.observe('click', function(e) {
+        element.observe('mousedown', function(e) {
           if (this.selected !== null) {
             if (this.selected.indexOf(' ') >= 0) {
               var classes = this.selected.split(' ').join('.');
@@ -137,7 +147,6 @@ define('screens/editor', ['screens/screen'], function() {
             } else {
               this.tilesBox.select('.' + this.selected)[0].removeClassName('selected');
             }
-
           }
           this.selected = item;
           e.element().addClassName('selected');
@@ -218,7 +227,8 @@ define('screens/editor', ['screens/screen'], function() {
       return tile;
     },
     setTile: function(x, y, tile) {
-      var element = $(x + 'x' + y);
+      var id = x + 'x' + y;
+      var element = $(id);
       element.className = 'tile';
       element.addClassName(tile);
 
@@ -281,6 +291,49 @@ define('screens/editor', ['screens/screen'], function() {
         }
       }
       this.alignArea();
+      this.drawData();
+      this.initData(this.size.x, this.size.y);
+    },
+    drawData: function() {
+      for (var i = 0; i < this.size.y; i++) {
+        for (var j = 0; j < this.size.x; j++) {
+          this.setTile(j, i, this.charToClassName(this.data[i][j]));
+        }
+      }
+    },
+    charToClassName: function(character) {
+      switch (character.toLowerCase()) {
+        case '+':
+        case 'b':
+            return 'box';
+        break;
+        case 'w':
+        case '*':
+            return 'wall';
+        break;
+        case ' ':
+            return 'ground';
+        break;
+        case 'o':
+            return 'trap';
+        break;
+        case 's':
+            return 'ice';
+        break;
+
+        case '1': case '2': case '3': case '4':
+        case '5': case '6': case '7': case '0':
+          return 'ground player-' + character;
+        break;
+
+        case '<':
+        case '>':
+        case 'v':
+        case '^':
+            return 'arrow';
+        break;
+      }
+      return 'none';
     },
     alignArea: function() {
       this.area.setStyle({
@@ -296,14 +349,12 @@ define('screens/editor', ['screens/screen'], function() {
       }
     },
     clear: function() {
-      console.log('clear');
       this.initData(this.size.x, this.size.y);
       this.eachTile(function(element) {
         element.className = 'tile none';
       });
     },
     fill: function() {
-      console.log('fill');
       if (this.selected) {
         this.initData(this.size.x, this.size.y);
         this.eachTile(function(element) {

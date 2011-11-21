@@ -132,7 +132,14 @@ var Game = Class.create({
         this.screen.setSleeping(false);
         this.dispatchScreen();
       }
-      var _screen = new screen();
+
+      var _screen;
+      if (Object.isUndefined(screen.instance)) {
+        _screen = new screen();
+      } else {
+        _screen = screen.instance;
+        _screen.prerender();
+      }
       for (var event in _screen.listeners) {
         if (event.indexOf('key') === 0) {
           document.observe(event, _screen.listeners[event], false);
