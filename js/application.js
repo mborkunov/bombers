@@ -1,6 +1,11 @@
-"use strict";
+'use strict';
 
-if (Object.isUndefined(console)) {
+if (Prototype.Browser.IE) {
+  window.onload = function() {
+    document.getElementById('game-container').innerHTML = '<img src="images/ie.png" style="margin: 70px 170px;"/>';
+  }
+}
+if (typeof('console') == 'undefined') {
   window.console = {
     log: function() {},
     info: function() {}

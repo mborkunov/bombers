@@ -23,7 +23,7 @@ var Game = Class.create({
     var themes = Config.getProperty('graphic.theme').getValues();
     var themesElement = new Element('div', {id: 'theme-switcher'}).setStyle({position: 'absolute', top: 0, right: 0, zIndex: 10, height: '30px', width: (30 * themes.size()) + 'px'});
     this.container.appendChild(themesElement);
-    var colors = ['green', 'yellow', 'silver'];
+    var colors = ['green', 'yellow', 'silver', 'blue', 'red'];
 
     themes.each(function(theme, i) {
       var themeEl = new Element('div', {title: theme, theme: theme}).setStyle({'float': 'left', background: colors[i], width: '30px', height: '30px'});

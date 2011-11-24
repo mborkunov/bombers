@@ -62,6 +62,8 @@ Element.addMethods({
   }
 });
 
-(typeof(KeyboardEvent) == 'undefined' ? Event : KeyboardEvent).prototype.hasModifiers = function() {
-  return (this.ctrlKey || this.altKey || this.shiftKey || this.metaKey);
-};
+if (!Prototype.Browser.IE) {
+  (typeof(KeyboardEvent) == 'undefined' ? Event : KeyboardEvent).prototype.hasModifiers = function() {
+    return (this.ctrlKey || this.altKey || this.shiftKey || this.metaKey);
+  };
+}
