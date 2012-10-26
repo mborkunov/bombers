@@ -58,7 +58,7 @@ define('screens/editor', ['screens/screen'], function() {
         document.oncontextmenu = function() {return false}; // enable context menu
       }
     },
-    update: function(delay) {
+    update: function() {
     },
     render: function(delay) {
       if (!this.rendered) {
@@ -392,7 +392,7 @@ define('screens/editor', ['screens/screen'], function() {
     },
     email: function() {
       if (this.validate()) {
-        window.location.href = 'mailto:Maxim Borkunov<maxim.borkunov@gmail.com>?subject=Please add this map&body=' + this.serialize();
+        window.location.href = 'mailto:Maxim Borkunov&lt;maxim.borkunov@gmail.com&gt;?subject=Please add this map&body=' + this.serialize();
       } else {
         alert('The map isn\'t valid');
       }

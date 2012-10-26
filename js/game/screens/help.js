@@ -27,7 +27,7 @@ define('screens/help', ['screens/screen'], function() {
 
       this.drawHelp('Drugs', [
         {name: 'Joint', text: 'Controller will be reversed'},
-        {name: 'Viagra', text: 'Autofire, this can be very dangerous!'},
+        {name: 'Viagra', text: 'AutoFire, this can be very dangerous!'},
         {name: 'Cocaine', text: 'Lets you move very fast!! (too fast)'}
       ], 'drugs');
 

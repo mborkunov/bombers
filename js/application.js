@@ -5,7 +5,7 @@ if (Prototype.Browser.IE) {
     document.getElementById('game-container').innerHTML = '<img src="images/ie.png" style="margin: 70px 170px;"/>';
   }
 }
-if (typeof('console') == 'undefined') {
+if (typeof(console) == 'undefined') {
   window.console = {
     log: function() {},
     info: function() {}

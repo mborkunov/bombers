@@ -1,4 +1,9 @@
+@import url(http://fonts.googleapis.com/css?family=Fenix);
+
 body.default {
+  * {
+    font-family: 'Fenix';
+  }
   #game-container {
     &.intro {
       background: #000;
@@ -220,6 +225,21 @@ body.default {
         &.bomber-8 {
           background-color: #f08080;
         }
+      }
+      .corpse-part {
+        background: transparent url('../../images/themes/default/corpse_parts.png') 0 0;
+      }
+      .corpse-part-1 {
+        background-position-x: 0px;
+      }
+      .corpse-part-2 {
+        background-position-x: 40px;
+      }
+      .corpse-part-3 {
+        background-position-x: 80px;
+      }
+      .corpse-part-4 {
+        background-position-x: 120px;
       }
       #arbiter {
         background: url('../../images/themes/default/trollface.png') 0 0 no-repeat;

@@ -111,7 +111,11 @@ var Game = Class.create({
   getScreenByName: function(name) {
     try {
         return eval('Game.Screen.' + name);
-    } catch (e) {}
+    } catch (e) {
+      console.error("Screen doesn't exists: " + name);
+    }
+    return null;
+
   },
   start: function() {
       this.graphics.start();

@@ -9,6 +9,7 @@ define('objects/bomber', ['objects/object'], function() {
     power: null,
     bombs: null,
     dead: null,
+    blown: null,
     number: null,
     angle: null,
     rollAngle: null,
@@ -18,18 +19,19 @@ define('objects/bomber', ['objects/object'], function() {
       this.bombs = [];
       this.distance = 0;
       this.rollingAngle = 0;
-      this.rollAngle = 0,
+      this.rollAngle = 0;
       this.angle = 0;
       this.rollAngle = 0;
       this.dead = false;
+      this.blown = false;
       this.location = location;
       this.number = number;
       this.config = config;
 
       this.speed = .05 + Config.getValue('start.skateboards') * Game.Object.Extra.Skateboard.getSpeed();
       this.maxBombs = Config.getValue('start.bombs');
-      this.power = Config.getValue('start.power');
-      this.canKick = Config.getValue('start.kick');
+      this.power    = Config.getValue('start.power');
+      this.canKick  = Config.getValue('start.kick');
       this.canThrow = Config.getValue('start.glove');
 
       controller.attach(this);
@@ -115,6 +117,7 @@ define('objects/bomber', ['objects/object'], function() {
         case 2: return 270;
         case 3: return 180;
       }
+      return -1;
     },
     getClockWiseDirection:function(currentAngle, requiredAngle) {
       var diff = requiredAngle - currentAngle;
@@ -137,19 +140,34 @@ define('objects/bomber', ['objects/object'], function() {
       extra.remove();
     },
     kill: function() {
-      if (this.dead) return;
+      if (this.dead) this.blow();
       this.dead = true;
       this.controller.deactivate();
       this.element.addClassName('dead');
       this.element.setAttribute('title', "It's dead");
       Sound.play('die');
     },
+    blow: function() {
+      if (this.blown) {
+        return;
+      }
+      this.blown = true;
+      this.element.remove();
+
+      var screen = Game.instance.getScreen();
+      for (var i = 0; i < Math.ceil(Math.random() * 2) + 2; i++) {
+        screen.add(new Game.Object.CorpsePart(this.getLocation().clone(), i + 1));
+      }
+      Sound.play('corpse_explode');
+    },
     spawnBomb: function() {
       if (this.isFlying() || this.isFalling()) return;
       if (this.bombs.length >= this.maxBombs) return;
 
       var bomb = this.getTile(this.getLocation()).spawnBomb(this);
-      this.bombs.push(bomb);
+      if (bomb != null) {
+        this.bombs.push(bomb);
+      }
     },
     throwBomb: function(bomb) {
     },

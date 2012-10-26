@@ -53,24 +53,20 @@ define('tiles/tile', [], function() {
       return Game.instance.getScreen().hasBomb(this.location);
     },
     shake: function(shake) {
-      if (shake == 0) {
-        return null;
+      if (shake > 0) {
+        var offset = Math.round(Math.random() * 10) % 2 == 0 ? 1 : 2;
+
+        var top = Math.round(Math.random() * 10) % 2 == 0 ? - offset : offset;
+        var left = Math.round(Math.random() * 10) % 2 == 0 ? - offset : offset;
+
+        top += this.top;
+        left += this.left;
+
+        this.nextCoordinates.y = top;
+        this.nextCoordinates.x = left;
       } else {
-        if (shake > 0) {
-          var offset = Math.round(Math.random() * 10) % 2 == 0 ? 1 : 2;
-
-          var top = Math.round(Math.random() * 10) % 2 == 0 ? - offset : offset;
-          var left = Math.round(Math.random() * 10) % 2 == 0 ? - offset : offset;
-
-          top += this.top;
-          left += this.left;
-
-          this.nextCoordinates.y = top;
-          this.nextCoordinates.x = left;
-        } else {
-          this.nextCoordinates.y = this.top;
-          this.nextCoordinates.x = this.left;
-        }
+        this.nextCoordinates.y = this.top;
+        this.nextCoordinates.x = this.left;
       }
     },
     prerender: function(container) {
@@ -154,7 +150,7 @@ define('tiles/tile', [], function() {
     },
     spawnBomb: function(bomber) {
       var screen = Game.instance.getScreen();
-      if (screen.hasBomb(this.getLocation())) return;
+      if (screen.hasBomb(this.getLocation())) return null;
 
       var bomb = new Game.Object.Bomb(this.getLocation().clone(), bomber || screen.objects.bombers[0]);
       screen.add(bomb);

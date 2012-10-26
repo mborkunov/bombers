@@ -12,9 +12,9 @@ define('tiles/arrow', ['tiles/ground'], function() {
   });
 
   Object.extend(Game.Tile.Arrow, {
-    getDirection: function(char) {
+    getDirection: function(ch) {
       var direction = -1;
-      switch (char) {
+      switch (ch) {
         case '^':
           direction = 0;
           break;

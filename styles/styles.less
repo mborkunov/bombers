@@ -153,6 +153,10 @@ div.clear {
     }
   }
 
+  &.credits {
+    overflow: hidden;
+  }
+
   &.credits .content {
     color: #fff;
     padding: 0 200px;
@@ -188,6 +192,17 @@ div.clear {
     background: #000;
     .field {
       margin: 50px 0 0 60px;
+      &.filter {
+        -webkit-filter: blur(3px);
+      }
+    }
+    .map-name {
+      color: #a8a8a8;
+      position: absolute;
+      top: -35px;
+      left: 25px;
+      font-weight: bold;
+      font-size: 20px;
     }
 
     .object {
@@ -216,6 +231,12 @@ div.clear {
       width: 40px;
       height: 40px;
       background: red;
+    }
+    .corpse-part {
+      background: red;
+      width: 40px;
+      height: 40px;
+      z-index: 200;
     }
     .tile {
       z-index: 10;

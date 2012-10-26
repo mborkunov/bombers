@@ -5,7 +5,7 @@ define('screens/levels', ['screens/screen'], function() {
     init: function() {
       this.rendered = false;
       this.listeners = {
-        click: function(e) {
+        click: function() {
         },
         keydown: function(e) {
           if (e.keyCode == 27 || e.keyCode == 13) {
@@ -14,11 +14,11 @@ define('screens/levels', ['screens/screen'], function() {
         }.bind(this)
       };
     },
-    dispatch: function($super) {
+    dispatch: function() {
     },
-    update: function(delay) {
+    update: function() {
     },
-    render: function(delay) {
+    render: function() {
       if (!this.rendered) {
         this.rendered = true;
       }

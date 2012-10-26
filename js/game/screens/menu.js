@@ -90,7 +90,7 @@ define('screens/menu', ['screens/screen'], function() {
       this.listeners = {
         mousemove: function(e) {
         },
-        keydown: function(e) {
+        keydown: function() {
         },
         keyup: function(e) {
           switch (e.keyCode) {
@@ -249,7 +249,7 @@ define('screens/menu', ['screens/screen'], function() {
       if (this.type === Game.Screen.Menu.Item.Type.Settings) {
         var property = Config.getProperty(this.args[0]);
         if (property.type == 'boolean') {
-          this.label;
+          return this.label;
         } else {
           return this.label + ' - ' + property.getScreenValue();
         }

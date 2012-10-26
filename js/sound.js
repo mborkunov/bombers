@@ -1,9 +1,9 @@
-if (Object.isUndefined(Audio)) {
+if (Object.isUndefined(window.Audio)) {
   var Audio = function(source) {
     this.src = source;
   };
-  Audio.prototype.play = function() {}
-  Audio.prototype.observe = function() {}
+  Audio.prototype.play = function() {};
+  Audio.prototype.observe = function() {};
 }
 var Sound = Class.create();
 

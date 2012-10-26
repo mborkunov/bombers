@@ -1,9 +1,11 @@
 var Point = Class.create({
   x: null,
   y: null,
+  changed: false,
   initialize: function(x, y) {
     this.x = x;
     this.y = y;
+    this.changed = true;
   },
   getX: function() {
     return this.x;
@@ -13,19 +15,24 @@ var Point = Class.create({
   },
   setX: function(x) {
     this.x = x;
+    this.changed = true;
+  },
+  setY: function(y) {
+    this.y = y;
+    this.changed = true;
   },
   increaseX: function(delta) {
     this.x += delta;
+    this.changed = true;
   },
   increaseY: function(delta) {
     this.y += delta;
+    this.changed = true;
   },
   increase: function(deltaX, deltaY) {
     this.x += deltaX;
     this.y += deltaY;
-  },
-  setY: function(y) {
-    this.y = y;
+    this.changed = true;
   },
   roundX: function() {
     return new Point(Math.round(this.x), this.y);
@@ -40,7 +47,7 @@ var Point = Class.create({
           point.y -= offset;
         break;
       case 1:
-          point.x += offset
+          point.x += offset;
         break;
       case 2:
           point.y += offset;
@@ -62,6 +69,12 @@ var Point = Class.create({
       throw 'illegal argument: ' + point;
     }
     return this.x === point.getX() && this.y === point.getY();
+  },
+  isChanged: function() {
+    return this.changed;
+  },
+  setChanged: function(flag) {
+    this.changed = flag;
   }
 });
 

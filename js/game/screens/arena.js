@@ -17,6 +17,7 @@ define('screens/arena', ['screens/screen'], function() {
     init: function() {
       this.objects = {
         bombers: [],
+        corpses: [],
         bombs: [],
         explosions: [],
         arbiter:  new Game.Object.Arbiter(),
@@ -26,6 +27,7 @@ define('screens/arena', ['screens/screen'], function() {
           Util.iterate(this.bombs, call);
           Util.iterate(this.extras, call);
           Util.iterate(this.explosions, call);
+          Util.iterate(this.corpses, call);
 
           call(this.arbiter);
         }
@@ -117,6 +119,8 @@ define('screens/arena', ['screens/screen'], function() {
         this.objects.explosions.push(object);
       } else if (object instanceof Game.Object.Bomb) {
         this.objects.bombs.push(object);
+      } else if (object instanceof Game.Object.CorpsePart) {
+        this.objects.corpses.push(object);
       }
     },
     remove: function(object) {
@@ -128,6 +132,8 @@ define('screens/arena', ['screens/screen'], function() {
         this.objects.explosions = this.objects.explosions.without(object);
       } else if (object instanceof Game.Object.Bomb) {
         this.objects.bombs = this.objects.bombs.without(object);
+      } else if (object instanceof Game.Object.CorpsePart) {
+        this.objects.corpses = this.objects.corpses.without(object);
       }
     },
     hasBomb: function(location) {

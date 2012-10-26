@@ -34,6 +34,10 @@ define('tiles/map', [], function() {
     getRandomTile: function() {
       return this.entry.getRandomTile();
     },
+    getRandomTileByType: function(type) {
+      var entries = this.entry.findTilesByType(type);
+      return entries[Math.floor(Math.random() * entries.length)];
+    },
     getTile: function(x, y) {
       return this.entry.getTile(x, y);
     },
@@ -190,7 +194,6 @@ define('tiles/map', [], function() {
       return this.playerPositions;
     },
     hasTiles: function() {
-      var x = 0, y = 0;
       for (var y = 0, yLength = this.tiles.length; y < yLength; y++)  {
         for (var x = 0, xLength = this.tiles[y].length; x < xLength; x++)  {
           var tile = this.tiles[y][x];
@@ -236,7 +239,7 @@ define('tiles/map', [], function() {
           if (callback) callback(map);
         },
         onFailure: function() {
-          throw new String("cannot load map " + name);
+          throw "cannot load map " + name;
         }
       });
       return new Game.Map();

@@ -9,6 +9,7 @@ define('objects/object', [], function() {
     destination: null,
     scaleFactor: null,
     callback: null,
+    flySpeed: 50,
 
     initialize: function() {
       this.scaleFactor = 1;
@@ -81,7 +82,7 @@ define('objects/object', [], function() {
         return;
       }
       if (this.isFlying()) {
-        var diff = 50; // fly speed
+        var diff = this.flySpeed; // fly speed
         var speedX = (this.destination.getX() - this.departure.getX()) / diff;
         var speedY = (this.destination.getY() - this.departure.getY()) / diff;
 
@@ -135,8 +136,11 @@ define('objects/object', [], function() {
     },
     render: function() {
       if (this.element) {
-        this.element.style.top = (this.location.getY() * 40) + 'px';
-        this.element.style.left = (this.location.getX() * 40) + 'px';
+        if (this.location.isChanged()) {
+          this.element.style.top = (this.location.getY() * 40) + 'px';
+          this.element.style.left = (this.location.getX() * 40) + 'px';
+          this.location.setChanged(false);
+        }
 
         this.element.style.setProperty('z-index', Math.round(this.scaleFactor * 100), null);
         this.element.scale(this.scaleFactor);
@@ -146,6 +150,12 @@ define('objects/object', [], function() {
           this.element.style.opacity = this.falling;
         }
       }
+    },
+    remove: function() {
+      if (this.element != null) {
+        this.element.remove();
+      }
+      Game.instance.getScreen().remove(this);
     }
   });
 });

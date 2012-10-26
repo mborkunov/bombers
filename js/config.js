@@ -55,6 +55,8 @@ var Config = {
           property.loadUserValue();
           Config.properties[property.getId()] = property;
         }
+
+        console.log(properties.length + " config properties were loaded");
         options.onSuccess();
       },
       onFailure: options.onFailure

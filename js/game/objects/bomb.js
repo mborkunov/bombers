@@ -44,7 +44,6 @@ define('objects/bomb', ['objects/object', 'objects/explosion'], function() {
           if (this.element) {
             this.element.scale(scale, scale);
           }
-  
         }
       }
       $super(delay);
