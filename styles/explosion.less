@@ -1,0 +1,148 @@
+#game-container {
+  background: #000;
+}
+.explosion {
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  background:  none;
+
+  &.explosion-small {
+     background-position-y: 40px;
+   }
+  &.explosion-middle {
+    background-position-y: 80px;
+  }
+  &.explosion-big {
+    background-position-y: 120px;
+  }
+
+  &.explosion-small {
+    .north, .south {
+      background-position-x: 40px;
+    }
+  }
+  &.explosion-middle {
+    .north, .south {
+      background-position-x: 80px;
+    }
+  }
+  &.explosion-big {
+    .north, .south {
+      background-position-x: 120px;
+    }
+  }
+
+  .epicenter {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -20px;
+    margin-left: -20px;
+    background-image: url('../images/themes/default/explosion.png');
+    background-position-x: 40px;
+    background-position-y: inherit;
+  }
+
+  .epicenter, .edge {
+    width: 40px;
+    height: 40px;
+  }
+
+  .beam {
+    .edge {
+      background-image: url('../images/themes/default/explosion.png');
+    }
+    &.west, &.east {
+       .body {
+         background-image: url('../images/themes/default/explosion-hbeam.png');
+       }
+    }
+    &.north, &.south {
+      .body {
+        background-image: url('../images/themes/default/explosion-vbeam.png');
+      }
+    }
+    &.north {
+      position: absolute;
+      bottom: 50%;
+      left: 50%;
+      width: 40px;
+      margin-left: -20px;
+      margin-bottom: 20px;
+      background-position-y: inherit;
+
+      .edge {
+        background-position-x: 160px;
+        background-position-y: inherit;
+      }
+      .body {
+        height: 50px;
+        background-position-x: inherit;
+      }
+    }
+
+    &.west {
+      position: absolute;
+      top: 50%;
+      right: 50%;
+      margin-right: 20px;
+      margin-top: -20px;
+      background-position-y: inherit;
+
+      .edge, .body {
+        float: left;
+        background-position-y: inherit;
+      }
+      .edge {
+        background-position-x: 0;
+      }
+      .body {
+        height: 40px;
+        width: 40px;
+        background-position-x: -40px;
+      }
+    }
+
+    &.east {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-top: -20px;
+      margin-left: 20px;
+      background-position-y: inherit;
+
+      .edge, .body {
+        float: left;
+        background-position-y: inherit;
+      }
+      .edge {
+        background-position-x: -80px;
+      }
+      .body {
+        height: 40px;
+        width: 40px;
+        background-position-x: -40px;
+      }
+    }
+
+    &.south {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 40px;
+      margin-left: -20px;
+      margin-top: 20px;
+      background-position-y: inherit;
+
+      .edge {
+        background-position-x: 80px;
+        background-position-y: inherit;
+      }
+      .body {
+        height: 40px;
+        background-position-x: inherit;
+      }
+    }
+  }
+}

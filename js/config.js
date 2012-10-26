@@ -1,11 +1,15 @@
 var Config = {
+  /** @type Object */
   properties: {},
+  /** @type Object */
   types: {},
   getProperty: function(key) {
     if (typeof (this.properties[key]) !== 'undefined') {
       return this.properties[key];
     }
-    console.error('There is no property for id #' + key);
+    var message = 'There is no property for id #' + key;
+    console.error(message);
+    throw message;
   },
   getValue: function(key) {
     return Config.getProperty(key).getValue();
@@ -28,7 +32,7 @@ var Config = {
         var nodeToObject = function(node) {
           var data = {};
           for (var x = 0, length = node.childNodes.length; x < length; x++) {
-            var child = type.childNodes[x];
+            var child = node.childNodes[x];
             console.log(child);
             if (child.nodeType == 1) {
               if (child.childNodes.length == 1) {

@@ -1,107 +1,49 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <!-- manifest="cache.appcache"-->
-  <head>
-    <link rel="stylesheet" type="text/css" href="css/styles.css"/>
-    <link rel="stylesheet" type="text/css" href="css/themes/base.css"/>
-    <link rel="stylesheet" type="text/css" href="css/themes/default.css"/>
+<!-- manifest="cache.appcache"-->
+<head>
+    <link rel="stylesheet/less" type="text/css" href="styles/explosion.less"/>
     <link rel="shortcut icon" href="favicon.ico"/>
     <title>Explosion test</title>
-    <style type="text/css">
-      #game-container {
-        background: #000;
-      }
-
-      .explosion {
-        width: 200px;
-        height: 200px;
-        position: absolute;
-        background:  none;
-      }
-
-      .explosion-small {
-        background-position-y: 40px;
-      }
-      .explosion-middle {
-        background-position-y: 80px;
-      }
-
-      .explosion-big {
-        background-position-y: 120px;
-      }
-
-      .explosion .center {
-        width: 40px;
-        height: 40px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin-top: -20px;
-        margin-left: -20px;
-        background-image: url('images/themes/default/explosion.png');
-        background-position-x: 40px;
-        background-position-y: inherit;
-      }
-      .explosion .north-beam {
-        position: absolute;
-        top: 0%;
-        left: 50%;
-        width: 40px;
-        margin-left: -20px;
-        height: auto;
-        background-position-y: inherit;
-      }
-
-      .explosion .north-beam .edge {
-        width: 40px;
-        height: 40px;
-        background-image: url('images/themes/default/explosion.png');
-        background-position-x: 160px;
-        background-position-y: inherit;
-      }
-      .explosion .north-beam .beam {
-        height: 40px;
-        background-image: url('images/themes/default/explosion.png');
-        background-position-x: 120px;
-        background-position-y: inherit;
-      }
-
-    </style>
 
     <script type="text/javascript">
-      var i = 0;
+        var i = 0;
 
-      var widths = ['small', 'middle', 'big'];
+        var widths = ['small', 'middle', 'big'];
 
-      function change() {
-        var explosion = document.getElementById('explosion');
-        var width = widths[i++%3];
-        explosion.setAttribute('class', 'explosion explosion-' + width);
-        setTimeout(change, 100);
-      }
+        function change() {
+            var explosion = document.getElementById('explosion');
+            var width = widths[i++ % 3];
+            explosion.setAttribute('class', 'explosion explosion-' + width);
+            setTimeout(change, 100);
+        }
 
 
-      window.onload = function() {
-        change();
-      }
+        window.onload = function () {
+            change();
+        }
     </script>
-  </head>
-  <body class="default">
-    <div id="game-container">
+    <script type="text/javascript" src="js/third_party/less.js"></script>
+</head>
+<body class="default">
+<div id="game-container">
+    <img src="images/themes/default/explosion.png" width="280" height="120"/>
 
-      <img src="images/themes/default/explosion.png" width="280" height="120"/>
-
-      <div id="explosion" class="explosion explosion-small">
-        <div class="north-beam" style="height: 80px;">
-          <div class="edge"></div>
-          <div class="beam"></div>
+    <div id="explosion" class="explosion">
+        <div class="epicenter"></div>
+        <div class="beam north">
+            <div class="edge"></div><div class="body"></div>
         </div>
-        <div class="center"></div>
-        <!--<div class="west-beam">
-          <div class="beam"></div>
-          <div class="edge"></div>
-        </div>-->
-      </div>
+        <div class="beam west">
+            <div class="edge"></div><div class="body"></div>
+        </div>
+        <div class="beam east">
+            <div class="body"></div><div class="edge"></div>
+        </div>
+        <div class="beam south">
+            <div class="body"></div><div class="edge"></div>
+        </div>
     </div>
-  </body>
+</div>
+</body>
 </html>

@@ -55,7 +55,7 @@ document.observe("dom:loaded", function() {
   });
 
   var dependencies = [
-      'js/util/common.js', 'js/util/point.js', 'js/util/square.js',
+      'js/util/common.js', 'js/util/point.js', 'js/util/square.js', 'js/util/trigger.js',
       'js/worker.js', 'js/sound.js', 'js/game.js', 'js/config.js'
     ].concat(screens).concat(tiles).concat(objects).concat(controllers);
 

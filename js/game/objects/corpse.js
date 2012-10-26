@@ -36,11 +36,11 @@ define('objects/corpse', ['objects/object'], function() {
         if (random) {
           this.flied = true;
           this.flyTo(random, function() {
-            this.finishTime = date();
+            this.finishTime = now();
           }.bind(this));
         }
       }
-      if (this.finishTime > 0 && date() - this.finishTime > this.lifetime) {
+      if (this.finishTime > 0 && now() - this.finishTime > this.lifetime) {
         this.remove();
       }
       $super(delay);

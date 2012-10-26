@@ -3,6 +3,7 @@ define('objects/bomb', ['objects/object', 'objects/explosion'], function() {
     location: null,
     bomber: null,
     scaleCounter: null,
+    lifetime: 3000,
     initialize: function($super, location, bomber) {
       this.backgroundPosition = {x: 0, y: 0};
       this.bomber = bomber;
@@ -11,6 +12,16 @@ define('objects/bomb', ['objects/object', 'objects/explosion'], function() {
       this.location = location;
       this.scaleCounter = 0;
       this.lastUpdate = 0;
+      this.start = now();
+      this.triggers = [];
+      this.triggers.push(
+        new Trigger(function() {
+          return now() - this.start > this.lifetime;
+        }.bind(this),
+          function() {
+            this.explode();
+          }.bind(this)
+      ));
     },
     render: function($super, container) {
       if (!this.element && container) {
@@ -37,7 +48,7 @@ define('objects/bomb', ['objects/object', 'objects/explosion'], function() {
         if (tile.getName() == 'none' || tile.isDestroyed()) {
           this.fall();
         }
-        var time = date();
+        var time = now();
         if (time - this.lastUpdate > 10) {
           this.lastUpdate = time;
           var scale = 1 + Math.abs(Math.sin(this.scaleCounter+=3 * Math.PI / 180)) / 7;
@@ -46,6 +57,9 @@ define('objects/bomb', ['objects/object', 'objects/explosion'], function() {
           }
         }
       }
+      Util.iterate(this.triggers, function(trigger) {
+        trigger.check();
+      });
       $super(delay);
     },
     move: function(direction, delay) {
@@ -59,7 +73,7 @@ define('objects/bomb', ['objects/object', 'objects/explosion'], function() {
     },
     explode: function() {
       this.removeBomb();
-      this.getScreen().objects.explosions.push(new Game.Object.Explosion(this.location.clone(), this.bomber));
+      this.getScreen().add(new Game.Object.Explosion(this.location.clone().round(), this.bomber));
       this.getScreen().shakeIt();
       Sound.play("explode");
     }

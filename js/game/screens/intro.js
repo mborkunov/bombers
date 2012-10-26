@@ -38,12 +38,12 @@ define('screens/intro', ['screens/screen'], function() {
       if (this.drawText && !this.timeout) {
         var length = this.textElement.firstChild.nodeValue.length;
         if (length - 1 < this.text.length) {
-          if ((date() - this.lastCall) >= 1000 / this.speed) {
+          if ((now() - this.lastCall) >= 1000 / this.speed) {
             var c = this.text.charAt(length - 1);
             this.textElement.firstChild.nodeValue += c;
             if (c != ' ') {
               Sound.play('typewriter');
-              this.lastCall = date();
+              this.lastCall = now();
             }
           }
         } else {

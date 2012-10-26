@@ -1,8 +1,13 @@
 var Game = Class.create({
+  /** @type Element */
   container: $('game-container'),
+  /** @type Screen */
   screen: null,
+  /** @type Worker */
   graphics: null,
+  /** @type Worker */
   state: null,
+  /** @type String */
   currentTheme: null,
   initialize: function() {
     this.setTheme(Config.getProperty("graphic.theme").getValue());

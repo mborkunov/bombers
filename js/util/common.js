@@ -1,11 +1,11 @@
-var date = function() {
+var now = function() {
   return new Date().getTime();
 };
 
 var Util = {
   iterate: function(items, func) {
     for (var i = 0, length = items.length; i < length; i++) {
-      func(items[i]);
+      func(items[i], i);
     }
   },
   Location: {

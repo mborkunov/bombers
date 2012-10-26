@@ -1,19 +1,61 @@
 define('objects/explosion', ['objects/object'], function() {
   Game.Object.Explosion = Class.create(Game.Object, {
-    growSpeed: null,
     size: null,
     power: null,
     beams: null,
     rendered: null,
-    beamUpdateHandler: function(beam) {
-      beam.update(this.delay);
-    },
+    lifetime: 500,
+    start: null,
+    triggers: null,
     initialize: function($super, location, bomber) {
       this.beams = [];
-      this.rendered = false;
-      this.growSpeed = .5;
+      this.triggers = [];
       this.location = location;
       this.power = bomber.getPower();
+      this.rendered = false;
+      this.start = now();
+      this.triggers.push(
+        new Trigger(function() {
+          return now() - this.start > this.lifetime / 6;
+        }.bind(this),
+          function() {
+            this.element.removeClassName("small").addClassName("medium");
+          }.bind(this)
+      ));
+      this.triggers.push(
+        new Trigger(function() {
+          return now() - this.start > this.lifetime - this.lifetime / 3;
+        }.bind(this),
+        function() {
+          this.element.removeClassName("medium").addClassName("big");
+        }.bind(this)
+      ));
+      this.triggers.push(
+        new Trigger(function() {
+          return now() - this.start > this.lifetime - this.lifetime / 6;
+        }.bind(this),
+          function() {
+            this.element.removeClassName("big").addClassName("medium");
+          }.bind(this)
+      ));
+      this.triggers.push(
+        new Trigger(function() {
+          return now() - this.start > this.lifetime - this.lifetime / 8;
+        }.bind(this),
+          function() {
+            this.element.removeClassName("medium").addClassName("small");
+          }.bind(this)
+      ));
+
+      this.triggers.push(
+        new Trigger(function() {
+          return now() - this.start > this.lifetime;
+        }.bind(this),
+          function() {
+            Game.instance.getScreen().remove(this);
+            this.dispatch();
+        }.bind(this)
+      ));
     },
     render: function($super, container) {
       if (!this.rendered && container) {
@@ -21,44 +63,42 @@ define('objects/explosion', ['objects/object'], function() {
         this.element = new Element('div').setStyle({
           top: (this.location.getY() * 40) + 'px',
           left: (this.location.getX() * 40) + 'px'
-        }).addClassName('explosion-root').addClassName('object');
+        }).addClassName('explosion small').addClassName('object');
+
+        this.element.insert('<div class="epicenter"></div>');
+
+        ['north', 'west', 'south', 'east'].each(function(dir, index) {
+          var beam = new Element('div');
+          beam.addClassName('beam ' + dir);
+          if (index < 2) {
+            beam.insert('<div class="edge"></div><div class="body"></div>');
+          } else {
+            beam.insert('<div class="body"></div><div class="edge"></div>');
+          }
+
+          this.element.appendChild(beam);
+        }.bind(this));
+
         container.appendChild(this.element);
-
-        this.beams.push(new Game.Object.Explosion.Beam(0, this.power, this.location.clone(), container));
-        this.beams.push(new Game.Object.Explosion.Beam(1, this.power, this.location.clone(), container));
-        this.beams.push(new Game.Object.Explosion.Beam(2, this.power, this.location.clone(), container));
-        this.beams.push(new Game.Object.Explosion.Beam(3, this.power, this.location.clone(), container));
-
-        Util.iterate(this.beams, function(beam) {
-          beam.prerender(container);
-        });
       } else if (this.rendered) {
-        Util.iterate(this.beams, function(beam) {
+        /*Util.iterate(this.beams, function(beam) {
           beam.render();
-        });
+        });*/
       }
       $super();
     },
     dispatch: function($super) {
       this.element.remove();
-      for (var i = 0, length = this.beams.length; i < length; i++) {
-        this.beams[i].dispatch();
-      }
     },
     update: function($super, delay, map) {
-      if (!this.isFlying() && !this.isFalling()) {
-        this.delay = delay;
-        Util.iterate(this.beams, this.beamUpdateHandler);
-        var tile = map.getTile(this.location.getX(), this.location.getY());
-        if (tile.getName() == 'none' || tile.isDestroyed()) {
-          this.fall();
-        }
-      }
+      Util.iterate(this.triggers, function(trigger) {
+        trigger.check();
+      });
       $super(delay);
     }
   });
 
-  Game.Object.Explosion.Beam = Class.create({
+  /*Game.Object.Explosion.Beam = Class.create({
     direction: null,
     source: null,
     container: null,
@@ -129,7 +169,7 @@ define('objects/explosion', ['objects/object'], function() {
       this.element.remove();
     },
     prerender: function() {
-      /*this.element = new Element('div').addClassName('beam');
+      *//*this.element = new Element('div').addClassName('beam');
 
       this.element.setStyle({
         top: this.source.getY() * 40 + 'px',
@@ -142,7 +182,7 @@ define('objects/explosion', ['objects/object'], function() {
       this.element.appendChild(this.head);
       this.element.appendChild(this.body);
 
-      this.container.appendChild(this.element);*/
+      this.container.appendChild(this.element);*//*
     },
     render: function() {
       if (this.freeze) {
@@ -170,5 +210,5 @@ define('objects/explosion', ['objects/object'], function() {
         }).addClassName('explosion-root'));
       }
     }
-  })
+  })*/
 });

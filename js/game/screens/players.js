@@ -38,8 +38,8 @@ define('screens/players', ['screens/screen'], function() {
       if (!this.playersTable) {
         return;
       }
-      if (date() - this.lastAction > 100) {
-        this.lastAction = date();
+      if (now() - this.lastAction > 100) {
+        this.lastAction = now();
         var selectedRow = this.playersTable.select('tr.selected')[0];
         var nextRow;
         var player = selectedRow.player;

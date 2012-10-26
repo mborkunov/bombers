@@ -1,7 +1,11 @@
 var Worker = Class.create({
+  /** @type Integer */
   defaultFps: 30,
+  /** @type Integer */
   lastCall: null,
+  /** @type Integer */
   fps: null,
+  /** @type String */
   name: null,
   initialize: function() {
     this.fps = this.defaultFps;
@@ -12,17 +16,17 @@ var Worker = Class.create({
     this.loop();
   },
   loop: function() {
-    this.lastCall = date();
+    this.lastCall = now();
     var screen = Game.instance.getScreen();
     try {
       if (screen && !screen.sleeping) {
-        this.action(date() - this.lastCallEnd);
+        this.action(now() - this.lastCallEnd);
       }
     } catch (e) {
       console.log(e, this.name);
     }
-    this.lastCallEnd = date();
-    this.timeout = Math.abs(1000 / this.fps - (date() - this.lastCall));
+    this.lastCallEnd = now();
+    this.timeout = Math.abs(1000 / this.fps - (now() - this.lastCall));
     setTimeout(this.loop.bind(this), this.timeout);
   }
 });
