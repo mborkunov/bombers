@@ -55,7 +55,7 @@
     <color>green</color>
     <eyes>stereo</eyes>
     <active>true</active>
-    <controller>wasd</controller>
+    <controller>arrows</controller>
     <team>0</team>
   </property>
   <property id="game.player.3" type="complex">
@@ -109,7 +109,7 @@
     <color>silver</color>
     <eyes>alien</eyes>
     <active>true</active>
-    <controller>arrows</controller>
+    <controller>wasd</controller>
     <team>3</team>
   </property>
 
@@ -172,7 +172,7 @@
   </property>
 
   <property id="game.round_time" type="number" default="90">
-    <name>Points to win</name>
+    <name>Round time</name>
     <range min="15" max="300" step="15"/>
   </property>
 

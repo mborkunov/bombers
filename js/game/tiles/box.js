@@ -9,10 +9,10 @@ define('tiles/box', ['tiles/tile'], function() {
       $super(container);
 
       if (Config.getValue('debug')) {
-        this.element.stopObserving("click", this.clickHandler);
+        this.element.stopObserving('click', this.clickHandler);
 
-        this.element.on("click", function() {
-          Sound.play("crunch");
+        this.element.on('click', function() {
+          Sound.play('crunch');
           this.destroy();
         }.bind(this));
       }

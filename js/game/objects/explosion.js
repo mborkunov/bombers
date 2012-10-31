@@ -2,14 +2,11 @@ define('objects/explosion', ['objects/object'], function() {
   Game.Object.Explosion = Class.create(Game.Object, {
     size: null,
     power: null,
-    beams: null,
     rendered: null,
     lifetime: 500,
     start: null,
-    triggers: null,
     initialize: function($super, location, bomber) {
-      this.beams = [];
-      this.triggers = [];
+      $super();
       this.location = location;
       this.power = bomber.getPower();
       this.rendered = false;
@@ -52,7 +49,6 @@ define('objects/explosion', ['objects/object'], function() {
           return now() - this.start > this.lifetime;
         }.bind(this),
           function() {
-            Game.instance.getScreen().remove(this);
             this.dispatch();
         }.bind(this)
       ));
@@ -80,135 +76,94 @@ define('objects/explosion', ['objects/object'], function() {
         }.bind(this));
 
         container.appendChild(this.element);
-      } else if (this.rendered) {
-        /*Util.iterate(this.beams, function(beam) {
-          beam.render();
-        });*/
+
+        var power = this.power - 1;
+
+        var size = (power * 80 + 120);
+        this.element.style.width =  size + 'px';
+        this.element.style.height =  size + 'px';
+        this.element.style.marginTop =  - size / 2 + 20 + 'px';
+        this.element.style.marginLeft =  - size / 2 + 20 + 'px';
+
+        this.element.select(".body").each(function(beamBody) {
+          var attribute = beamBody.parentNode.getAttribute("class");
+          if (attribute.indexOf("west") > -1 || attribute.indexOf("east") > -1) {
+            beamBody.style.width = (power * 40) + 'px';
+          } else {
+            beamBody.style.height = (power * 40) + 'px';
+          }
+        }.bind(this));
+
+        var cssClasses = ['north', 'east', 'south', 'west'];
+        for (var i = 0; i < 4; i++) {
+          var barrier;
+          if ((barrier = this.findIntersection(i)) != null) {
+            var tile = barrier[0];
+            var offset = barrier[1];
+            if (tile instanceof Game.Tile.Ground) {
+              if (tile.hasExtra()) {
+                tile.getExtra().remove();
+                //this.element.select('.' + cssClasses[i] + ' >.edge').invoke('hide');
+              } else if (tile.hasBomb()) {
+                tile.getBomb().explode();
+                this.element.select('.' + cssClasses[i] + ' >.edge').invoke('hide');
+              }
+            } else if (tile instanceof Game.Tile.Box) {
+              tile.destroy();
+              if (tile.next.hasExtra()) {
+                this.element.select('.' + cssClasses[i] + ' >.edge').invoke('hide');
+              }
+            } else if (tile instanceof Game.Tile.Wall) {
+              this.element.select('.' + cssClasses[i] + ' >.edge').invoke('hide');
+            }
+            if (offset == 1) {
+              this.element.select('.' + cssClasses[i] + ' >.body').invoke('hide');
+            } else if (offset > 1) {
+              var diff = offset - 1;
+              this.element.select('.' + cssClasses[i] + ' >.body').each(function(body) {
+                if (i == 0 || i == 2) {
+                  body.style.height = diff * 40 + 'px';
+                } else {
+                  body.style.width = diff * 40 + 'px';
+                }
+              });
+            }
+          }
+        }
+        this.element.observe('click', this.dispatch.bind(this));
       }
       $super();
     },
+    findIntersection: function(direction) {
+      var i = 0;
+      var location = this.location.clone();
+      var bombers = Game.instance.getScreen().objects.bombers;
+      while (++i <= this.power) {
+        switch(direction) {
+          case 0: location.increaseY(-1); break;
+          case 1: location.increaseX(1);  break;
+          case 2: location.increaseY(1);  break;
+          case 3: location.increaseX(-1); break;
+        }
+        var tile = this.getTile(location);
+        if (!tile.isPassable() ||
+          (tile instanceof Game.Tile.Ground && (tile.hasExtra() || tile.hasBomb()))) {
+          return [tile, i];
+        }
+        Util.iterate(bombers, function(bomber) {
+          if (bomber.getLocation().round().equals(location)) {
+            bomber.isDead() ? bomber.blow() : bomber.kill();
+          }
+        });
+      }
+      return null;
+    },
     dispatch: function($super) {
+      Game.instance.getScreen().remove(this);
       this.element.remove();
     },
     update: function($super, delay, map) {
-      Util.iterate(this.triggers, function(trigger) {
-        trigger.check();
-      });
       $super(delay);
     }
   });
-
-  /*Game.Object.Explosion.Beam = Class.create({
-    direction: null,
-    source: null,
-    container: null,
-    epicenter: null,
-    names: ['north', 'east', 'south', 'west'],
-    size: null,
-    power: null,
-    freeze: null,
-    initialize: function(direction, power, epicenter, container) {
-      this.epicenter = epicenter;
-      this.direction = direction % 4;
-      this.source = epicenter.shift(1, direction);
-      this.power = power;
-      this.freeze = false;
-      this.growSpeed = .05;
-      this.size = 0;
-      this.container = container;
-      this.rendered = false;
-      this.screen = Game.instance.getScreen();
-      this.renderedSize = 0;
-      this.emptyBeam = false;
-      console.log('epicenter', epicenter, 'direction', this.direction, 'source', this.source, "power - " + this.power);
-    },
-    update: function(delay) {
-      // updating flame width
-      if (this.freeze) return;
-      if (this.size + 1 >= this.power) {
-        this.freeze = true;
-        return;
-      }
-
-      // checking source location
-      if (!this.sourceChecked) {
-        this.sourceChecked = true;
-        var sourceTile = this.screen.map.getTile(this.source.getX(), this.source.getY());
-        if (sourceTile.name == 'wall' || sourceTile.name == 'box') {
-          this.size = 0;
-          this.freeze = true;
-          if (sourceTile.name == 'box') {
-            this.emptyBeam = true;
-            sourceTile.vanish();
-          }
-          return;
-        }
-      }
-
-      var growLocation = this.getGrowLocation();
-      var tile = this.screen.map.getTile(growLocation.getX(), growLocation.getY());
-
-      switch (tile.name) {
-        case 'box':
-          tile.vanish();
-        case 'wall':
-          this.freeze = true;
-        break;
-        default:
-            this.size++;
-        break;
-      }
-    },
-    getHeadLocation: function() {
-      return this.source.shift(this.size, this.direction);
-    },
-    getGrowLocation: function() {
-      return this.source.shift(this.size + 1, this.direction);
-    },
-    dispatch: function() {
-      this.element.remove();
-    },
-    prerender: function() {
-      *//*this.element = new Element('div').addClassName('beam');
-
-      this.element.setStyle({
-        top: this.source.getY() * 40 + 'px',
-        left: this.source.getX() * 40 + 'px'
-      });
-      this.element.addClassName('beam-' + this.names[this.direction]);
-
-      this.head = new Element('div').addClassName('head');
-      this.body = new Element('div').addClassName('body');
-      this.element.appendChild(this.head);
-      this.element.appendChild(this.body);
-
-      this.container.appendChild(this.element);*//*
-    },
-    render: function() {
-      if (this.freeze) {
-        if (this.size == 0) {
-          //this.element.remove();
-        }
-        return;
-      }
-
-      if (!this.emptyBeam && !this.sourceElement) {
-        this.sourceElement = new Element('div').setStyle({
-          top: (this.source.getY() * 40) + 'px',
-          left: (this.source.getX() * 40) + 'px'
-        }).addClassName('explosion-root');
-
-        this.container.appendChild(this.sourceElement);
-      }
-
-      if (this.renderedSize != this.size) {
-        this.renderedSize = this.size;
-        var location = this.getHeadLocation();
-        this.container.appendChild(new Element('div').setStyle({
-          top: (location.getY() * 40) + 'px',
-          left: (location.getX() * 40) + 'px'
-        }).addClassName('explosion-root'));
-      }
-    }
-  })*/
 });

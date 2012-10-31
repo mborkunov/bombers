@@ -5,6 +5,7 @@ define('objects/bomb', ['objects/object', 'objects/explosion'], function() {
     scaleCounter: null,
     lifetime: 3000,
     initialize: function($super, location, bomber) {
+      $super();
       this.backgroundPosition = {x: 0, y: 0};
       this.bomber = bomber;
       this.distance = 0;
@@ -13,10 +14,9 @@ define('objects/bomb', ['objects/object', 'objects/explosion'], function() {
       this.scaleCounter = 0;
       this.lastUpdate = 0;
       this.start = now();
-      this.triggers = [];
       this.triggers.push(
         new Trigger(function() {
-          return now() - this.start > this.lifetime;
+          return now() - this.start > this.lifetime && !(this.isFlying() || this.isFalling());
         }.bind(this),
           function() {
             this.explode();
@@ -29,12 +29,12 @@ define('objects/bomb', ['objects/object', 'objects/explosion'], function() {
           top: (this.location.getY() * 40) + 'px',
           left: (this.location.getX() * 40) + 'px'
         }).addClassName('bomb').addClassName('object');
-        this.element.observe("click", this.explode.bind(this));
+        this.element.observe('click', this.explode.bind(this));
         container.appendChild(this.element);
       }
 
       if (this.isFlying()) {
-        this.element.style.setProperty('z-index', 200, null);
+        this.element.style.setProperty('z-index', '200', null);
       } else {
         //this.element.style['z-index'] = Math.round(Math.abs(this.location.getY() + 0) * 10) + 11;
       }
@@ -57,9 +57,6 @@ define('objects/bomb', ['objects/object', 'objects/explosion'], function() {
           }
         }
       }
-      Util.iterate(this.triggers, function(trigger) {
-        trigger.check();
-      });
       $super(delay);
     },
     move: function(direction, delay) {
@@ -74,8 +71,9 @@ define('objects/bomb', ['objects/object', 'objects/explosion'], function() {
     explode: function() {
       this.removeBomb();
       this.getScreen().add(new Game.Object.Explosion(this.location.clone().round(), this.bomber));
+      this.bomber.bombs--;
       this.getScreen().shakeIt();
-      Sound.play("explode");
+      Sound.play('explode');
     }
   });
 });

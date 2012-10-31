@@ -24,9 +24,9 @@ define('objects/corpse', ['objects/object'], function() {
       }
 
       if (this.isFlying()) {
-        this.element.style.setProperty('z-index', 200, null);
+        this.element.style.setProperty('z-index', '200', null);
       } else {
-        this.element.style.setProperty('z-index', 11, null);
+        this.element.style.setProperty('z-index', '11', null);
       }
       $super();
     },

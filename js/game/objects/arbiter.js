@@ -22,16 +22,14 @@ define('objects/arbiter', ['objects/object'], function() {
           left: (this.location.getX() * 40) + 'px'
         }).addClassName('arbiter').addClassName('object');
 
-        if (Config.getValue('debug')) {
-          this.element.observe('click', function() {
-            this.run();
-          }.bind(this));
-        }
-
         this.timerElement = new Element('div', {id: 'timer'}).addClassName('object');
         this.clockElement = new Element('div', {id: 'clock'});
 
         if (Config.getValue('debug')) {
+          this.element.observe('click', function() {
+            this.running ? this.stop() : this.run();
+          }.bind(this));
+
           this.clockElement.observe('click', function() {
             this.run();
           }.bind(this));
@@ -64,6 +62,13 @@ define('objects/arbiter', ['objects/object'], function() {
         this.elapsed = Number.MAX_VALUE;
         Sound.play('time_over');
         this.running = true;
+      }
+    },
+    stop: function() {
+      if (this.running) {
+        this.elapsed = 0;
+        this.running = false;
+        this.flyToLocation(new Point(-1, -1));
       }
     },
     hurryUp: function() {

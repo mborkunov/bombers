@@ -109,8 +109,11 @@ define('screens/arena', ['screens/screen'], function() {
         this.prerender();
       }.bind(this));
     },
-
+    /**
+     * @param {Game.Object} object
+     */
     add: function(object) {
+      object.setArena(this);
       if (object instanceof Game.Object.Bomber) {
         this.objects.bombers.push(object);
       } else if (object instanceof Game.Object.Extra) {
@@ -123,7 +126,11 @@ define('screens/arena', ['screens/screen'], function() {
         this.objects.corpses.push(object);
       }
     },
+    /**
+     * @param {Game.Object} object
+     */
     remove: function(object) {
+      object.setArena(null);
       if (object instanceof Game.Object.Bomber) {
         this.objects.bombers = this.objects.bombers.without(object);
       } else if (object instanceof Game.Object.Extra) {
@@ -137,13 +144,16 @@ define('screens/arena', ['screens/screen'], function() {
       }
     },
     hasBomb: function(location) {
+      return this.getBomb(location) != null;
+    },
+    getBomb: function(location) {
       for (var i = 0; i < this.objects.bombs.length; i++) {
         var bomb = this.objects.bombs[i];
         if (bomb.getLocation().equals(location)) {
-          return true;
+          return bomb;
         }
       }
-      return false;
+      return null;
     },
     prerender: function() {
       this.rendered = true;
@@ -248,9 +258,8 @@ define('screens/arena', ['screens/screen'], function() {
           try {
             this.container.removeChild(this.overlay);
           } catch (ignored) {}
-        } 
+        }
       } catch (ignored) {}
     }
   });
-
 });

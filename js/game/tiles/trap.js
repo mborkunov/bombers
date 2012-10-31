@@ -12,7 +12,7 @@ define('tiles/trap', ['tiles/ground'], function() {
         if (tile instanceof Game.Tile.Trap) {
           var sources = Game.instance.screen.map.findTilesByType(Game.Tile.Trap);
           var randomSource = sources[Math.floor(Math.random() * sources.length)];
-          var targets = Game.instance.screen.map.findTilesByType(Game.Tile.Trap);
+          var targets = Game.instance.screen.map.findTilesByType(Game.Tile.Ground);
           var randomTarget = targets[Math.floor(Math.random() * targets.length)];
 
           if (randomSource === randomTarget) {

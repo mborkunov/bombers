@@ -16,7 +16,7 @@ define('objects/bomber', ['objects/object'], function() {
     rollingAngle: null,
     initialize: function($super, controller, number, location, config) {
       this.backgroundPosition = {x: 0, y: 0};
-      this.bombs = [];
+      this.bombs = 0;
       this.distance = 0;
       this.rollingAngle = 0;
       this.rollAngle = 0;
@@ -57,9 +57,10 @@ define('objects/bomber', ['objects/object'], function() {
       }
 
       if (this.isFlying()) {
-        this.element.style['z-index'] = 200;
+        this.element.style.setProperty('z-index', '200', false);
       } else {
-        this.element.style['z-index'] = Math.round(Math.abs(this.location.getY() + 0) * 10) + 11;
+        var zIndex = Math.round(Math.abs(this.location.getY() + 0) * 10) + 11;
+        this.element.style.setProperty('z-index', zIndex, false);
       }
 
       if (!Object.isUndefined(this.eyes)) {
@@ -140,7 +141,6 @@ define('objects/bomber', ['objects/object'], function() {
       extra.remove();
     },
     kill: function() {
-      if (this.dead) this.blow();
       this.dead = true;
       this.controller.deactivate();
       this.element.addClassName('dead');
@@ -162,11 +162,9 @@ define('objects/bomber', ['objects/object'], function() {
     },
     spawnBomb: function() {
       if (this.isFlying() || this.isFalling()) return;
-      if (this.bombs.length >= this.maxBombs) return;
-
-      var bomb = this.getTile(this.getLocation()).spawnBomb(this);
-      if (bomb != null) {
-        this.bombs.push(bomb);
+      if (this.bombs >= this.maxBombs) return;
+      if (this.getTile(this.getLocation()).spawnBomb(this)) {
+        this.bombs++;
       }
     },
     throwBomb: function(bomb) {

@@ -3,7 +3,7 @@ define('tiles/tile', [], function() {
     location: null,
     vanishing: null,
     destroyed: false,
-    passable: false,
+    passable: null,
     blocking: false,
     type: -1,
     name: null,
@@ -12,6 +12,7 @@ define('tiles/tile', [], function() {
     currentCoordinates: null,
     nextCoordinates: null,
     initialize: function(location) {
+      this.passable = false;
       this.location = location;
       this.currentCoordinates = {x: location.getX(), y: location.getY()};
       this.nextCoordinates = {x: this.left, y: this.top};
@@ -52,18 +53,23 @@ define('tiles/tile', [], function() {
     hasBomb: function() {
       return Game.instance.getScreen().hasBomb(this.location);
     },
+    getBomb: function() {
+      return Game.instance.getScreen().getBomb(this.location);
+    },
     shake: function(shake) {
       if (shake > 0) {
-        var offset = Math.round(Math.random() * 10) % 2 == 0 ? 1 : 2;
+        if (Math.random() > 0) {
+          var offset = Math.round(Math.random() * 10) % 2 == 0 ? 1 : 2;
 
-        var top = Math.round(Math.random() * 10) % 2 == 0 ? - offset : offset;
-        var left = Math.round(Math.random() * 10) % 2 == 0 ? - offset : offset;
+          var top = Math.round(Math.random() * 10) % 2 == 0 ? - offset : offset;
+          var left = Math.round(Math.random() * 10) % 2 == 0 ? - offset : offset;
 
-        top += this.top;
-        left += this.left;
+          top += this.top;
+          left += this.left;
 
-        this.nextCoordinates.y = top;
-        this.nextCoordinates.x = left;
+          this.nextCoordinates.y = top;
+          this.nextCoordinates.x = left;
+        }
       } else {
         this.nextCoordinates.y = this.top;
         this.nextCoordinates.x = this.left;
@@ -84,7 +90,7 @@ define('tiles/tile', [], function() {
         switch (e.button) {
           case 0:
               this.vanish();
-              this.element.stopObserving("click", this.clickHandler);
+              this.element.stopObserving('click', this.clickHandler);
           break;
           case 1:
               this.spawnBomb();
@@ -114,7 +120,7 @@ define('tiles/tile', [], function() {
       var screen = Game.instance.getScreen();
       var extra = null;
 
-      switch (Math.floor(Math.random() * 10)) {
+      switch (Math.floor(Math.random() * 1) + 5) {
         case 0:
             extra = Game.Object.Extra.Bomb;
           break;
@@ -140,19 +146,21 @@ define('tiles/tile', [], function() {
             extra = Game.Object.Extra.Viagra;
           break;
       }
+      if (Math.random() > .5) {
+        extra = null;
+      }
 
       if (extra) {
         this.extra = new extra(this.location.clone());
         this.extra.tile = this;
         screen.add(this.extra);
-
       }
     },
     spawnBomb: function(bomber) {
       var screen = Game.instance.getScreen();
       if (screen.hasBomb(this.getLocation())) return null;
 
-      var bomb = new Game.Object.Bomb(this.getLocation().clone(), bomber || screen.objects.bombers[0]);
+      var bomb = new Game.Object.Bomb(this.getLocation().clone(), bomber || screen.objects.bombers[1]);
       screen.add(bomb);
       Sound.play('putbomb');
       return bomb;

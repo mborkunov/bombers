@@ -20,7 +20,6 @@ define('objects/extras/extra', [], function() {
         }.bind(this));
         Game.instance.getScreen().battleField.appendChild(this.element);
       }
-      $super();
     },
     update: function($super, delay) {
       if (!this.isFalling()) {

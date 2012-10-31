@@ -10,9 +10,16 @@ define('objects/object', [], function() {
     scaleFactor: null,
     callback: null,
     flySpeed: 50,
+    arena: null,
+    lastScaleFactor: null,
+    triggers: null,
 
     initialize: function() {
+      this.triggers = [];
       this.scaleFactor = 1;
+    },
+    setArena: function(arena) {
+      this.arena = arena;
     },
     getElement: function() {
       return this.element;
@@ -71,12 +78,22 @@ define('objects/object', [], function() {
     },
     move: function(speed, direction) {
     },
+    flyToLocation: function(location, callback) {
+      this.destination = location;
+      this.departure = this.location.clone();
+      this.callback = callback;
+    },
     flyTo: function(tile, callback) {
       this.destination = tile.getLocation();
       this.departure = this.location.clone();
       this.callback = callback;
     },
     update: function() {
+      if (this.triggers !=  null) {
+        Util.iterate(this.triggers, function(trigger) {
+          trigger.check();
+        });
+      }
       if (this.isFalling()) {
         this.fall();
         return;
@@ -142,8 +159,11 @@ define('objects/object', [], function() {
           this.location.setChanged(false);
         }
 
-        this.element.style.setProperty('z-index', Math.round(this.scaleFactor * 100), null);
-        this.element.scale(this.scaleFactor);
+        if (this.scaleFactor >= 1 && this.scaleFactor != this.lastScaleFactor) {
+          this.element.style.setProperty('z-index', Math.round(this.scaleFactor * 100), null);
+          this.element.scale(this.scaleFactor);
+          this.lastScaleFactor = this.scaleFactor
+        }
 
         if (this.isFalling()) {
           this.element.scale(this.falling);
