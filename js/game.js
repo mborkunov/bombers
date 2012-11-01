@@ -123,8 +123,8 @@ var Game = Class.create({
 
   },
   start: function() {
-      this.graphics.start();
-      this.state.start();
+    this.graphics.start();
+    this.state.start();
   },
   setTheme: function(theme) {
     if (theme == null) return;

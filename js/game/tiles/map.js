@@ -168,12 +168,11 @@ define('tiles/map', [], function() {
     },
     findTilesByType: function(type) {
       var tiles = [];
-
-      this.each(function(tile, options) {
-        if (tile instanceof options.type) {
-          options.tiles.push(tile);
-        }
-      }.bind(this), {type:type, tiles: tiles});
+      this.each(function(tile) {
+          if (tile instanceof type && !tile.isDestroyed()) {
+            tiles.push(tile);
+          }
+      }.bind(this));
       return tiles;
     },
     getRandomTile: function() {
@@ -269,12 +268,12 @@ define('tiles/map', [], function() {
       return new Game.Map(name, author, maxPlayers, data);
     },
     list: function() {
-      return $A(['Big_Standard','Blast_Matrix','Bloody_Ring','Boiling_Egg','Bomb_Attack',
+      return $A(['Bomb_Attack'/*'Big_Standard','Blast_Matrix','Bloody_Ring','Boiling_Egg','Bomb_Attack',
       'Broken_Heart','Crammed','Death_Corridor','Dilemma','FearCircle',
       'FearCircle_Remix','FireWheels','Football','Four_Instance','GhostBear',
       'Hard_Work','Hole_Run','Huge_Standard','Juicy_Lucy','Kitchen','Meeting',
       'MungoBane','Obstacle_Race','Overkill','Prison_Cells','Redirection',
-      'Sixty_Nine','Small_Standard','Snake_Race','Tiny_Standard','Whole_Mess']);
+      'Sixty_Nine','Small_Standard','Snake_Race','Tiny_Standard','Whole_Mess'*/]);
     },
     getNextMap: function(callback) {
       var maps = Game.Map.list();

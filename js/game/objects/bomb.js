@@ -4,12 +4,14 @@ define('objects/bomb', ['objects/object', 'objects/explosion'], function() {
     bomber: null,
     scaleCounter: null,
     lifetime: 3000,
+    power: null,
     initialize: function($super, location, bomber) {
       $super();
       this.backgroundPosition = {x: 0, y: 0};
       this.bomber = bomber;
       this.distance = 0;
       this.speed = .05;
+      this.power = bomber.getPower();
       this.location = location;
       this.scaleCounter = 0;
       this.lastUpdate = 0;
@@ -70,7 +72,7 @@ define('objects/bomb', ['objects/object', 'objects/explosion'], function() {
     },
     explode: function() {
       this.removeBomb();
-      this.getScreen().add(new Game.Object.Explosion(this.location.clone().round(), this.bomber));
+      this.getScreen().add(new Game.Object.Explosion(this.location.clone().round(), this.bomber, this.power));
       this.bomber.bombs--;
       this.getScreen().shakeIt();
       Sound.play('explode');

@@ -67,3 +67,19 @@ if (!Prototype.Browser.IE) {
     return (this.ctrlKey || this.altKey || this.shiftKey || this.metaKey);
   };
 }
+
+dat.GUI.prototype.createFolder = function(name) {
+  var parts = name.split('.');
+  var folder = this;
+  parts.each(function(part, index) {
+    if (index + 1 == parts.length) {
+      return;
+    }
+    try {
+      folder = folder.addFolder(part);
+    } catch (ignored) {
+      folder = folder.__folders[part];
+    }
+  });
+  return folder;
+};

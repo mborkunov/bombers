@@ -36,6 +36,7 @@ define('screens/menu', ['screens/screen'], function() {
             .addChild(new Item(null, Type.Settings, 'extras.kick'))
             .addChild(new Item(null, Type.Settings, 'extras.glove')))
           .addChild(new Item('Diseases', Type.Inner)
+            .addChild(new Item(null, Type.Settings, 'diseases'))
             .addChild(new Item(null, Type.Settings, 'diseases.joint'))
             .addChild(new Item(null, Type.Settings, 'diseases.viagra'))
             .addChild(new Item(null, Type.Settings, 'diseases.cocaine')))

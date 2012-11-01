@@ -117,44 +117,44 @@ define('tiles/tile', [], function() {
       }
     },
     spawnExtra: function() {
+      if (Math.random() > .25) {
+        return;
+      }
       var screen = Game.instance.getScreen();
-      var extra = null;
 
-      switch (Math.floor(Math.random() * 1) + 5) {
-        case 0:
-            extra = Game.Object.Extra.Bomb;
-          break;
-        case 1:
-            extra = Game.Object.Extra.Cocaine;
-          break;
-        case 2:
-            extra = Game.Object.Extra.Glove;
-          break;
-        case 3:
-            extra = Game.Object.Extra.Joint;
-          break;
-        case 4:
-            extra = Game.Object.Extra.Kick;
-          break;
-        case 5:
-            extra = Game.Object.Extra.Power;
-          break;
-        case 6:
-            extra = Game.Object.Extra.Skateboard;
-          break;
-        case 7:
-            extra = Game.Object.Extra.Viagra;
-          break;
-      }
-      if (Math.random() > .5) {
-        extra = null;
-      }
+      var extras = [];
 
-      if (extra) {
-        this.extra = new extra(this.location.clone());
-        this.extra.tile = this;
-        screen.add(this.extra);
+      if (Config.getProperty('diseases').getValue()) {
+        if (Config.getProperty('diseases.joint').getValue()) {
+          extras.push(Game.Object.Extra.Joint);
+        }
+        if (Config.getProperty('diseases.viagra').getValue()) {
+          extras.push(Game.Object.Extra.Viagra);
+        }
+        if (Config.getProperty('diseases.cocaine').getValue()) {
+          extras.push(Game.Object.Extra.Cocaine);
+        }
       }
+      if (Config.getProperty('extras.bombs').getValue()) {
+        extras.push(Game.Object.Extra.Bomb);
+      }
+      if (Config.getProperty('extras.power').getValue()) {
+        extras.push(Game.Object.Extra.Power);
+      }
+      if (Config.getProperty('extras.skateboard').getValue()) {
+        extras.push(Game.Object.Extra.Skateboard);
+      }
+      if (Config.getProperty('extras.kick').getValue()) {
+        extras.push(Game.Object.Extra.Kick);
+      }
+      if (Config.getProperty('extras.bombs').getValue()) {
+        extras.push(Game.Object.Extra.Glove);
+      }
+      var extra = extras[Math.floor(Math.random() * extras.length)];
+
+      this.extra = new extra(this.location.clone());
+      this.extra.tile = this;
+      screen.add(this.extra);
     },
     spawnBomb: function(bomber) {
       var screen = Game.instance.getScreen();

@@ -32,7 +32,7 @@ define('screens/arena', ['screens/screen'], function() {
           call(this.arbiter);
         }
       };
-      this.shakyExplosions = Config.getProperty('graphic.shaky_explosions').getValue();
+      this.shakyExplosions = Config.getProperty('graphic.shaky_explosions');
       this.shake = 0;
       this.timeisup = false;
       this.rendered = false;
@@ -174,10 +174,10 @@ define('screens/arena', ['screens/screen'], function() {
         }
       }.bind(this));
     },
-    checkBombers: function() {
+    killBombers: function() {
       if (!this.scoreScreenTimeout && this.objects.bombers.filter(this.checkBomberFilter).length == 0) {
         this.scoreScreenTimeout = setTimeout(function() {
-          Game.instance.setScreen(Game.Screen.Score);
+          Game.instance.setScreen(Game.Screen.Arena);
         }, 1000);
       }
     },
@@ -190,10 +190,10 @@ define('screens/arena', ['screens/screen'], function() {
 
       this.objects.each(this.updateObjectsHandler);
       this.map.update(delay, this.shake);
-      this.checkBombers();
+      this.killBombers();
     },
     shakeIt: function() {
-      if (!this.shakyExplosions) return;
+      if (!this.shakyExplosions.getValue()) return;
       if (!Object.isUndefined(this.timeout)) {
         clearTimeout(this.timeout);
       }

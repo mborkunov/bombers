@@ -5,10 +5,10 @@ define('objects/explosion', ['objects/object'], function() {
     rendered: null,
     lifetime: 500,
     start: null,
-    initialize: function($super, location, bomber) {
+    initialize: function($super, location, bomber, power) {
       $super();
       this.location = location;
-      this.power = bomber.getPower();
+      this.power = power;
       this.rendered = false;
       this.start = now();
       this.triggers.push(
@@ -16,7 +16,7 @@ define('objects/explosion', ['objects/object'], function() {
           return now() - this.start > this.lifetime / 6;
         }.bind(this),
           function() {
-            this.element.removeClassName("small").addClassName("medium");
+            this.element.removeClassName('small').addClassName('medium');
           }.bind(this)
       ));
       this.triggers.push(
@@ -24,7 +24,7 @@ define('objects/explosion', ['objects/object'], function() {
           return now() - this.start > this.lifetime - this.lifetime / 3;
         }.bind(this),
         function() {
-          this.element.removeClassName("medium").addClassName("big");
+          this.element.removeClassName('medium').addClassName('big');
         }.bind(this)
       ));
       this.triggers.push(
@@ -32,7 +32,7 @@ define('objects/explosion', ['objects/object'], function() {
           return now() - this.start > this.lifetime - this.lifetime / 6;
         }.bind(this),
           function() {
-            this.element.removeClassName("big").addClassName("medium");
+            this.element.removeClassName('big').addClassName('medium');
           }.bind(this)
       ));
       this.triggers.push(
@@ -40,7 +40,7 @@ define('objects/explosion', ['objects/object'], function() {
           return now() - this.start > this.lifetime - this.lifetime / 8;
         }.bind(this),
           function() {
-            this.element.removeClassName("medium").addClassName("small");
+            this.element.removeClassName('medium').addClassName('small');
           }.bind(this)
       ));
 
@@ -85,9 +85,9 @@ define('objects/explosion', ['objects/object'], function() {
         this.element.style.marginTop =  - size / 2 + 20 + 'px';
         this.element.style.marginLeft =  - size / 2 + 20 + 'px';
 
-        this.element.select(".body").each(function(beamBody) {
-          var attribute = beamBody.parentNode.getAttribute("class");
-          if (attribute.indexOf("west") > -1 || attribute.indexOf("east") > -1) {
+        this.element.select('.body').each(function(beamBody) {
+          var attribute = beamBody.parentNode.getAttribute('class');
+          if (attribute.indexOf('west') > -1 || attribute.indexOf('east') > -1) {
             beamBody.style.width = (power * 40) + 'px';
           } else {
             beamBody.style.height = (power * 40) + 'px';
@@ -103,7 +103,6 @@ define('objects/explosion', ['objects/object'], function() {
             if (tile instanceof Game.Tile.Ground) {
               if (tile.hasExtra()) {
                 tile.getExtra().remove();
-                //this.element.select('.' + cssClasses[i] + ' >.edge').invoke('hide');
               } else if (tile.hasBomb()) {
                 tile.getBomb().explode();
                 this.element.select('.' + cssClasses[i] + ' >.edge').invoke('hide');
@@ -130,6 +129,7 @@ define('objects/explosion', ['objects/object'], function() {
             }
           }
         }
+        this.killBombers(this.location);
         this.element.observe('click', this.dispatch.bind(this));
       }
       $super();
@@ -137,7 +137,6 @@ define('objects/explosion', ['objects/object'], function() {
     findIntersection: function(direction) {
       var i = 0;
       var location = this.location.clone();
-      var bombers = Game.instance.getScreen().objects.bombers;
       while (++i <= this.power) {
         switch(direction) {
           case 0: location.increaseY(-1); break;
@@ -150,13 +149,18 @@ define('objects/explosion', ['objects/object'], function() {
           (tile instanceof Game.Tile.Ground && (tile.hasExtra() || tile.hasBomb()))) {
           return [tile, i];
         }
-        Util.iterate(bombers, function(bomber) {
-          if (bomber.getLocation().round().equals(location)) {
-            bomber.isDead() ? bomber.blow() : bomber.kill();
-          }
-        });
+        this.killBombers(location);
       }
       return null;
+    },
+    killBombers: function(location) {
+      var bombers = Game.instance.getScreen().objects.bombers;
+      Util.iterate(bombers, function(bomber) {
+        if (bomber.isFalling()) return;
+        if (bomber.getLocation().round().equals(location)) {
+          bomber.isDead() ? bomber.blow() : bomber.kill();
+        }
+      });
     },
     dispatch: function($super) {
       Game.instance.getScreen().remove(this);

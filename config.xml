@@ -234,6 +234,10 @@
     <name>Extra Glove</name>
   </property>
 
+  <property id="diseases" type="boolean" default="true">
+      <name>Diseases</name>
+  </property>
+
   <property id="diseases.joint" type="boolean" default="true">
     <name>Joint disease</name>
   </property>

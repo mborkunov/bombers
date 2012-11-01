@@ -51,16 +51,18 @@ define('objects/bomber', ['objects/object'], function() {
         this.eyes = new Element('div').addClassName('eyes object').addClassName(this.config['eyes']);
         this.element.appendChild(this.eyes);
         if (Config.getValue('debug')) {
-          this.element.observe('click', this.kill.bind(this));
+          this.element.observe('click', function() {
+            this.isDead() ? this.blow() : this.kill();
+          }.bind(this));
         }
         container.appendChild(this.element);
       }
 
       if (this.isFlying()) {
-        this.element.style.setProperty('z-index', '200', false);
+        this.element.style.setProperty('z-index', '200', null);
       } else {
-        var zIndex = Math.round(Math.abs(this.location.getY() + 0) * 10) + 11;
-        this.element.style.setProperty('z-index', zIndex, false);
+        var zIndex = String(Math.round(Math.abs(this.location.getY() + 0) * 10) + 11);
+        this.element.style.setProperty('z-index', zIndex, null);
       }
 
       if (!Object.isUndefined(this.eyes)) {

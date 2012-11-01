@@ -8,7 +8,6 @@ define('tiles/trap', ['tiles/ground'], function() {
       var bomb = $super(bomber);
 
       function callback(tile, bomb) {
-        console.log(tile, 'fly finished');
         if (tile instanceof Game.Tile.Trap) {
           var sources = Game.instance.screen.map.findTilesByType(Game.Tile.Trap);
           var randomSource = sources[Math.floor(Math.random() * sources.length)];

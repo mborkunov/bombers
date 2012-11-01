@@ -45,19 +45,23 @@ var Config = {
           return data;
         };
 
-        /*for (var x = 0, length = types.length; x < length; x++) {
-          var type = types[x];
-          var id = type.getAttribute('id');
-          //Config.types[id] = nodeToObject(type);
-        }*/
-        //console.log(t.responseXML.firstChild, types);
-        //console.log(xml.firstChild.querySelectorAll('types > type'));
-
+        var gui = new dat.GUI();
         var properties = xml.getElementsByTagName('property');
         for (var i = 0; i < properties.length; i++) {
           var property = Config.Property.create(properties[i]);
           property.loadUserValue();
           Config.properties[property.getId()] = property;
+
+          var folder = gui.createFolder(property.getId());
+          if (!(property instanceof Config.Property.Complex)) {
+            var parts = property.getId().split('.');
+            var name = parts[parts.length - 1];
+            if (property instanceof Config.Property.Number) {
+              folder.add(property, name, property.min, property.max, property.step, property.step, property.step).listen();
+            } else {
+              folder.add(property, name).listen();
+            }
+          }
         }
 
         console.log(properties.length + " config properties were loaded");
@@ -76,6 +80,10 @@ Config.Property = Class.create({
     this.id = xmlConfig.getAttribute('id');
     this.name = xmlConfig.getElementsByTagName('name')[0].firstChild.nodeValue;
     this.immutable = xmlConfig.hasAttribute('immutable') && xmlConfig.getAttribute('immutable').toLowerCase() == 'true';
+  },
+  initProperty: function(value) {
+    var parts = this.id.split('.');
+    this[parts[parts.length - 1]] = value || this.value;
   },
   loadUserValue: function() {
     if (this.immutable) {
@@ -107,6 +115,7 @@ Config.Property = Class.create({
       throw 'Cannot change immutable property';
     }
     localStorage.setItem(this.id, this.value);
+    this.initProperty();
   },
   getNextValue: null,
   getPreviousValue: null,
@@ -216,6 +225,7 @@ Config.Property.Enum = Class.create(Config.Property, {
     if (this.values.indexOf(this.value) < 0) {
       this.value = this.values[0];
     }
+    this.initProperty(); //this.values
   },
   getValues: function() {
     return this.values;
@@ -227,7 +237,7 @@ Config.Property.Enum = Class.create(Config.Property, {
     $super();
   },
   getNextValue: function() {
-    var currentIndex = this.values.indexOf(this.value); 
+    var currentIndex = this.values.indexOf(this.value);
     if (currentIndex < 0) {
       return this.values[0];
     } else {
@@ -279,6 +289,7 @@ Config.Property.Number = Class.create(Config.Property, {
       this.value = this.max;
     }
     this.defaultValue = this.value;
+    this.initProperty();
   },
   setValue: function($super, value) {
     if (typeof (value) === 'number') {
@@ -318,6 +329,7 @@ Config.Property.Boolean = Class.create(Config.Property, {
       this.value = false;
     }
     this.defaultValue = this.value;
+    this.initProperty();
   },
   getNextValue: function() {
     return !this.value;
