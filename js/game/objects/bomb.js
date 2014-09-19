@@ -38,7 +38,7 @@ define('objects/bomb', ['objects/object', 'objects/explosion'], function() {
       if (this.isFlying()) {
         this.element.style.setProperty('z-index', '200', null);
       } else {
-        //this.element.style['z-index'] = Math.round(Math.abs(this.location.getY() + 0) * 10) + 11;
+        this.element.style.setProperty('z-index', String((Math.round(Math.abs(this.location.getY() + 0) * 10) + 11)), null);
       }
       $super();
     },
