@@ -69,6 +69,7 @@ if (!Prototype.Browser.IE) {
 }
 
 dat.GUI.prototype.createFolder = function(name) {
+  if (name.indexOf('.') < 0) return this;
   var parts = name.split('.');
   var folder = this;
   parts.each(function(part, index) {

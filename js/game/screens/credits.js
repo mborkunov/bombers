@@ -38,7 +38,7 @@ define('screens/credits', ['screens/screen'], function() {
         }.bind(this)
       };
 
-      this.margin = $('game-container').getHeight();
+      this.margin = Game.instance.container.getHeight();
       this.text = '<h1>ClanBomber Credits (Original)</h1><br/>' +
           '<h2>Game Design</h2>' +
           'Andreas Hundt<br/>' +
@@ -85,7 +85,7 @@ define('screens/credits', ['screens/screen'], function() {
       this.div.remove();
     },
     update: function(delay) {
-      if (Math.abs(this.margin) - 180 > $('game-container').getHeight()) {
+      if (Math.abs(this.margin) - 180 > Game.instance.container.getHeight()) {
         Game.instance.setScreen(Game.Screen.Menu);
       }
 

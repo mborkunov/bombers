@@ -7,10 +7,12 @@ var Worker = Class.create({
   fps: null,
   /** @type String */
   name: null,
+  retries: null,
   initialize: function() {
     this.fps = this.defaultFps;
     this.timeout = 0;
     this.lastCall = 0;
+    this.retries = 0;
   },
   start: function() {
     this.loop();
@@ -23,10 +25,15 @@ var Worker = Class.create({
         this.action(now() - this.lastCallEnd);
       }
     } catch (e) {
-      console.log(e, this.name);
+      if (this.retries++ >= 5) {
+        console.log('Maximum number of retries exceeded', e);
+        return;
+      }
+      console.log('Worker failed ' + [this.name], e);
     }
     this.lastCallEnd = now();
-    this.timeout = Math.abs(1000 / this.fps - (now() - this.lastCall));
+    var fps = this.fps instanceof Config.Property ? this.fps.getValue() : this.fps;
+    this.timeout = Math.abs(1000 / fps - (now() - this.lastCall));
     setTimeout(this.loop.bind(this), this.timeout);
   }
 });
@@ -34,10 +41,9 @@ var Worker = Class.create({
 var Graphics = Class.create(Worker, {
   name: 'graphics',
   initialize: function() {
-    this.fps = Config.getProperty('graphic.maxfps').getValue();
+    this.fps = Config.getProperty('graphic.maxfps');
   },
   action: function(delay) {
-    this.fps = Config.getProperty('graphic.maxfps').getValue() | 0;
     Game.instance.getScreen().render(delay);
   }
 });

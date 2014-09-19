@@ -1,4 +1,9 @@
-@import url(http://fonts.googleapis.com/css?family=Fenix);
+@font-face {
+  font-family: 'Fenix';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Fenix'), local('Fenix-Regular'), url(./themes/fenix.woff) format('woff');
+}
 
 $path: '../images/themes/default';
 

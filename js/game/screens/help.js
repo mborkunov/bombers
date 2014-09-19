@@ -22,7 +22,7 @@ define('screens/help', ['screens/screen'], function() {
         {name: 'Power', text: 'Explosions grow one field in each direction'},
         {name: 'Skateboard', text: 'Lets you move faster'},
         {name: 'Kick', text: 'Kick bombs if you walk against one'},
-        {name: 'Throw', text: 'Throw Bombs if you press the button twice without moving'}
+        {name: 'Glove', text: 'Throw Bombs if you press the button twice without moving'}
       ], 'extras');
 
       this.drawHelp('Drugs', [
@@ -47,7 +47,7 @@ define('screens/help', ['screens/screen'], function() {
       var list = new Element('ul').addClassName(cls);
       $A(items).each(function(item) {
         var li = new Element('li').addClassName(item.name.toLowerCase());
-        li.appendChild(new Element('img', {src: 'images/empty.gif'}));
+        li.appendChild(new Element('img', {src: 'images/empty.gif'}).addClassName('extra'));
         li.appendChild(new Element('span').update(item.name + ':'));
         li.appendChild(new Element('span').addClassName('text').update(item.text));
         li.appendChild(new Element('div').addClassName('clear'));
