@@ -1,6 +1,6 @@
 var Game = Class.create({
   /** @type Element */
-  container: $('game-container'),
+  container: $('container'),
   /** @type Screen */
   screen: null,
   /** @type Worker */
@@ -12,6 +12,7 @@ var Game = Class.create({
   initialize: function() {
     this.setTheme(Config.getProperty("graphic.theme").getValue());
     Sound.setEnabled(Config.getProperty("sounds").getValue());
+    Sound.setVolume(Config.getProperty('volume').getValue());
     Game.instance = this;
     this.setScreen(this.getStartScreen());
     this.graphics = new Graphics();

@@ -1,0 +1,474 @@
+body.svg {
+  #container {
+    &.intro {
+      background: #000;
+      .logo {
+        background: url("../images/themes/default/logo.png") no-repeat;
+        width: 419px;
+        height: 130px;
+        margin: 30% auto 0;
+        .text {
+          color: #cecece;
+          font-size: 26px;
+          margin: 10px 0 0;
+          text-transform: uppercase;
+        }
+      }
+    }
+
+    &.menu {
+      background-image: url('../images/themes/default/title.png');
+      #menu {
+        opacity: 0.7;
+        width: 35%;
+        padding: 0;
+        -webkit-box-reflect: below 15px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(0.6, transparent), to(black));
+         li {
+          width: auto;
+          height: 30px;
+          background: #a87;
+          margin: 0 auto;
+          border: none;
+          &.selected {
+            background: #965;
+            color: #000;
+          }
+        }
+      }
+    }
+    &.credits {
+      background: url('../images/overlay.png'), #000 url('../images/themes/original/horst_evil.png');
+    }
+
+    &.editor {
+      background-image: url('../images/themes/original/editor.png');
+      .preview, .toolbox {
+        background: #333;
+        .tile {
+          width: 39px;
+          height: 39px;
+          border: none;
+          border-bottom: 1px solid black;
+          border-right: 1px solid black;
+          &.ice {
+            background: url('../images/themes/default/tile_addons.png') 0 0, url('../images/themes/default/tiles.png') 160px 0;
+          }
+          &.trap {
+            background: url('../images/themes/default/tile_addons.png') 40px 0, url('../images/themes/default/tiles.png') 160px 0;
+          }
+          &.ground {
+            background: url('../images/themes/default/tiles.png') 160px 0;
+            text-aling: center;
+            &.spawn {
+              background: red;
+            }
+          }
+          &.box {
+            background: url('../images/themes/default/tiles.png') 80px 0;
+          }
+          &.wall {
+            background: url('../images/themes/default/tiles.png') 120px 0;
+            &.player-1::before{
+              content:'1';
+            }
+            &.player-2::before{
+              content:'2';
+            }
+            &.player-3::before{
+              content:'3';
+            }
+            &.player-4::before{
+              content:'4';
+            }
+            &.player-5::before{
+              content:'5';
+            }
+            &.player-6::before{
+              content:'6';
+            }
+            &.player-7::before{
+              content:'7';
+            }
+            &.player-8::before{
+              content:'8';
+            }
+          }
+          &.arrow {
+            &.east {
+              background: url('../images/themes/default/tile_addons.png') 160px 0, url('../images/themes/default/tiles.png') 160px 0;
+            }
+            &.south {
+              background: url('../images/themes/default/tile_addons.png') 280px 0, url('../images/themes/default/tiles.png') 160px 0;
+            }
+            &.west {
+              background: url('../images/themes/default/tile_addons.png') 240px 0, url('../images/themes/default/tiles.png') 160px 0;
+            }
+            &.north {
+              background: url('../images/themes/default/tile_addons.png') 200px 0, url('../images/themes/default/tiles.png') 160px 0;
+            }
+          }
+        }
+      }
+      .preview {
+/*        .opacity(1);*/
+      }
+      .toolbox {
+        .tile {
+          border: 1px solid black;
+          &.selected {
+            border: 1px solid white;
+          }
+        }
+      }
+    }
+    &.help {
+      background: url('../images/overlay.png'), url('../images/themes/original/title.png');
+      ul li {
+        &.bomb img {
+          background: url('../images/themes/original/extras.png') 0 0 no-repeat;
+        }
+        &.power img {
+          background: url('../images/themes/original/extras.png') -38px 0 no-repeat;
+        }
+        &.kick img {
+          background: url('../images/themes/original/extras.png') -114px 0 no-repeat;
+        }
+        &.glove img {
+          background: url('../images/themes/original/extras.png') -152px 0 no-repeat;
+        }
+        &.skateboard img {
+          background: url('../images/themes/original/extras.png') -76px 0 no-repeat;
+        }
+        &.joint img {
+          background: url('../images/themes/original/extras.png') -190px 0 no-repeat;
+        }
+        &.cocaine img {
+          background: url('../images/themes/original/extras.png') -266px 0 no-repeat;
+        }
+        &.viagra img {
+          background: url('../images/themes/original/extras.png') -228px 0 no-repeat;
+        }
+      }
+    }
+    &.arena {
+      .bomb {
+        width: 36px;
+        height: 36px;
+        position: absolute;
+        margin: 2px;
+        z-index: 200 !important;
+        background: url("../images/themes/default/bomb.png") 0 0 no-repeat;
+      }
+      .bomber {
+        width: 36px;
+        height: 36px;
+        border: 1px solid black;
+        border-radius: 20px;
+        background: url("../images/light.png") 0 0 no-repeat;
+
+        .eyes {
+          width: 36px;
+          height: 36px;
+          &.stereo {
+            background: url('../images/themes/svg/stereo-eyes.svg') 0 0 no-repeat;
+          }
+          &.cyclope {
+            background: url('../images/themes/svg/cyclope-eyes.svg') 0 0 no-repeat;
+          }
+          &.alien {
+            background: url('../images/themes/svg/alien-eyes.svg') 0 0 no-repeat;
+          }
+          &.olimpian {
+            background: url('../images/themes/default/olimpian-eyes.png') 0 0 no-repeat;
+          }
+        }
+        &.dead .eyes {
+          &.stereo {
+            background: url('../images/themes/svg/stereo-eyes-dead.svg') 0 0 no-repeat;
+          }
+          &.alien {
+            background: url('../images/themes/svg/alien-eyes-dead.svg') 0 0 no-repeat;
+          }
+          &.cyclope {
+            background: url('../images/themes/svg/cyclope-eyes-dead.svg') 0 0 no-repeat;
+          }
+          &.olimpian {
+            background: url('../images/themes/default/cyclope-eyes-dead.png') 0 0 no-repeat;
+          }
+        }
+        &.bomber-1 {
+          background-color: silver;
+        }
+        &.bomber-2 {
+          background-color: green;
+        }
+        &.bomber-3 {
+          background-color: yellow;
+        }
+        &.bomber-4 {
+          background-color: #800;
+        }
+        &.bomber-5 {
+          background-color: #7fffd4;
+        }
+        &.bomber-6 {
+          background-color: #d2691e;
+        }
+        &.bomber-7 {
+          background-color: orange;
+        }
+        &.bomber-8 {
+          background-color: #f08080;
+        }
+      }
+      #arbiter {
+        background: url('../images/themes/default/trollface.png') 0 0 no-repeat;
+        background-size: 40px 40px;
+      }
+      .tile {
+        &.ice {
+          background: url('../images/themes/default/tile_addons.png') 0 0, url('../images/themes/default/tiles.png') 160px 0;
+        }
+        &.trap {
+          background: url('../images/themes/svg/trap.svg') 0 0 no-repeat;
+        }
+        &.ground {
+          background: url('../images/themes/svg/ground.svg') 0 0 no-repeat;
+        }
+        &.box {
+          background: url('../images/themes/svg/box.svg') 0 0 no-repeat;
+        }
+        &.wall {
+          background: url('../images/themes/svg/wall.svg') 0 0;
+        }
+        &.arrow {
+          &.east {
+            background: url('../images/themes/default/tile_addons.png') 160px 0, url('../images/themes/default/tiles.png') 160px 0;
+          }
+          &.south {
+            background: url('../images/themes/default/tile_addons.png') 280px 0, url('../images/themes/default/tiles.png') 160px 0;
+          }
+          &.west {
+            background: url('../images/themes/default/tile_addons.png') 240px 0, url('../images/themes/default/tiles.png') 160px 0;
+          }
+          &.north {
+            background: url('../images/themes/default/tile_addons.png') 200px 0, url('../images/themes/default/tiles.png') 160px 0;
+          }
+        }
+      }
+
+      .extra {
+        &.bomb {
+          background: url('../images/themes/original/extras.png') 0 0 no-repeat;
+        }
+        &.power {
+          background: url('../images/themes/original/extras.png') -40px 0 no-repeat;
+        }
+        &.kick {
+          background: url('../images/themes/original/extras.png') -160px 0 no-repeat;
+        }
+        &.glove {
+          background: url('../images/themes/original/extras.png') -160px 0 no-repeat;
+        }
+        &.skateboard {
+          background: url('../images/themes/original/extras.png') -80px 0 no-repeat;
+        }
+        &.joint {
+          background: url('../images/themes/original/extras.png') -120px 0 no-repeat;
+        }
+        &.cocaine {
+          background: url('../images/themes/original/extras.png') -200px 0 no-repeat;
+        }
+        &.viagra {
+          background: url('../images/themes/original/extras.png') -240px 0 no-repeat;
+        }
+      }
+      .dialog {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        margin: 30% 0 0 -234px;
+        z-index: 301;
+        border: none;
+/*        .opacity(.9);*/
+        .action {
+          float: left;
+          width: 150px;
+          margin: 30px 25px;
+          background-color: #a87 !important;
+          height: 30px;
+          border: none;
+          &:hover {
+            background: #965 !important;
+            color: #000 !important;
+          }
+        }
+      }
+      #logo {
+          position: absolute;
+          z-index: 9;
+          top: -40px;
+          left: 250px;
+          width: 146px;
+          height: 40px;
+          background-image: url('../images/logo_small.png');
+      }
+
+      #timer #clock {
+        width: 40px;
+        height: 40px;
+        margin: 7px 20px 0 0;
+        background: url('../images/themes/default/clock.png') 0 0 no-repeat;
+      }
+      #timer #counter {
+        margin-top: 3px;
+      }
+      #timer #clock, #timer #counter {
+        float: left;
+      }
+      #timer #clock.expired {
+        background: url('../images/themes/default/clock.png') -40px 0 no-repeat;
+      }
+    }
+
+    &.score {
+      background: url('../images/themes/default/score_bg.png') no-repeat;
+      .preview {
+        .tile {
+          &.ice {
+            background: url('../images/themes/default/tile_addons.png') 0 0, url('../images/themes/default/tiles.png') 160px 0;
+          }
+          &.trap {
+            background: url('../images/themes/default/tile_addons.png') 40px 0, url('../images/themes/default/tiles.png') 160px 0;
+          }
+          &.ground {
+            background: url('../images/themes/default/tiles.png') 160px 0;
+          }
+          &.box {
+            background: url('../images/themes/default/tiles.png') 80px 0;
+          }
+          &.wall {
+            background: url('../images/themes/default/tiles.png') 120px 0;
+          }
+          &.arrow {
+            &.east {
+              background: url('../images/themes/default/tile_addons.png') 160px 0, url('../images/themes/default/tiles.png') 160px 0;
+            }
+            &.south {
+              background: url('../images/themes/default/tile_addons.png') 280px 0, url('../images/themes/default/tiles.png') 160px 0;
+            }
+            &.west {
+              background: url('../images/themes/default/tile_addons.png') 240px 0, url('../images/themes/default/tiles.png') 160px 0;
+            }
+            &.north {
+              background: url('../images/themes/default/tile_addons.png') 200px 0, url('../images/themes/default/tiles.png') 160px 0;
+            }
+          }
+        }
+      }
+    }
+    &.levels {
+      background:  url('../images/themes/default/level_selection.png') 0 0 no-repeat !important;
+    }
+
+    &.players {
+      background:  url('../images/themes/default/playersetup.png') 0 0 no-repeat !important;
+      .list {
+        margin:  60px auto 0;
+        width: 80%;
+        color: #fff;
+        font-size: 20px;
+        .player {
+          td {
+            &.preview {
+              .bomber {
+/*                .border-radius(20px);*/
+                .hotspot {
+                  background: url("../images/light.png") 0 0 no-repeat;
+                  width: 40px;
+                  height: 40px;
+                  .eyes {
+                    width: 40px;
+                    height: 40px;
+                    &.stereo {
+                      background: url('../images/themes/default/stereo-eyes.png') 2px 0 no-repeat;
+                    }
+                    &.cyclope {
+                      background: url('../images/themes/default/cyclope-eyes.png') 2px 0 no-repeat;
+                    }
+                    &.alien {
+                      background: url('../images/themes/default/alien-eyes.png') 2px 0 no-repeat;
+                    }
+                    &.olimpian {
+                      background: url('../images/themes/default/olimpian-eyes.png') 2px 0 no-repeat;
+                    }
+                  }
+                }
+              }
+            }
+            &.controller {
+              &::before {
+                content: '';
+              }
+              &.ijkl {
+                background: url('../images/themes/default/controllers.png') 0 -165px no-repeat;
+              }
+              &.wasd {
+                background: url('../images/themes/default/controllers.png') 0 -110px no-repeat;
+              }
+              &.arrows {
+                background: url('../images/themes/default/controllers.png') 0 -54px no-repeat;
+              }
+              &.ai {
+                background: url('../images/themes/default/controllers.png') 0 0 no-repeat;
+              }
+            }
+
+            &.eyes {
+              &.stereo {
+                background: url('../images/themes/default/stereo-eyes.png') 13px 15px no-repeat;
+              }
+              &.cyclope {
+                background: url('../images/themes/default/cyclope-eyes.png') 13px 15px no-repeat;
+              }
+              &.alien {
+                background: url('../images/themes/default/alien-eyes.png') 13px 15px no-repeat;
+              }
+              &.olimpian {
+                background: url('../images/themes/default/olimpian-eyes.png') 13px 15px no-repeat;
+              }
+            }
+
+            &.team {
+              &::before {
+                content: '';
+              }
+              &.team-0 {
+                background: url('../images/themes/default/teams.jpg') 0 0 no-repeat;
+              }
+              &.team-1 {
+                background: url('../images/themes/default/teams.jpg') 0 -56px no-repeat;
+              }
+              &.team-2 {
+                background: url('../images/themes/default/teams.jpg') 0 -112px no-repeat;
+              }
+              &.team-3 {
+                background: url('../images/themes/default/teams.jpg') 0 -167px no-repeat;
+              }
+              &.team-4 {
+                background: url('../images/themes/default/teams.jpg') 0 -224px no-repeat;
+              }
+            }
+          }
+          &.selected td {
+            border: 1px solid white;
+            background-color: gray;
+          }
+        }
+      }
+      .anykey.escape {
+        margin-top: 0;
+      }
+    }
+  }
+}

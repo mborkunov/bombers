@@ -27,6 +27,11 @@
     <name>Sound</name>
   </property>
 
+  <property id="volume" type="number" default=".5">
+    <name>Sound volume</name>
+    <range min="0" max="1" step=".1"/>
+  </property>
+
   <property id="debug" type="boolean" default="true">
     <name>Debug</name>
   </property>

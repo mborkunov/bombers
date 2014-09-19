@@ -1,0 +1,176 @@
+body.debug {
+  #container {
+    &.arena {
+      .bomb {
+        background: #008b8b;
+        text-align: center;
+        font-weight: bold;
+        &::before {
+          content: "b";
+
+        }
+      }
+      .bomber {
+        text-align: center;
+        font-weight: bold;
+        &.bomber-1 {
+          background-color: lightred;
+          &::before {
+            content: "p1";
+          }
+        }
+        &.bomber-2 {
+          background-color: green;
+          &::before {
+            content: "p2";
+          }
+        }
+        &.bomber-3 {
+          background-color: yellow;
+          &::before {
+            content: "p3";
+          }
+        }
+        &.bomber-4 {
+          background-color: #800;
+          &::before {
+            content: "p4";
+          }
+        }
+        &.bomber-5 {
+          background-color: #7fffd4;
+          &::before {
+            content: "p5";
+          }
+        }
+        &.bomber-6 {
+          background-color: #d2691e;
+          &::before {
+            content: "p6";
+          }
+        }
+        &.bomber-7 {
+          background-color: orange;
+          &::before {
+            content: "p7";
+          }
+        }
+        &.bomber-8 {
+          background-color: #f08080;
+          &::before {
+            content: "p8";
+          }
+        }
+        &.dead {
+          background-image: url('../images/themes/debug/ribbon.png');
+          background-position: 100% 100%;
+          background-repeat: no-repeat;
+        }
+
+      }
+
+      .explosion {
+        background:  none;
+
+        .beam {
+          .edge, .body {
+            background: red;
+          }
+        }
+        .epicenter {
+          background: red;
+        }
+      }
+      .extra {
+        border: 1px groove #00ffff;
+        &.bomb {
+          z-index: 20 !important;
+        }
+        &.disease {
+          border-color: red;
+        }
+      }
+
+      .extra {
+        width: 40px !important;
+        height: 40px !important;
+        margin: 0;
+        border: none;
+        color: #fff;
+        text-align: center;
+        font-weight: bold;
+        font-size: 14px;
+        &::before {
+          content: "e-";
+        }
+        &.bomb::after {
+          content: "b";
+        }
+        &.power::after {
+          content: "p";
+        }
+        &.kick::after {
+          content: "k";
+        }
+        &.glove::after {
+          content: "g";
+        }
+        &.skateboard::after {
+          content: "s";
+        }
+        &.joint::after {
+          content: "j";
+        }
+        &.cocaine::after {
+          content: "c";
+        }
+        &.viagra::after {
+          content: "v";
+        }
+      }
+
+      .tile {
+        width: 39px;
+        height: 39px;
+        border-right: 1px solid black;
+        border-bottom: 1px solid black;
+        text-align: center;
+        &::before {
+          content: 't-';
+        }
+        &.ice::after {
+          content: 'i';
+        }
+        &.trap::after {
+          content: 't';
+        }
+        &.ground::after {
+          content: 'g';
+        }
+        &.box::after {
+          content: 'b';
+        }
+        &.wall::after {
+          content: 'w';
+        }
+        &.arrow::after {
+          &.east {
+            content: '>';
+          }
+          &.south {
+            content: 'v';
+          }
+          &.west {
+            content: '<';
+          }
+          &.north {
+            content: '^';
+          }
+        }
+      }
+      .dialog {
+        border: 2px solid #fff;
+      }
+    }
+  }
+}

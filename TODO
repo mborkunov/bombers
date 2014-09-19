@@ -1,4 +1,5 @@
 resources pre-loading
 webkitAudioContext for sound system
-combine separated JavaScript files into one
 cache reusable screens
+screen layers
+loading screen functionality

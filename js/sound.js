@@ -9,7 +9,7 @@ var Sound = Class.create();
 
 Object.extend(Sound, {
     container: $('sounds'),
-    volume: 0.35,
+    volume: 1,
     enabled: true,
     poolSize: 10,
     pool: {},
@@ -23,7 +23,7 @@ Object.extend(Sound, {
         this.volume = volume;
     },
     play: function(name) {
-        if (!this.enabled) {
+        if (!this.enabled || !Config.getProperty('sounds').getValue()) {
             return;
         }
 
@@ -34,7 +34,7 @@ Object.extend(Sound, {
         if (this.pool[name].length <= this.poolSize) {
           var audio = new Audio('sounds/' + name + '.wav');
           audio.preload = 'auto';
-          audio.volume = this.volume;
+          audio.volume = Config.getProperty('volume').getValue();
           audio.observe('loadeddata', function(e) {
             e.element().play();
           });

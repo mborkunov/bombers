@@ -4,10 +4,10 @@
   "version": "1",
   "app": {
     "urls": [
-      "*://energy.jelastic.com/bombers/"
+      "*://maxim-borkunov.com/bombers/"
     ],
     "launch": {
-      "web_url": "http://energy.jelastic.com/bombers/"
+      "web_url": "http://maxim-borkunov.com/bombers/"
     }
   },
   "icons": {
