@@ -13,6 +13,7 @@ define('objects/bomb', ['objects/object', 'objects/explosion'], function() {
       this.speed = .05;
       this.power = bomber.getPower();
       this.location = location;
+      this.scale = 1;
       this.scaleCounter = 0;
       this.lastUpdate = 0;
       this.start = now();
@@ -39,6 +40,7 @@ define('objects/bomb', ['objects/object', 'objects/explosion'], function() {
         this.element.style.setProperty('z-index', '200', null);
       } else {
         this.element.style.setProperty('z-index', String((Math.round(Math.abs(this.location.getY() + 0) * 10) + 11)), null);
+        this.element.scale(this.scale, this.scale);
       }
       $super();
     },
@@ -53,10 +55,7 @@ define('objects/bomb', ['objects/object', 'objects/explosion'], function() {
         var time = now();
         if (time - this.lastUpdate > 10) {
           this.lastUpdate = time;
-          var scale = 1 + Math.abs(Math.sin(this.scaleCounter+=3 * Math.PI / 180)) / 7;
-          if (this.element) {
-            this.element.scale(scale, scale);
-          }
+          this.scale = 1 + Math.abs(Math.sin(this.scaleCounter+=3 * Math.PI / 180)) / 7;
         }
       }
       $super(delay);
