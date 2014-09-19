@@ -37,6 +37,7 @@ var Graphics = Class.create(Worker, {
     this.fps = Config.getProperty('graphic.maxfps').getValue();
   },
   action: function(delay) {
+    this.fps = Config.getProperty('graphic.maxfps').getValue() | 0;
     Game.instance.getScreen().render(delay);
   }
 });

@@ -26,8 +26,6 @@ var Config = {
       method: 'get',
       onSuccess: function(t) {
         var xml = t.responseXML;
-        //var types = xml.querySelectorAll('types > type');
-        //console.log(types);
 
         var nodeToObject = function(node) {
           var data = {};
@@ -80,6 +78,18 @@ Config.Property = Class.create({
     this.id = xmlConfig.getAttribute('id');
     this.name = xmlConfig.getElementsByTagName('name')[0].firstChild.nodeValue;
     this.immutable = xmlConfig.hasAttribute('immutable') && xmlConfig.getAttribute('immutable').toLowerCase() == 'true';
+
+    var split = this.id.split('.');
+    this.propertyName = split[split.length - 1];
+
+    this.__defineGetter__(this.propertyName, function(value) {
+      return this.value;
+    }.bind(this));
+
+    this.__defineSetter__(this.propertyName, function(value) {
+      this.value = value;
+      window['localStorage'].setItem(this.id, value);
+    }.bind(this));
   },
   initProperty: function(value) {
     var parts = this.id.split('.');
