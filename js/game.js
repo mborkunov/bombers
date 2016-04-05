@@ -9,13 +9,12 @@ export default class Game {
     this.overlay = new Overlay();
     this.container = $('container');
     this.setTheme(Config.getProperty("graphic.theme").getValue());
-    Sound.setEnabled(Config.getProperty("sounds").getValue());
-    Sound.setVolume(Config.getProperty('volume').getValue());
+    Sound.enabled = Config.getProperty("sounds").getValue();
+    Sound.volume = Config.getProperty('volume').getValue();
     Game.instance = this;
     this.setScreen(this.getStartScreen());
-
-    this.graphics = new Graphics();
-    this.state = new State();
+    this.graphics = new Graphics(this.getScreen.bind(this));
+    this.state = new State(this.getScreen.bind(this));
     if (Config.getProperty("graphic.shadows").getValue()) {
       this.container.addClassName('shadows');
     }

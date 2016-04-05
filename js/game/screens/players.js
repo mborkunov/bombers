@@ -1,14 +1,12 @@
-export default class {}
-/*
-define('screens/players', ['screens/screen'], function() {
-  Game.Screen.Players = Class.create(Game.Screen, {
-    name: 'Players',
-    rendered: null,
-    players: null,
-    escapeKeyElement: null,
-    lastAction: null,
-    angle: null,
-    init: function() {
+import Screen from 'babel!./screen';
+import Menu from 'babel!./menu';
+import Config from 'babel!../../config';
+
+export default class extends Screen {
+
+    constructor(container, callback) {
+      super('players', container);
+      this.callback = callback;
       this.rendered = false;
       this.lastAction = 0;
       this.angle = 0;
@@ -19,8 +17,8 @@ define('screens/players', ['screens/screen'], function() {
           if (this.keys.indexOf(e.keyCode) === -1) {
             this.keys.push(e.keyCode);
           }
-          if (e.keyCode == 27 /!*|| e.keyCode == 13*!/) {
-            Game.instance.setScreen(Game.Screen.Menu);
+          if (e.keyCode == 27 || e.keyCode == 13) {
+            callback(Menu);
           }
         }.bind(this),
         keyup: function(e) {
@@ -31,12 +29,14 @@ define('screens/players', ['screens/screen'], function() {
         }.bind(this)
       };
       this.players = Config.Players.getAllPlayers();
-    },
-    dispatch: function($super) {
+    }
+
+    dispatch() {
       this.playersTable.remove();
       this.escapeKeyElement.remove();
-    },
-    update: function(delay) {
+    }
+
+    update(delay) {
       if (!this.playersTable) {
         return;
       }
@@ -106,8 +106,9 @@ define('screens/players', ['screens/screen'], function() {
       if (this.angle >= 360) {
         this.angle = 0;
       }
-    },
-    render: function(delay) {
+    }
+
+    render(delay) {
       if (!this.rendered) {
         this.rendered = true;
 
@@ -153,13 +154,11 @@ define('screens/players', ['screens/screen'], function() {
 
         this.escapeKeyElement = new Element("span").addClassName("anykey").addClassName('escape').update("Press escape key to return to exit");
         this.escapeKeyElement.on('click', function() {
-          Game.instance.setScreen(Game.Screen.Menu)
-        });
+          this(Menu);
+        }.bind(this.callback));
         this.container.appendChild(this.escapeKeyElement);
       } else {
         this.playersTable.select('tbody > tr.selected > td.preview > .bomber')[0].rotate(this.angle);
       }
     }
-  });
-});
-*/
+}

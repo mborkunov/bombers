@@ -2,12 +2,12 @@ export default class Screen {
 
   constructor(name, container) {
     this.name = name;
+    this.container = container;
     this.sleeping = false;
     this.rendered = false;
     this.keys = [];
     this.listeners = {};
     //this.game = Game.instance;
-    this.container = container;
   }
 
   //get listeners() { return this.listeners}

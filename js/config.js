@@ -27,7 +27,7 @@ const Config = {
       onSuccess: function(t) {
         var xml = t.responseXML;
 
-        var nodeToObject = function(node) {
+        /*var nodeToObject = function(node) {
           var data = {};
           for (var x = 0, length = node.childNodes.length; x < length; x++) {
             var child = node.childNodes[x];
@@ -41,27 +41,26 @@ const Config = {
             }
           }
           return data;
-        };
+        };*/
 
         var gui = new dat.GUI();
         var properties = xml.getElementsByTagName('property');
         for (var i = 0; i < properties.length; i++) {
-          var property = Config.Property.create(properties[i]);
+          var property = Property.create(properties[i]);
           property.loadUserValue();
           Config.properties[property.getId()] = property;
 
           var folder = gui.createFolder(property.getId());
-          if (!(property instanceof Config.Property.Complex)) {
+          if (!(property instanceof ComplexProperty)) {
             var parts = property.getId().split('.');
             var name = parts[parts.length - 1];
-            if (property instanceof Config.Property.Number) {
+            if (property instanceof NumberProperty) {
               folder.add(property, name, property.min, property.max, property.step, property.step, property.step).listen();
             } else {
               folder.add(property, name).listen();
             }
           }
         }
-
         console.log(properties.length + " config properties were loaded");
         options.onSuccess();
       },
@@ -70,11 +69,13 @@ const Config = {
   }
 };
 
-Config.Property = Class.create({
-  value: null,
-  defaultValue: null,
-  immutable: null,
-  initialize: function(xmlConfig) {
+class Property {
+
+  constructor(type, xmlConfig) {
+    this.value = null;
+    this.type = type;
+    this.defaultValue = null;
+    this.immutable = null;
     this.id = xmlConfig.getAttribute('id');
     this.name = xmlConfig.getElementsByTagName('name')[0].firstChild.nodeValue;
     this.immutable = xmlConfig.hasAttribute('immutable') && xmlConfig.getAttribute('immutable').toLowerCase() == 'true';
@@ -90,12 +91,14 @@ Config.Property = Class.create({
       this.value = value;
       window['localStorage'].setItem(this.id, value);
     }.bind(this));
-  },
-  initProperty: function(value) {
+  }
+
+  initProperty(value) {
     var parts = this.id.split('.');
     this[parts[parts.length - 1]] = value || this.value;
-  },
-  loadUserValue: function() {
+  }
+
+  loadUserValue() {
     if (this.immutable) {
       return;
     }
@@ -107,32 +110,77 @@ Config.Property = Class.create({
     if (value !== null) {
       this.setValue(value);
     }
-  },
-  getId: function() {
+  }
+
+  getId() {
     return this.id;
-  },
-  getName: function() {
+  }
+
+  getName() {
     return this.name;
-  },
-  getValue: function() {
+  }
+
+  getValue() {
     return this.value;
-  },
-  getScreenValue: function() {
+  }
+
+  getScreenValue() {
     return this.value;
-  },
-  setValue: function() {
+  }
+
+  setValue() {
     if (this.immutable) {
       throw 'Cannot change immutable property';
     }
     localStorage.setItem(this.id, this.value);
     this.initProperty();
-  },
-  getNextValue: null,
-  getPreviousValue: null,
-  toString: function() {
+  }
+
+  getNextValue() {return null}
+
+  getPreviousValue() {return null}
+
+  toString() {
     return '(' + this.type + ') #' + this.id + ' ' + this.value + ' <' + this.getPreviousValue() + '|' + this.getNextValue() + '>' + ' - ' + this.name;
   }
-});
+
+  static parse(propertyString) {
+    var parts = propertyString.split('|');
+
+    switch (parts[parts.length - 1]) {
+      case "boolean":
+        break;
+
+      case "number":
+        break;
+
+      case "string":
+        break;
+    }
+  }
+
+  static create(xmlProperty) {
+    if (!xmlProperty.hasAttribute('type')) return null;
+    var property;
+
+    switch (xmlProperty.getAttribute('type')) {
+      case 'boolean':
+        property = new BooleanProperty(xmlProperty);
+        break;
+      case 'enum':
+        property = new EnumProperty(xmlProperty);
+        break;
+      case 'number':
+        property = new NumberProperty(xmlProperty);
+        break;
+      case 'complex':
+        property = new ComplexProperty(xmlProperty);
+        break;
+    }
+
+    return property;
+  }
+}
 
 Config.Players = {
   getAllPlayers: function() {
@@ -176,11 +224,10 @@ Config.Players = {
   }
 };
 
-Config.Property.Complex = Class.create(Config.Property, {
-  type: 'complex',
-  map: null,
-  initialize: function($super, xmlConfig) {
-    $super(xmlConfig);
+class ComplexProperty extends Property {
+
+  constructor(xmlConfig) {
+    super('complex', xmlConfig);
     this.map = {};
 
     var children  = xmlConfig.childNodes;
@@ -195,33 +242,34 @@ Config.Property.Complex = Class.create(Config.Property, {
         } catch (ignored) {}
       }
     }
-  },
-  getConfig: function() {
+  }
+
+  getConfig() {
     return this.map;
-  },
+  }
   /*getNextValue: function() {
     //return !this.value;
   },*/
-  setValue: function($super, key, value) {
+  setValue($super, key, value) {
     this.map[key] = value;
-  },
-  getValue: function($super, key) {
+  }
+
+  getValue($super, key) {
     return this.map[key];
-  },
-  getScreenValue: function(key) {
+  }
+
+  getScreenValue(key) {
     return this.map[key];
   }
   /*getPreviousValue: function() {
     return this.getNextValue();
   }*/
-});
+}
 
+class EnumProperty extends Property {
 
-Config.Property.Enum = Class.create(Config.Property, {
-  type: 'enum',
-  values: null,
-  initialize: function($super, xmlConfig) {
-    $super(xmlConfig);
+  constructor(xmlConfig) {
+    super('enum', xmlConfig);
 
     this.values = [];
     this.value = xmlConfig.getAttribute('default');
@@ -236,17 +284,20 @@ Config.Property.Enum = Class.create(Config.Property, {
       this.value = this.values[0];
     }
     this.initProperty(); //this.values
-  },
-  getValues: function() {
+  }
+
+  getValues() {
     return this.values;
-  },
-  setValue: function($super, value) {
+  }
+
+  setValue(value) {
     if (this.values.indexOf(value) >= 0) {
       this.value = value;
     }
-    $super();
-  },
-  getNextValue: function() {
+    super.setValue()
+  }
+
+  getNextValue() {
     var currentIndex = this.values.indexOf(this.value);
     if (currentIndex < 0) {
       return this.values[0];
@@ -257,8 +308,9 @@ Config.Property.Enum = Class.create(Config.Property, {
         return this.values[currentIndex + 1];
       }
     }
-  },
-  getPreviousValue: function() {
+  }
+
+  getPreviousValue() {
     var currentIndex = this.values.indexOf(this.value);
     if (currentIndex < 0) {
       return this.values[0];
@@ -269,16 +321,17 @@ Config.Property.Enum = Class.create(Config.Property, {
         return this.values[currentIndex - 1];
       }
     }
-  },
-  toString: function($super) {
-    return $super() + ' [' + this.values + ']';
   }
-});
 
-Config.Property.Number = Class.create(Config.Property, {
-  type: 'number',
-  initialize: function($super, xmlConfig) {
-    $super(xmlConfig);
+  toString() {
+    return super.toString() + ' [' + this.values + ']';
+  }
+}
+
+class NumberProperty extends Property {
+
+  constructor(xmlConfig) {
+    super('number', xmlConfig);
 
     this.value = parseInt(xmlConfig.getAttribute('default'));
 
@@ -300,8 +353,9 @@ Config.Property.Number = Class.create(Config.Property, {
     }
     this.defaultValue = this.value;
     this.initProperty();
-  },
-  setValue: function($super, value) {
+  }
+
+  setValue(value) {
     if (typeof (value) === 'number') {
       if (value >= this.min) {
         this.value = value;
@@ -316,22 +370,23 @@ Config.Property.Number = Class.create(Config.Property, {
     } else {
       this.setValue(parseInt(value));
     }
-    $super();
-  },
-  getNextValue: function() {
+    super.setValue();
+  }
+
+  getNextValue() {
     var nextValue = this.value + this.step;
     return nextValue > this.max ? this.min : nextValue;
-  },
-  getPreviousValue: function() {
+  }
+
+  getPreviousValue() {
     var prevValue = this.value - this.step;
     return prevValue < this.min ? this.max : prevValue;
   }
-});
+}
 
-Config.Property.Boolean = Class.create(Config.Property, {
-  type: 'boolean',
-  initialize: function($super, xmlConfig) {
-    $super(xmlConfig);
+class BooleanProperty extends Property {
+  constructor(xmlConfig) {
+    super('boolean', xmlConfig);
 
     if (xmlConfig.hasAttribute('default')) {
       this.value = this._getBoolean(xmlConfig.getAttribute('default').toLowerCase());
@@ -340,80 +395,32 @@ Config.Property.Boolean = Class.create(Config.Property, {
     }
     this.defaultValue = this.value;
     this.initProperty();
-  },
-  getNextValue: function() {
+  }
+
+  getNextValue() {
     return !this.value;
-  },
-  setValue: function($super, value) {
+  }
+
+  setValue(value) {
     if (typeof (value) === 'boolean') {
       this.value = value;
     } else {
       this.value = this._getBoolean(value);
     }
-    $super();
-  },
-  getScreenValue: function() {
+    super.setValue();
+  }
+
+  getScreenValue() {
     return this.value ? 'on' : 'off';
-  },
-  _getBoolean: function(value) {
-    switch (value) {
-      case true:
-      case 'true':
-      case '1':
-        return true;
-        break;
-      case false:
-      case 'false':
-      case '0':
-        return false;
-        break;
-      default:
-        return false;
-        break;
-    }
-  },
-  getPreviousValue: function() {
+  }
+
+  _getBoolean(value) {
+    return value === true || value === 'true' || value === '1';
+  }
+
+  getPreviousValue() {
     return this.getNextValue();
   }
-});
-
-
-Object.extend(Config.Property, {
-  parse: function(propertyString) {
-    var parts = propertyString.split('|');
-
-    switch (parts[parts.length - 1]) {
-      case "boolean":
-      break;
-
-      case "number":
-      break;
-
-      case "string":
-      break;
-    }
-  },
-  create: function(xmlProperty) {
-    if (!xmlProperty.hasAttribute('type')) return null;
-    var property;
-
-    switch (xmlProperty.getAttribute('type')) {
-      case 'boolean':
-          property = new Config.Property.Boolean(xmlProperty);
-        break;
-      case 'enum':
-          property = new Config.Property.Enum(xmlProperty);
-        break;
-      case 'number':
-          property = new Config.Property.Number(xmlProperty);
-        break;
-     case 'complex':
-          property = new Config.Property.Complex(xmlProperty);
-        break;
-    }
-
-    return property;
-  }
-});
+}
 
 export default Config;

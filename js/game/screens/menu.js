@@ -55,7 +55,7 @@ export default class extends Screen {
           .addChild(new Item(null, Type.Settings, 'graphic.corpse_parts'))
           .addChild(new Item(null, Type.Settings, 'graphic.shaky_explosions')))
         .addChild(new Item(null, Type.Settings, 'sounds', function(value) {
-          Sound.setEnabled(value);
+          Sound.enabled = value;
         }))
         .addChild(new Item(null, Type.Settings, 'debug', function(value) {
           if (value) {

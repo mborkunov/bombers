@@ -1,28 +1,23 @@
-import Game from 'babel!./game';
 import Config from 'babel!./config';
 
-var Worker = Class.create({
-  /** @type Integer */
-  defaultFps: 30,
-  /** @type Integer */
-  lastCall: null,
-  /** @type Integer */
-  fps: null,
-  /** @type String */
-  name: null,
-  retries: null,
-  initialize: function() {
-    this.fps = this.defaultFps;
+class Worker {
+
+  constructor(name, screen) {
+    this.fps = 30;
+    this.name = name;
+    this.screen = screen;
     this.timeout = 0;
     this.lastCall = 0;
     this.retries = 0;
-  },
-  start: function() {
+  }
+
+  start() {
     this.loop();
-  },
-  loop: function() {
+  }
+
+  loop() {
     this.lastCall = now();
-    var screen = Game.instance.getScreen();
+    var screen = this.screen();
     try {
       if (screen && !screen.sleeping) {
         this.action(now() - this.lastCallEnd);
@@ -35,30 +30,32 @@ var Worker = Class.create({
       console.log('Worker failed ' + [this.name], e);
     }
     this.lastCallEnd = now();
-    var fps = this.fps instanceof Config.Property ? this.fps.getValue() : this.fps;
+    var fps = typeof this.fps === 'object' ? this.fps.getValue() : this.fps;
     this.timeout = Math.abs(1000 / fps - (now() - this.lastCall));
     setTimeout(this.loop.bind(this), this.timeout);
   }
-});
+}
 
-var Graphics = Class.create(Worker, {
-  name: 'graphics',
-  initialize: function() {
+export class Graphics extends Worker {
+
+  constructor(screen) {
+    super('graphics', screen);
     this.fps = Config.getProperty('graphic.maxfps');
-  },
-  action: function(delay) {
-    Game.instance.getScreen().render(delay);
   }
-});
 
-var State = Class.create(Worker, {
-  name: 'state',
-  initialize: function() {
+  action(delay) {
+    this.screen().render(delay);
+  }
+}
+
+export class State extends Worker {
+
+  constructor(screen) {
+    super('state', screen);
     this.fps = 50;
-  },
-  action: function(delay) {
-    Game.instance.getScreen().update(delay);
   }
-});
 
-export {Graphics, State}
+  action(delay) {
+    this.screen().update(delay);
+  }
+}

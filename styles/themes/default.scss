@@ -536,7 +536,7 @@ body.default {
           td {
             &.preview {
               .bomber {
-/*                .border-radius(20px);*/
+                border-radius: 20px;
                 .hotspot {
                   background: url('../images/light.png') 0 0 no-repeat;
                   width: 40px;
