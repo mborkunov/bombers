@@ -1,41 +1,47 @@
-define('screens/screen', [], function() {
-  Game.Screen = Class.create({
-    game: null,
-    container: null,
-    keys: null,
-    listeners: null,
-    sleeping: null,
-    initialize: function() {
-      this.sleeping = false;
-      this.keys = [];
-      this.listeners = {};
-      this.game = Game.instance;
-      this.container = Game.instance.container;
-      this.init();
+export default class Screen {
 
-    },
-    init: function() {
-    },
-    update: function() {
-    },
-    prerender: function() {
-      
-    },
-    render: function() {
-    },
-    setSleeping: function(sleeping) {
-      this.sleeping = sleeping;
-    },
-    dispatch: function() {
-      this.container.update();
-      this.rendered = false;
-      this.listeners = {};
-    }
-  });
+  constructor(name, container) {
+    this.name = name;
+    this.sleeping = false;
+    this.rendered = false;
+    this.keys = [];
+    this.listeners = {};
+    //this.game = Game.instance;
+    this.container = container;
+  }
 
-  Object.extend(Game.Screen, {
-    getCurrent: function() {
-      return Game.instance.getScreen();
+  //get listeners() { return this.listeners}
+
+  init() {}
+
+  update() {}
+
+  prerender() {}
+
+  render() {}
+
+  setSleeping(sleeping) {
+    this.sleeping = sleeping;
+  }
+
+  dispatch() {
+    this.container.update();
+    this.rendered = false;
+    this.listeners = {};
+  }
+
+/*  static register(name, screen) {
+    if (typeof Screen.items == 'undefined') {
+      Screen.items = {};
     }
-  });
-});
+    Screen.items[name] = screen;
+  }*/
+
+  static getScreen(name) {
+    return Screen.items[name];
+  }
+
+  static getCurrent() {
+    //return Game.instance.getScreen();
+  }
+}

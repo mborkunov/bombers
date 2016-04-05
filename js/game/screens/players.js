@@ -1,3 +1,5 @@
+export default class {}
+/*
 define('screens/players', ['screens/screen'], function() {
   Game.Screen.Players = Class.create(Game.Screen, {
     name: 'Players',
@@ -17,7 +19,7 @@ define('screens/players', ['screens/screen'], function() {
           if (this.keys.indexOf(e.keyCode) === -1) {
             this.keys.push(e.keyCode);
           }
-          if (e.keyCode == 27 /*|| e.keyCode == 13*/) {
+          if (e.keyCode == 27 /!*|| e.keyCode == 13*!/) {
             Game.instance.setScreen(Game.Screen.Menu);
           }
         }.bind(this),
@@ -160,3 +162,4 @@ define('screens/players', ['screens/screen'], function() {
     }
   });
 });
+*/

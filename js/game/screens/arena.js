@@ -1,3 +1,6 @@
+export default class {}
+/*
+
 define('screens/arena', ['screens/screen'], function() {
   Game.Screen.Arena = Class.create(Game.Screen, {
     name: 'Arena',
@@ -109,9 +112,9 @@ define('screens/arena', ['screens/screen'], function() {
         this.prerender();
       }.bind(this));
     },
-    /**
+    /!**
      * @param {Game.Object} object
-     */
+     *!/
     add: function(object) {
       object.setArena(this);
       if (object instanceof Game.Object.Bomber) {
@@ -126,9 +129,9 @@ define('screens/arena', ['screens/screen'], function() {
         this.objects.corpses.push(object);
       }
     },
-    /**
+    /!**
      * @param {Game.Object} object
-     */
+     *!/
     remove: function(object) {
       object.setArena(null);
       if (object instanceof Game.Object.Bomber) {
@@ -222,20 +225,20 @@ define('screens/arena', ['screens/screen'], function() {
         this.dialog.appendChild(new Element('a').addClassName('action').update('Resume').observe('click', function() {
           this.paused = false;
         }.bind(this)));
-        /*window.google_ad_client = "ca-pub-8348571392367855";
+        /!*window.google_ad_client = "ca-pub-8348571392367855";
         window.google_ad_slot = "9307338421";
         window.google_ad_width = 468;
         window.google_ad_height = 60;
         google_ad_client = "ca-pub-8348571392367855";
         google_ad_slot = "9307338421";
         google_ad_width = 468;
-        google_ad_height = 60;*/
+        google_ad_height = 60;*!/
 
         //var adblock = new Element('div').addClassName('adblock');
-        /*adblock.appendChild(new Element('script', {
+        /!*adblock.appendChild(new Element('script', {
           type: 'text/javascript',
           src: 'http://pagead2.googlesyndication.com/pagead/show_ads.js'
-        }));*/
+        }));*!/
         //adblock.appendChild($('adblock'));
         //this.dialog.appendChild(adblock);
         this.container.appendChild(this.overlay);
@@ -263,3 +266,4 @@ define('screens/arena', ['screens/screen'], function() {
     }
   });
 });
+*/

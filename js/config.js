@@ -1,4 +1,4 @@
-var Config = {
+const Config = {
   /** @type Object */
   properties: {},
   /** @type Object */
@@ -415,3 +415,5 @@ Object.extend(Config.Property, {
     return property;
   }
 });
+
+export default Config;

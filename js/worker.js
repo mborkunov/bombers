@@ -1,3 +1,6 @@
+import Game from 'babel!./game';
+import Config from 'babel!./config';
+
 var Worker = Class.create({
   /** @type Integer */
   defaultFps: 30,
@@ -58,3 +61,4 @@ var State = Class.create(Worker, {
   }
 });
 
+export {Graphics, State}

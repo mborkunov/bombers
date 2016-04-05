@@ -1,20 +1,19 @@
-var Game = Class.create({
-  /** @type Element */
-  container: $('container'),
-  /** @type Screen */
-  screen: null,
-  /** @type Worker */
-  graphics: null,
-  /** @type Worker */
-  state: null,
-  /** @type String */
-  currentTheme: null,
-  initialize: function() {
+import Config from 'babel!./config';
+import {Graphics, State} from 'babel!./worker';
+import Sound from 'babel!./sound';
+import Intro from 'babel!./game/screens/intro';
+
+export default class Game {
+
+  constructor() {
+    this.overlay = new Overlay();
+    this.container = $('container');
     this.setTheme(Config.getProperty("graphic.theme").getValue());
     Sound.setEnabled(Config.getProperty("sounds").getValue());
     Sound.setVolume(Config.getProperty('volume').getValue());
     Game.instance = this;
     this.setScreen(this.getStartScreen());
+
     this.graphics = new Graphics();
     this.state = new State();
     if (Config.getProperty("graphic.shadows").getValue()) {
@@ -24,8 +23,9 @@ var Game = Class.create({
     if (Config.getValue('debug')) {
       this.drawThemesSwitcher()
     }
-  },
-  drawThemesSwitcher: function() {
+  }
+
+  drawThemesSwitcher() {
     var themes = Config.getProperty('graphic.theme').getValues();
     var themesElement = new Element('div', {id: 'theme-switcher'}).setStyle({position: 'absolute', top: 0, right: 0, zIndex: 10, height: '30px', width: (30 * themes.size()) + 'px'});
     this.container.appendChild(themesElement);
@@ -44,90 +44,33 @@ var Game = Class.create({
         Game.instance.setTheme(Config.getProperty("graphic.theme").getValue());
       });
     }.bind(themesElement));
-  },
-  overlay: {
-    element: null,
-    working: 0,
-    timeout: null,
-    add: function() {
-      this.working = 0;
-      this.element = new Element('div', {id: 'overlay'});
-      this.element.style.setProperty('opacity', 1, null);
-      Game.instance.container.appendChild(this.element);
-    },
-    appear: function(callback) {
-      this.callback = callback;
-      try {
-        this.element.show();
-      } catch (e) {
-        this.add();
-      }
-      this.opacity = 1;
-      this.working = -1;
-      this.element.style.setProperty('opacity', 1, null);
-      clearTimeout(this.timeout);
-      this.timeout = setTimeout(this.update.bind(this), 10);
-    },
-    fade: function(callback) {
-      this.callback = callback;
-      try {
-        this.element.show();
-      } catch (e) {
-        this.add();
-      }
+  }
 
-      this.opacity = 0;
-      this.working = 1;
-      this.element.style.setProperty('opacity', 0, null);
-      clearTimeout(this.timeout);
-      this.timeout = setTimeout(this.update.bind(this), 10);
-    },
-    remove: function() {
-      this.element.hide();
-    },
-    stop: function() {
-      this.working = 0;
-      clearTimeout(this.timeout);
-      this.callback();
-    },
-    update: function() {
-      if (this.working != 0 && this.element) {
-        this.element.style.setProperty('opacity', Math.max(0, this.opacity += this.working / 25), null);
-        this.working *= 1.1;
-        if (this.working < 0 && this.opacity <= 0) {
-          this.stop();
-          this.remove();
-        } else if (this.working > 0 && this.opacity >=  1) {
-          this.stop();
-        }
-        clearTimeout(this.timeout);
-        this.timeout = setTimeout(this.update.bind(this), 10);
-      }
-    }
-  },
-  getStartScreen: function() {
-    var screen = Game.Screen.Intro;
-    if (location.hash.length > 0) {
-      var _screen = location.hash.substr(1).toLowerCase();
-      _screen = _screen.substr(0, 1).toUpperCase() + _screen.substr(1);
-      screen = this.getScreenByName(_screen);
-    }
+  getStartScreen() {
+    var screen = Intro;
+    // if (location.hash.length > 0) {
+    //   var _screen = location.hash.substr(1).toLowerCase();
+    //   _screen = _screen.substr(0, 1).toUpperCase() + _screen.substr(1);
+    //   screen = this.getScreenByName(_screen.toLowerCase());
+    // }
     return screen;
-  },
-  getScreenByName: function(name) {
+  }
+
+  getScreenByName(name) {
     try {
-        return eval('Game.Screen.' + name);
+      return Screen.getScreen(name);
     } catch (e) {
       console.error("Screen doesn't exists: " + name);
     }
     return null;
+  }
 
-  },
-  start: function() {
+  start() {
     this.graphics.start();
     this.state.start();
-  },
-  setTheme: function(theme) {
+  }
+
+  setTheme(theme) {
     if (theme == null) return;
     if (document.body.hasClassName(this.currentTheme)) {
       document.body.removeClassName(this.currentTheme);
@@ -135,33 +78,35 @@ var Game = Class.create({
 
     document.body.addClassName(theme);
     this.currentTheme = theme;
-  },
-  setScreen: function(screen) {
+  }
+
+  setScreen(screen) {
     var appear = function() {
       if (this.screen) {
         this.screen.setSleeping(false);
         this.dispatchScreen();
       }
-
       var _screen;
+
       if (Object.isUndefined(screen.instance)) {
-        _screen = new screen();
+        _screen = new screen(this.container, this.setScreen.bind(this));
       } else {
         _screen = screen.instance;
         _screen.prerender();
       }
-      for (var event in _screen.listeners) {
+      var listeners = _screen.listeners;
+      for (var event in listeners) {
+        if (!listeners.hasOwnProperty(event)) continue;
         if (event.indexOf('key') === 0) {
-          document.observe(event, _screen.listeners[event], false);
+          document.observe(event, listeners[event], false);
         } else {
-          this.container.observe(event, _screen.listeners[event]);
+          this.container.observe(event, listeners[event]);
         }
       }
 
       this.container.removeClassName(this.screen ? this.screen.name.toLowerCase() : null).addClassName(_screen.name.toLowerCase());
 
       history.pushState({}, _screen.name + ' | Happy Bombers', "#" + _screen.name);
-
       this.screen = _screen;
       this.screen.setSleeping(true);
 
@@ -180,21 +125,97 @@ var Game = Class.create({
     } else {
       appear();
     }
-  },
-  getScreen: function() {
+  }
+
+  getScreen() {
     return this.screen;
-  },
-  dispatchScreen: function() {
+  }
+
+  dispatchScreen() {
     this.dispatchListeners();
     this.screen.dispatch();
-  },
-  dispatchListeners: function() {
-    for (var event in this.screen.listeners) {
+  }
+
+  dispatchListeners() {
+    var listeners = this.screen.listeners;
+
+    for (var event in listeners) {
+      if (!listeners.hasOwnProperty(event)) continue;
       if (event.indexOf('key') === 0) {
-        document.stopObserving(event, this.screen.listeners[event], false);
+        document.stopObserving(event, listeners[event], false);
       } else {
-        this.container.stopObserving(event, this.screen.listeners[event]);
+        this.container.stopObserving(event, listeners[event]);
       }
     }
   }
-});
+}
+
+class Overlay {
+
+  constructor() {
+    this.element = null;
+    this.working = 0;
+    this.timeout = null;
+  }
+
+  add() {
+    this.working = 0;
+    this.element = new Element('div', {id: 'overlay'});
+    this.element.style.setProperty('opacity', 1, null);
+    Game.instance.container.appendChild(this.element);
+  }
+  appear(callback) {
+    this.callback = callback;
+    try {
+      this.element.show();
+    } catch (e) {
+      this.add();
+    }
+    this.opacity = 1;
+    this.working = -1;
+    this.element.style.setProperty('opacity', 1, null);
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(this.update.bind(this), 10);
+  }
+
+  fade(callback) {
+    this.callback = callback;
+    try {
+      this.element.show();
+    } catch (e) {
+      this.add();
+    }
+
+    this.opacity = 0;
+    this.working = 1;
+    this.element.style.setProperty('opacity', 0, null);
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(this.update.bind(this), 10);
+  }
+
+  remove() {
+    this.element.hide();
+  }
+
+  stop() {
+    this.working = 0;
+    clearTimeout(this.timeout);
+    this.callback();
+  }
+
+  update() {
+    if (this.working != 0 && this.element) {
+      this.element.style.setProperty('opacity', Math.max(0, this.opacity += this.working / 25), null);
+      this.working *= 1.1;
+      if (this.working < 0 && this.opacity <= 0) {
+        this.stop();
+        this.remove();
+      } else if (this.working > 0 && this.opacity >= 1) {
+        this.stop();
+      }
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(this.update.bind(this), 10);
+    }
+  }
+}
+

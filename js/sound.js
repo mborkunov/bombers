@@ -1,10 +1,5 @@
-if (Object.isUndefined(window.Audio)) {
-  var Audio = function(source) {
-    this.src = source;
-  };
-  Audio.prototype.play = function() {};
-  Audio.prototype.observe = function() {};
-}
+import Config from 'babel!./config';
+
 var Sound = Class.create();
 
 Object.extend(Sound, {
@@ -50,3 +45,5 @@ Object.extend(Sound, {
 
     }
 });
+
+export default Sound;

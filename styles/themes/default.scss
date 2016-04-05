@@ -79,11 +79,11 @@ body.default {
       .preview, .toolbox {
         background: #333;
         .tile {
-          width: 39px;
-          height: 39px;
+          width: 40px;
+          height: 40px;
           border: none;
-          border-bottom: 1px solid black;
-          border-right: 1px solid black;
+          /*border-bottom: 1px solid black;
+          border-right: 1px solid black;*/
           &.ice {
             background: url('#{$path}/tile_addons.png') 0 0, url('#{$path}/tiles.png') 160px 0;
           }

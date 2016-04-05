@@ -1,3 +1,6 @@
+export default class {}
+/*
+
 define('screens/levels', ['screens/screen'], function() {
   Game.Screen.Levels = Class.create(Game.Screen, {
     name: 'Levels',
@@ -25,3 +28,4 @@ define('screens/levels', ['screens/screen'], function() {
     }
   });
 });
+*/

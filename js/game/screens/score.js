@@ -1,4 +1,6 @@
-define('screens/score', ['screens/screen'], function() {
+export default class {}
+/*
+
   Game.Screen.Score = Class.create(Game.Screen, {
     name: 'Score',
     rendered: false,
@@ -97,6 +99,4 @@ define('screens/score', ['screens/screen'], function() {
         this.prerender();
       }
     }
-  });
-});
-
+  });*/

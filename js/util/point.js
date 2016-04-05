@@ -1,83 +1,94 @@
-var Point = Class.create({
-  x: null,
-  y: null,
-  changed: false,
-  initialize: function(x, y) {
-    this.x = x;
-    this.y = y;
-    this.changed = true;
-  },
-  getX: function() {
-    return this.x;
-  },
-  getY: function() {
-    return this.y;
-  },
-  setX: function(x) {
-    this.x = x;
-    this.changed = true;
-  },
-  setY: function(y) {
-    this.y = y;
-    this.changed = true;
-  },
-  increaseX: function(delta) {
-    this.x += delta;
-    this.changed = true;
-  },
-  increaseY: function(delta) {
-    this.y += delta;
-    this.changed = true;
-  },
-  increase: function(deltaX, deltaY) {
-    this.x += deltaX;
-    this.y += deltaY;
-    this.changed = true;
-  },
-  roundX: function() {
-    return new Point(Math.round(this.x), this.y);
-  },
-  roundY: function() {
-    return new Point(this.x, Math.round(this.y));
-  },
-  shift: function(offset, direction) {
+export class Point {
+  constructor(x, y) {
+    this._x = x;
+    this._y = y;
+    this._changed = true;
+  }
+
+  get x() {
+    return this._x;
+  }
+
+  get y() {
+    return this._y;
+  }
+
+  set x(x) {
+    this._x = x;
+    this._changed = true;
+  }
+
+  set y(y) {
+    this._y = y;
+    this._changed = true;
+  }
+
+  increaseX(delta) {
+    this._x += delta;
+    this._changed = true;
+  }
+
+  increaseY(delta) {
+    this._y += delta;
+    this._changed = true;
+  }
+
+  increase(deltaX, deltaY) {
+    this._x += deltaX;
+    this._y += deltaY;
+    this._changed = true;
+  }
+
+  roundX() {
+    return new Point(Math.round(this._x), this._y);
+  }
+
+  roundY() {
+    return new Point(this._x, Math.round(this._y));
+  }
+
+  shift(offset, direction) {
     var point = this.clone();
     switch (direction) {
       case 0:
-          point.y -= offset;
+        point.y -= offset;
         break;
       case 1:
-          point.x += offset;
+        point.x += offset;
         break;
       case 2:
-          point.y += offset;
+        point.y += offset;
         break;
       case 3:
-          point.x -= offset;
+        point.x -= offset;
         break;
     }
     return point;
-  },
-  round: function() {
-    return new Point(Math.round(this.x), Math.round(this.y));
-  },
-  clone: function() {
-    return new Point(this.x, this.y);
-  },
-  equals: function(point) {
+  }
+
+  round() {
+    return new Point(Math.round(this._x), Math.round(this._y));
+  }
+
+  clone() {
+    return new Point(this._x, this._y);
+  }
+
+  equals(point) {
     if (!point || !(point instanceof Point)) {
       throw 'illegal argument: ' + point;
     }
-    return this.x === point.getX() && this.y === point.getY();
-  },
-  isChanged: function() {
-    return this.changed;
-  },
-  setChanged: function(flag) {
-    this.changed = flag;
+    return this._x === point.x && this._y === point.y;
   }
-});
 
-Point.prototype.toString = function() {
-  return 'Point{x:' + this.x + ', y:' + this.y + '}';
-};
+  get changed() {
+    return this._changed;
+  }
+  set changed(flag) {
+    this._changed = flag;
+  }
+
+  toString() {
+    return 'Point{x:' + this._x + ', y:' + this._y + '}';
+  }
+}
