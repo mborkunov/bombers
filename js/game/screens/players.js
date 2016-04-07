@@ -2,7 +2,7 @@ import Screen from 'babel!./screen';
 import Menu from 'babel!./menu';
 import Config from 'babel!../../config';
 
-export default class extends Screen {
+export default class Players extends Screen {
 
     constructor(container, callback) {
       super('players', container);

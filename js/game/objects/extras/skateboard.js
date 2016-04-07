@@ -1,17 +1,16 @@
-define('objects/extras/skateboard', ['objects/extras/extra'], function() {
-  Game.Object.Extra.Skateboard = Class.create(Game.Object.Extra, {
-    initialize: function($super, location) {
-      $super(location);
-      this.name = 'skateboard';
-    },
-    act: function(bomber) {
-      bomber.setSpeed(bomber.getSpeed() + Game.Object.Extra.Skateboard.getSpeed());
-    }
-  });
+import Extra from 'babel!./extra';
 
-  Object.extend(Game.Object.Extra.Skateboard, {
-    getSpeed: function() {
-      return .05;
-    }
-  })
-});
+export default class Skateboard extends Extra {
+
+  constructor(location) {
+    super('skateboard', location);
+  }
+
+  act(bomber) {
+    bomber.setSpeed(bomber.getSpeed() + Skateboard.getSpeed());
+  }
+
+  static getSpeed() {
+    return .05;
+  }
+}

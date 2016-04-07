@@ -2,7 +2,7 @@ import Screen from 'babel!./screen';
 import Menu from 'babel!./menu';
 import Config from 'babel!../../config';
 
-export default class extends Screen {
+export default class Editor extends Screen {
 
   constructor(container, callback) {
     super('editor', container);
@@ -33,7 +33,7 @@ export default class extends Screen {
     this.author = 'Guest';
     this.playersNumber = 4;
     this.spawnedPlayers = 0;
-    this.initData(10, 12);
+    this.initData(16, 12);
   }
 
   initData(x, y) {
@@ -48,8 +48,8 @@ export default class extends Screen {
   }
 
   dispatch() {
-    this.preview.remove();
-    this.toolbox.remove();
+    this.preview && this.preview.remove();
+    this.toolbox && this.toolbox.remove();
     if (!Config.getValue('debug')) {
       document.onmousedown = function() {return false}; // enable text selection - chromium
       document.oncontextmenu = function() {return false}; // enable context menu
@@ -175,10 +175,10 @@ export default class extends Screen {
     this.actionsBox  = new Element('div').addClassName('actions');
     this.actionsBox.appendChild(new Element('h2').addClassName('title').update('Actions'));
 
-    this.actionsBox.appendChild(new Element('button').addClassName('action').update('todo:').observe('click', this.save.bind(this)));
+    /*this.actionsBox.appendChild(new Element('button').addClassName('action').update('todo:').observe('click', this.save.bind(this)));*/
     this.actionsBox.appendChild(new Element('button').addClassName('action').update('Download').observe('click', this.download.bind(this)));
-    this.actionsBox.appendChild(new Element('button').addClassName('action').update('todo:').observe('click', this.upload.bind(this)));
-    this.actionsBox.appendChild(new Element('button').addClassName('action').update('Email').observe('click', this.email.bind(this)));
+    /*this.actionsBox.appendChild(new Element('button').addClassName('action').update('todo:').observe('click', this.upload.bind(this)));
+    this.actionsBox.appendChild(new Element('button').addClassName('action').update('Email').observe('click', this.email.bind(this)));*/
 
 
     this.toolbox.appendChild(this.actionsBox);

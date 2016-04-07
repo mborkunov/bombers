@@ -10,8 +10,6 @@ export default class Screen {
     //this.game = Game.instance;
   }
 
-  //get listeners() { return this.listeners}
-
   init() {}
 
   update() {}

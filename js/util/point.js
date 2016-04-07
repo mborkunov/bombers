@@ -1,4 +1,5 @@
-export class Point {
+export default class Point {
+
   constructor(x, y) {
     this._x = x;
     this._y = y;
@@ -76,7 +77,7 @@ export class Point {
 
   equals(point) {
     if (!point || !(point instanceof Point)) {
-      throw 'illegal argument: ' + point;
+      throw 'Point.equals: illegal argument [' + point + ']';
     }
     return this._x === point.x && this._y === point.y;
   }

@@ -1,7 +1,7 @@
 import Screen from 'babel!./screen';
 import Menu from 'babel!./menu';
 
-export default class extends Screen {
+export default class Credits extends Screen {
   constructor(container, callback) {
     super('credits', container);
     this.callback = callback;

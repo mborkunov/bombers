@@ -1,13 +1,12 @@
-var Trigger = Class.create({
-  done: null,
-  condition: null,
-  success: null,
-  initialize: function(condition, success) {
+export default class {
+
+  constructor(condition, success) {
     this.done = false;
     this.success = success;
     this.condition = condition;
-  },
-  check: function() {
+  }
+
+  check() {
     if (this.done || !this.condition()) {
       return false;
     }
@@ -15,4 +14,4 @@ var Trigger = Class.create({
     this.success();
     return true;
   }
-});
+}

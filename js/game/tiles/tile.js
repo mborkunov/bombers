@@ -1,190 +1,218 @@
-define('tiles/tile', [], function() {
-  Game.Tile = Class.create({
-    location: null,
-    vanishing: null,
-    destroyed: false,
-    passable: null,
-    blocking: false,
-    type: -1,
-    name: null,
-    element: null,
-    next: null,
-    currentCoordinates: null,
-    nextCoordinates: null,
-    initialize: function(location) {
-      this.passable = false;
-      this.location = location;
-      this.currentCoordinates = {x: location.getX(), y: location.getY()};
-      this.nextCoordinates = {x: this.left, y: this.top};
-      this.extra = null;
-    },
-    getType: function() {
-      return this.type;
-    },
-    isDestroyed: function() {
-      return this.destroyed;
-    },
-    isPassable: function() {
-      return this.passable;
-    },
-    isVanishing: function() {
-      return this.vanishing !== null && this.vanishing >= 0;
-    },
-    getLocation: function() {
-      return this.location;
-    },
-    setLocation: function(location) {
-      this.location = location;
-    },
-    getName: function() {
-      return this.name.toLowerCase();
-    },
-    vanish: function() {
-      Sound.play('crunch');
-      this.vanishing = 1;
-    },
-    destroy: function() {
-      if (this.next) {
-        this.next.prerender(this.container);
-      }
-      this.element.hide();
-      this.destroyed = true;
-    },
-    hasBomb: function() {
-      return Game.instance.getScreen().hasBomb(this.location);
-    },
-    getBomb: function() {
-      return Game.instance.getScreen().getBomb(this.location);
-    },
-    shake: function(shake) {
-      if (shake > 0) {
-        if (Math.random() > 0) {
-          var offset = Math.round(Math.random() * 10) % 2 == 0 ? 1 : 2;
+import Sound from 'babel!../../sound';
+import Config from 'babel!../../config';
+import * as objects from 'babel!../objects';
+import Actor from 'babel!../scene';
 
-          var top = Math.round(Math.random() * 10) % 2 == 0 ? - offset : offset;
-          var left = Math.round(Math.random() * 10) % 2 == 0 ? - offset : offset;
+export default class Tile extends Actor {
 
-          top += this.top;
-          left += this.left;
+  constructor(name, location) {
+    super();
+    this.name = name;
+    this.location = location;
+    this.blocking = false;
+    this.destroyed = false;
+    this.passable = false;
+    this.currentCoordinates = location.clone();
+    this.nextCoordinates = {x: this.left, y: this.top};
+    this.extra = null;
+  }
 
-          this.nextCoordinates.y = top;
-          this.nextCoordinates.x = left;
-        }
-      } else {
-        this.nextCoordinates.y = this.top;
-        this.nextCoordinates.x = this.left;
-      }
-    },
-    prerender: function(container) {
-      var id = 'tile-' + this.name + '-' + this.location.getX() + 'x' + this.location.getY();
-      var className = this.getName();
-      this.left = this.location.getX() * 40;
-      this.top = this.location.getY() * 40;
+  set map(map) {
+    this._map = map;
+  }
 
-      var styles = {
-        left: this.left + 'px',
-        top: this.top + 'px'
-      };
-      this.element = new Element('div', {id: id}).addClassName('object').addClassName('tile').addClassName(className).setStyle(styles);
-      this.clickHandler = function(e) {
-        switch (e.button) {
-          case 0:
-              this.vanish();
-              this.element.stopObserving('click', this.clickHandler);
-          break;
-          case 1:
-              this.spawnBomb();
-            break;
-        }
-      }.bind(this);
+  get map() {
+    return this._map;
+  }
 
-      if (Config.getValue('debug')) {
-        this.element.observe('click', this.clickHandler);
-      }
-      container.appendChild(this.element);
-    },
-    highlight: function() {
-      if (this.element)
-        this.element.addClassName("highlight");
-    },
-    update: function(delay, shake) {
-      this.shake(shake);
-      if (this.isVanishing() && !this.isDestroyed()) {
-        this.vanishing -= 0.01;
-        if (this.vanishing <= 0) {
-          this.destroy();
-        }
-      }
-    },
-    spawnExtra: function() {
-      if (Math.random() > .25) {
-        return;
-      }
-      var screen = Game.instance.getScreen();
+  set arena(arena) {
+    this._arena = arena;
+  }
 
-      var extras = [];
+  getType() {
+    return this.type;
+  }
 
-      if (Config.getProperty('diseases').getValue()) {
-        if (Config.getProperty('diseases.joint').getValue()) {
-          extras.push(Game.Object.Extra.Joint);
-        }
-        if (Config.getProperty('diseases.viagra').getValue()) {
-          extras.push(Game.Object.Extra.Viagra);
-        }
-        if (Config.getProperty('diseases.cocaine').getValue()) {
-          extras.push(Game.Object.Extra.Cocaine);
-        }
-      }
-      if (Config.getProperty('extras.bombs').getValue()) {
-        extras.push(Game.Object.Extra.Bomb);
-      }
-      if (Config.getProperty('extras.power').getValue()) {
-        extras.push(Game.Object.Extra.Power);
-      }
-      if (Config.getProperty('extras.skateboard').getValue()) {
-        extras.push(Game.Object.Extra.Skateboard);
-      }
-      if (Config.getProperty('extras.kick').getValue()) {
-        extras.push(Game.Object.Extra.Kick);
-      }
-      if (Config.getProperty('extras.bombs').getValue()) {
-        extras.push(Game.Object.Extra.Glove);
-      }
-      var extra = extras[Math.floor(Math.random() * extras.length)];
+  isDestroyed() {
+    return this.destroyed;
+  }
 
-      this.extra = new extra(this.location.clone());
-      this.extra.tile = this;
-      screen.add(this.extra);
-    },
-    spawnBomb: function(bomber) {
-      var screen = Game.instance.getScreen();
-      if (screen.hasBomb(this.getLocation())) return null;
+  isPassable() {
+    return this.passable;
+  }
 
-      var bomb = new Game.Object.Bomb(this.getLocation().clone(), bomber || screen.objects.bombers[1]);
-      screen.add(bomb);
-      Sound.play('putbomb');
-      return bomb;
-    },
-    render: function(container) {
-      if (this.nextCoordinates.x != this.currentCoordinates.x || this.nextCoordinates.y != this.currentCoordinates.y) {
-        this.currentCoordinates.x = this.nextCoordinates.x;// = {x: this.element.style.left, y: this.element.style.top}
-        this.currentCoordinates.y = this.nextCoordinates.y;
+  isVanishing() {
+    return this.vanishing !== null && this.vanishing >= 0;
+  }
 
-        this.element.style.top = this.currentCoordinates.y + 'px';
-        this.element.style.left = this.currentCoordinates.x + 'px';
-      }
+  getLocation() {
+    return this.location;
+  }
 
-      if (this.isVanishing()) {
-        this.element.scale(this.vanishing);
-        this.element.style.opacity = this.vanishing;
-      }
-    },
-    toString: function() {
-      return this.name + '-' + this.location.toString();
-    }
-  });
+  setLocation(location) {
+    this.location = location;
+  }
 
-  Game.Tile.prototype.toString = function() {
+  getName() {
     return this.name;
-  };
-});
+  }
+
+  vanish() {
+    Sound.play('crunch');
+    this.vanishing = 1;
+  }
+
+  destroy() {
+    if (this.next) {
+      this.next._arena = this._arena;
+      this.next.prerender(this.container);
+    }
+    this.element.hide();
+    this.destroyed = true;
+  }
+
+  hasBomb() {
+    return this._arena.hasBomb(this.location);
+  }
+
+  getBomb() {
+    return this._arena.getBomb(this.location);
+  }
+
+  shake(shake) {
+    if (shake > 0) {
+      if (Math.random() > 0) {
+        var offset = Math.round(Math.random() * 10) % 2 == 0 ? 1 : 2;
+
+        var top = Math.round(Math.random() * 10) % 2 == 0 ? - offset : offset;
+        var left = Math.round(Math.random() * 10) % 2 == 0 ? - offset : offset;
+
+        top += this.top;
+        left += this.left;
+
+        this.nextCoordinates.y = top;
+        this.nextCoordinates.x = left;
+      }
+    } else {
+      this.nextCoordinates.y = this.top;
+      this.nextCoordinates.x = this.left;
+    }
+  }
+
+  prerender(container) {
+    var id = 'tile-' + this.name + '-' + this.location.x + 'x' + this.location.y;
+    var className = this.getName();
+    this.left = this.location.x * 40;
+    this.top = this.location.y * 40;
+
+    var styles = {
+      left: this.left + 'px',
+      top: this.top + 'px'
+    };
+    this.element = new Element('div', {id: id}).addClassName('object').addClassName('tile').addClassName(className).setStyle(styles);
+    this.clickHandler = function(e) {
+      switch (e.button) {
+        case 0:
+            this.vanish();
+            this.element.stopObserving('click', this.clickHandler);
+        break;
+        case 1:
+            this.spawnBomb();
+          break;
+        case 2:
+          console.log('spawn extra');
+          this.spawnExtra();
+          break;
+      }
+    }.bind(this);
+
+    if (Config.getValue('debug')) {
+      this.element.observe('click', this.clickHandler);
+    }
+    container.appendChild(this.element);
+  }
+
+  highlight() {
+    if (this.element)
+      this.element.addClassName("highlight");
+  }
+
+  update(delay, shake) {
+    this.shake(shake);
+    if (this.isVanishing() && !this.isDestroyed()) {
+      this.vanishing -= 0.01;
+      if (this.vanishing <= 0) {
+        this.destroy();
+      }
+    }
+  }
+
+  spawnExtra() {
+    if (Math.random() > .25) {
+      return;
+    }
+    var extras = [];
+
+    if (Config.getProperty('diseases').getValue()) {
+      if (Config.getProperty('diseases.joint').getValue()) {
+        extras.push(objects.extras.Joint);
+      }
+      if (Config.getProperty('diseases.viagra').getValue()) {
+        extras.push(objects.extras.Viagra);
+      }
+      if (Config.getProperty('diseases.cocaine').getValue()) {
+        extras.push(objects.extras.Cocaine);
+      }
+    }
+    if (Config.getProperty('extras.bombs').getValue()) {
+      extras.push(objects.extras.Bomb);
+    }
+    if (Config.getProperty('extras.power').getValue()) {
+      extras.push(objects.extras.Power);
+    }
+    if (Config.getProperty('extras.skateboard').getValue()) {
+      extras.push(objects.extras.Skateboard);
+    }
+    if (Config.getProperty('extras.kick').getValue()) {
+      extras.push(objects.extras.Kick);
+    }
+    if (Config.getProperty('extras.bombs').getValue()) {
+      extras.push(objects.extras.Glove);
+    }
+    var extra = extras[Math.floor(Math.random() * extras.length)];
+
+    this.extra = new extra(this.location.clone());
+    console.log(this.extra);
+    this.extra.tile = this;
+    this._arena.add(this.extra);
+  }
+
+  spawnBomb(bomber) {
+    var screen = this._arena;
+    if (screen.hasBomb(this.getLocation())) return null;
+
+    var bomb = new objects.Bomb(this.getLocation().clone(), bomber || screen.objects.bombers[1]);
+    screen.add(bomb);
+    Sound.play('putbomb');
+    return bomb;
+  }
+
+  render(container) {
+    if (this.nextCoordinates.x != this.currentCoordinates.x || this.nextCoordinates.y != this.currentCoordinates.y) {
+      this.currentCoordinates.x = this.nextCoordinates.x;// = {x: this.element.style.left, y: this.element.style.top}
+      this.currentCoordinates.y = this.nextCoordinates.y;
+
+      this.element.style.top = this.currentCoordinates.y + 'px';
+      this.element.style.left = this.currentCoordinates.x + 'px';
+    }
+
+    if (this.isVanishing()) {
+      this.element.scale(this.vanishing);
+      this.element.style.opacity = this.vanishing;
+    }
+  }
+
+  toString() {
+    return this.name + '-' + this.location.toString();
+  }
+}

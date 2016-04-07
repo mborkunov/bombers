@@ -1,21 +1,23 @@
-export default class {}
-/*
+import Screen from 'babel!./screen';
+import Arena from 'babel!./arena';
+import Map from 'babel!../tiles/map';
 
-  Game.Screen.Score = Class.create(Game.Screen, {
-    name: 'Score',
-    rendered: false,
-    init: function() {
+export default class Score extends Screen {
+    constructor(container, callback) {
+      super('score', container);
+      this.callback = callback;
       this.listeners = {
         click: function(e) {
         },
         keydown: function(e) {
           if (e.keyCode == 27 || e.keyCode == 13) {
-            Game.instance.setScreen(Game.Screen.Arena);
+            callback(Arena);
           }
         }.bind(this)
       };
-    },
-    prerender: function() {
+    }
+
+    prerender() {
       this.layer = new Element('div');
 
       this.container.appendChild(this.layer);
@@ -75,7 +77,7 @@ export default class {}
       next.appendChild(new Element('div').addClassName('preview').addClassName('loading'));
 
       this.layer.appendChild(next);
-      Game.Map.getNextMap(function(next, map) {
+      Map.getNextMap(function(next, map) {
         var preview = next.select('.preview')[0];
         map.prerender(preview);
         next.select('.sign')[0].update('Next Map: ' +  map.getName().replace("_", " "));
@@ -84,19 +86,22 @@ export default class {}
 
       var anyKey = new Element("span").addClassName("anykey").update("Press enter or escape");
       anyKey.on('click', function() {
-        Game.instance.setScreen(Game.Screen.Arena)
+        this.callback(Arena);
       });
       this.layer.appendChild(anyKey);
-    },
-    dispatch: function($super) {
+    }
+
+    dispatch() {
       this.layer.remove();
-    },
-    update: function(delay) {
-    },
-    render: function(delay) {
+    }
+
+    update(delay) {
+    }
+
+    render(delay) {
       if (!this.rendered) {
         this.rendered = true;
         this.prerender();
       }
     }
-  });*/
+}

@@ -36,7 +36,7 @@ class Worker {
   }
 }
 
-export class Graphics extends Worker {
+class Graphics extends Worker {
 
   constructor(screen) {
     super('graphics', screen);
@@ -48,7 +48,7 @@ export class Graphics extends Worker {
   }
 }
 
-export class State extends Worker {
+class State extends Worker {
 
   constructor(screen) {
     super('state', screen);
@@ -59,3 +59,5 @@ export class State extends Worker {
     this.screen().update(delay);
   }
 }
+
+export {Graphics, State};

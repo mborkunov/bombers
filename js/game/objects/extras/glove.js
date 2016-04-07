@@ -1,11 +1,12 @@
-define('objects/extras/glove', ['objects/extras/extra'], function() {
-  Game.Object.Extra.Glove = Class.create(Game.Object.Extra, {
-    initialize: function($super, location) {
-      $super(location);
-      this.name = 'glove';
-    },
-    act: function(bomber) {
-      bomber.canThrow = true;
-    }
-  });
-});
+import Extra from 'babel!./extra';
+
+export default class Glove extends Extra {
+
+  constructor(location) {
+    super('glove', location);
+  }
+
+  act(bomber) {
+    bomber.canThrow = true;
+  }
+}

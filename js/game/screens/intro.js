@@ -2,7 +2,7 @@ import Screen from 'babel!./screen';
 import Menu from 'babel!./menu';
 import Sound from 'babel!../../sound';
 
-export default class extends Screen {
+export default class Intro extends Screen {
 
   constructor(container, callback) {
     super('intro', container);

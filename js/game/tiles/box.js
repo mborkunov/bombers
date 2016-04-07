@@ -1,51 +1,53 @@
-define('tiles/box', ['tiles/tile'], function() {
-  Game.Tile.Box = Class.create(Game.Tile, {
-    initialize: function($super, location) {
-      $super(location);
-      this.name = 'box';
-    },
-    prerender: function($super, container) {
-      this.container = container;
-      $super(container);
+import Config from 'babel!../../config';
+import Sound from 'babel!../../sound';
+import Tile from 'babel!./tile';
+import Ground from 'babel!./ground';
 
-      if (Config.getValue('debug')) {
-        this.element.stopObserving('click', this.clickHandler);
+export default class Box extends Tile {
+  constructor(location) {
+    super('box', location);
+    this.shadows = Config.getProperty('graphic.shadows');
+  }
 
-        this.element.on('click', function() {
-          Sound.play('crunch');
-          this.destroy();
-        }.bind(this));
-      }
-    },
-    destroy: function($super) {
-      this.next = new Game.Tile.Ground(this.getLocation().clone());
-      this.next.spawnExtra();
-      $super();
-    },
-    vanish: function() {
-      Sound.play('crunch');
-      this.destroy();
-    },
-    render: function($super, container) {
-      // todo: dynamic shadow
-      /*if (false && this.element) {
-       var arbiter = Game.instance.getScreen().objects.arbiter;
+  prerender(container) {
+    this.container = container;
+    super.prerender(container);
 
-       var ax = arbiter.getX(), ay = arbiter.getY();
+    if (Config.getValue('debug')) {
+      this.element.stopObserving('click', this.clickHandler);
 
-       var k = (ay - this.y) / (ax - this.x);
-       var fi = Math.atan(k);
-
-       var sx = (Math.cos(fi) * 5);
-       var sy = (Math.sin(fi) * 5);
-
-       sx = (ax < this.x ? sx  : - sx);
-       sy = (ay < this.y ? sy  : - sy);
-
-       this.element.style['box-shadow'] =  sx + 'px ' + sy + 'px 5px black';
-       this.element.style['z-index'] = 11;
-       }*/
-      $super(container);
+      this.element.on('click', function () {
+        Sound.play('crunch');
+        this.destroy();
+      }.bind(this));
     }
-  });
-});
+  }
+
+  destroy() {
+    this.next = new Ground(this.getLocation().clone());
+    this.next.spawnExtra();
+    super.destroy();
+  }
+
+  vanish() {
+    Sound.play('crunch');
+    this.destroy();
+  }
+
+  render(container) {
+    if (false && this.element && this.shadows.getValue()) { // fixme: dynamic shadows
+      var arbiter = this._arena.objects.arbiter;
+
+      var ax = arbiter.location.x, ay = arbiter.location.y;
+
+      var fi = Math.atan2((ay - this.location.y), (ax - this.location.x));
+
+      var sx = - (Math.cos(fi) * 5);
+      var sy = - (Math.sin(fi) * 5);
+
+      this.element.style['box-shadow'] = sx + 'px ' + sy + 'px 5px black';
+      this.element.style['z-index'] = 11;
+    }
+    super.render(container);
+  }
+}

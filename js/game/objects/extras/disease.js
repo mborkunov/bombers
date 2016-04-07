@@ -1,8 +1,9 @@
-define('objects/extras/disease', ['objects/extras/extra'], function() {
-  Game.Object.Extra.Disease = Class.create(Game.Object.Extra, {
-    initialize: function($super, location) {
-      $super(location);
-    }
-  });
-});
+import Extra from 'babel!./extra';
+
+export default class Disease extends Extra {
+
+  constructor(name, location) {
+    super(name, location);
+  }
+}
 

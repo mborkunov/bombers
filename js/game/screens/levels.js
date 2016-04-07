@@ -1,7 +1,7 @@
 import Screen from 'babel!./screen';
 import Menu from 'babel!./menu';
 
-export default class extends Screen {
+export default class Level extends Screen {
   constructor(container, callback) {
     super('levels', container);
     this.rendered = false;

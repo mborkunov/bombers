@@ -1,9 +1,8 @@
-define('tiles/ice', ['tiles/ground'], function() {
-  Game.Tile.Ice = Class.create(Game.Tile.Ground, {
-    initialize: function($super, location) {
-      $super(location);
-      this.name = 'ice';
-    }
-  });
-});
+import Ground from 'babel!./ground';
 
+export default class Ice extends Ground {
+  constructor(location) {
+    super(location);
+    this.name = 'ice';
+  }
+}

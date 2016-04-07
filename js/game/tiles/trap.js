@@ -1,30 +1,32 @@
-define('tiles/trap', ['tiles/ground'], function() {
-  Game.Tile.Trap = Class.create(Game.Tile.Ground, {
-    initialize: function($super, location) {
-      $super(location);
-      this.name = 'trap';
-    },
-    spawnBomb: function($super, bomber) {
-      var bomb = $super(bomber);
+import Ground from 'babel!./ground';
 
-      function callback(tile, bomb) {
-        if (tile instanceof Game.Tile.Trap) {
-          var sources = Game.instance.screen.map.findTilesByType(Game.Tile.Trap);
-          var randomSource = sources[Math.floor(Math.random() * sources.length)];
-          var targets = Game.instance.screen.map.findTilesByType(Game.Tile.Ground);
-          var randomTarget = targets[Math.floor(Math.random() * targets.length)];
+export default class Trap extends Ground {
 
-          if (randomSource === randomTarget) {
-            callback(tile, bomb);
-          } else {
-            bomb.setLocation(randomSource.getLocation().clone());
-            bomb.flyTo(randomTarget, callback);
-          }
+  constructor(location) {
+    super(location);
+    this.name = 'trap';
+  }
+
+  spawnBomb(bomber) {
+    var bomb = super.spawnBomb(bomber);
+
+    function callback(tile, bomb) {
+      if (tile instanceof Trap) {
+        var sources = this._map.findTilesByType(Trap);
+        var randomSource = sources[Math.floor(Math.random() * sources.length)];
+        var targets = this._map.findTilesByType(Ground);
+        var randomTarget = targets[Math.floor(Math.random() * targets.length)];
+
+        if (randomSource === randomTarget) {
+          callback(tile, bomb);
+        } else {
+          bomb.setLocation(randomSource.getLocation().clone());
+          bomb.flyTo(randomTarget, callback);
         }
       }
-
-      callback(this, bomb);
-      return bomb;
     }
-  })
-});
+
+    callback(this, bomb);
+    return bomb;
+  }
+}

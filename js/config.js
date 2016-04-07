@@ -176,6 +176,9 @@ class Property {
       case 'complex':
         property = new ComplexProperty(xmlProperty);
         break;
+/*      case 'list':
+        property = new ListProperty(xmlProperty);
+        break;*/
     }
 
     return property;
@@ -237,7 +240,6 @@ class ComplexProperty extends Property {
       if (node.nodeType == 1) {
         try {
           var key = node.tagName;
-          //console.log(node.hasAttribute('ref'), node.getAttribute('ref'));
           this.map[key] = node.firstChild.nodeValue;
         } catch (ignored) {}
       }
@@ -250,11 +252,11 @@ class ComplexProperty extends Property {
   /*getNextValue: function() {
     //return !this.value;
   },*/
-  setValue($super, key, value) {
+  setValue(key, value) {
     this.map[key] = value;
   }
 
-  getValue($super, key) {
+  getValue(key) {
     return this.map[key];
   }
 

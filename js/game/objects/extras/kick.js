@@ -1,11 +1,12 @@
-define('objects/extras/kick', ['objects/extras/extra'], function() {
-  Game.Object.Extra.Kick = Class.create(Game.Object.Extra, {
-    initialize: function($super, location) {
-      $super(location);
-      this.name = 'kick';
-    },
-    act: function(bomber) {
-      bomber.canKick = true;
-    }
-  });
-});
+import Extra from 'babel!./extra';
+
+export default class Kick extends Extra {
+
+  constructor(location) {
+    super('kick', location);
+  }
+
+  act(bomber) {
+    bomber.canKick = true;
+  }
+}

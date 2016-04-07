@@ -1,32 +1,31 @@
-define('controllers/controller', [], function() {
-  Game.Controller = Class.create({
+export default class {
 
-    active: null,
-    reverse: null,
-    autoShoot: null,
-    bomber: null,
+  constructor() {
+    this.active = true;
+    this.reverse = false;
+    this.autoShoot = false;
+  }
 
-    initialize: function() {
-      this.active = true;
-      this.reverse = false;
-      this.autoShoot = false;
-    },
-    attach: function(bomber) {
-      this.bomber = bomber;
-    },
-    revert: function() {
-      this.reverse = !this.reverse;
-    },
-    setAutoShoot: function(autoShoot) {
-      this.autoShoot = autoShoot;
-    },
-    activate: function() {
-      this.active = true;
-    },
-    deactivate: function() {
-      this.active = false;
-    },
-    update: function() {
-    }
-  });
-});
+  attach(bomber) {
+    this.bomber = bomber;
+  }
+
+  revert() {
+    this.reverse = !this.reverse;
+  }
+
+  setAutoShoot(autoShoot) {
+    this.autoShoot = autoShoot;
+  }
+
+  activate() {
+    this.active = true;
+  }
+
+  deactivate() {
+    this.active = false;
+  }
+
+  update() {
+  }
+}
