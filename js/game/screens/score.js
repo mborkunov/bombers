@@ -77,7 +77,7 @@ export default class Score extends Screen {
       next.appendChild(new Element('div').addClassName('preview').addClassName('loading'));
 
       this.layer.appendChild(next);
-      Map.getNextMap(function(next, map) {
+      Map.getRandomMap(function(next, map) {
         var preview = next.select('.preview')[0];
         map.prerender(preview);
         next.select('.sign')[0].update('Next Map: ' +  map.getName().replace("_", " "));

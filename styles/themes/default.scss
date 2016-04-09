@@ -78,70 +78,6 @@ body.default {
       background-image: url('../images/themes/original/editor.png');
       .preview, .toolbox {
         background: #333;
-        .tile {
-          width: 40px;
-          height: 40px;
-          border: none;
-          /*border-bottom: 1px solid black;
-          border-right: 1px solid black;*/
-          &.ice {
-            background: url('#{$path}/tile_addons.png') 0 0, url('#{$path}/tiles.png') 160px 0;
-          }
-          &.trap {
-            background: url('#{$path}/tile_addons.png') 40px 0, url('#{$path}/tiles.png') 160px 0;
-          }
-          &.ground {
-            background: url('#{$path}/tiles.png') 160px 0;
-            text-align: center;
-            &.spawn {
-              background: red;
-            }
-          }
-          &.box {
-            background: url('#{$path}/tiles.png') 80px 0;
-          }
-          &.wall {
-            background: url('#{$path}/tiles.png') 120px 0;
-            &.player-1::before {
-              content:'1';
-            }
-            &.player-2::before {
-              content:'2';
-            }
-            &.player-3::before {
-              content:'3';
-            }
-            &.player-4::before {
-              content:'4';
-            }
-            &.player-5::before {
-              content:'5';
-            }
-            &.player-6::before {
-              content:'6';
-            }
-            &.player-7::before {
-              content:'7';
-            }
-            &.player-8::before {
-              content:'8';
-            }
-          }
-          &.arrow {
-            &.east {
-              background: url('#{$path}/tile_addons.png') 160px 0, url('#{$path}/tiles.png') 160px 0;
-            }
-            &.south {
-              background: url('#{$path}/tile_addons.png') 280px 0, url('#{$path}/tiles.png') 160px 0;
-            }
-            &.west {
-              background: url('#{$path}/tile_addons.png') 240px 0, url('#{$path}/tiles.png') 160px 0;
-            }
-            &.north {
-              background: url('#{$path}/tile_addons.png') 200px 0, url('#{$path}/tiles.png') 160px 0;
-            }
-          }
-        }
       }
       .preview {
 /*        .opacity(1);*/
@@ -155,6 +91,74 @@ body.default {
         }
       }
     }
+
+    &.editor, &.levels {
+      .preview .area .tile, .toolbox .tile {
+        width: 40px;
+        height: 40px;
+        border: none;
+        /*border-bottom: 1px solid black;
+        border-right: 1px solid black;*/
+        &.ice {
+          background: url('#{$path}/tile_addons.png') 0 0, url('#{$path}/tiles.png') 160px 0;
+        }
+        &.trap {
+          background: url('#{$path}/tile_addons.png') 40px 0, url('#{$path}/tiles.png') 160px 0;
+        }
+        &.ground {
+          background: url('#{$path}/tiles.png') 160px 0;
+          text-align: center;
+          &.spawn {
+            background: red;
+          }
+        }
+        &.box {
+          background: url('#{$path}/tiles.png') 80px 0;
+        }
+        &.wall {
+          background: url('#{$path}/tiles.png') 120px 0;
+          &.player-1::before {
+            content:'1';
+          }
+          &.player-2::before {
+            content:'2';
+          }
+          &.player-3::before {
+            content:'3';
+          }
+          &.player-4::before {
+            content:'4';
+          }
+          &.player-5::before {
+            content:'5';
+          }
+          &.player-6::before {
+            content:'6';
+          }
+          &.player-7::before {
+            content:'7';
+          }
+          &.player-8::before {
+            content:'8';
+          }
+        }
+        &.arrow {
+          &.east {
+            background: url('#{$path}/tile_addons.png') 160px 0, url('#{$path}/tiles.png') 160px 0;
+          }
+          &.south {
+            background: url('#{$path}/tile_addons.png') 280px 0, url('#{$path}/tiles.png') 160px 0;
+          }
+          &.west {
+            background: url('#{$path}/tile_addons.png') 240px 0, url('#{$path}/tiles.png') 160px 0;
+          }
+          &.north {
+            background: url('#{$path}/tile_addons.png') 200px 0, url('#{$path}/tiles.png') 160px 0;
+          }
+        }
+      }
+    }
+
     &.help {
       background: url('../images/overlay.png'), url('../images/themes/original/title.png');
       ul li {
@@ -272,37 +276,6 @@ body.default {
       #arbiter {
         background: url('#{$path}/trollface.png') 1px 1px no-repeat;
         background-size: 38px 38px;
-      }
-      .tile {
-        &.ice {
-          background: url('#{$path}/tile_addons.png') 0 0, url('#{$path}/tiles.png') 160px 0;
-        }
-        &.trap {
-          background: url('#{$path}/tile_addons.png') 40px 0, url('#{$path}/tiles.png') 160px 0;
-        }
-        &.ground {
-          background: url('#{$path}/tiles.png') 160px 0;
-        }
-        &.box {
-          background: url('#{$path}/tiles.png') 80px 0;
-        }
-        &.wall {
-          background: url('#{$path}/tiles.png') 120px 0;
-        }
-        &.arrow {
-          &.east {
-            background: url('#{$path}/tile_addons.png') 160px 0, url('#{$path}/tiles.png') 160px 0;
-          }
-          &.south {
-            background: url('#{$path}/tile_addons.png') 280px 0, url('#{$path}/tiles.png') 160px 0;
-          }
-          &.west {
-            background: url('#{$path}/tile_addons.png') 240px 0, url('#{$path}/tiles.png') 160px 0;
-          }
-          &.north {
-            background: url('#{$path}/tile_addons.png') 200px 0, url('#{$path}/tiles.png') 160px 0;
-          }
-        }
       }
 
       .explosion {
@@ -482,6 +455,40 @@ body.default {
       }
       #timer #clock.expired {
         background: url('#{$path}/clock.png') -40px 0 no-repeat;
+      }
+    }
+
+    &.arena, &.levels {
+      .tile {
+        &.ice {
+          background: url('#{$path}/tile_addons.png') 0 0, url('#{$path}/tiles.png') 160px 0;
+        }
+        &.trap {
+          background: url('#{$path}/tile_addons.png') 40px 0, url('#{$path}/tiles.png') 160px 0;
+        }
+        &.ground {
+          background: url('#{$path}/tiles.png') 160px 0;
+        }
+        &.box {
+          background: url('#{$path}/tiles.png') 80px 0;
+        }
+        &.wall {
+          background: url('#{$path}/tiles.png') 120px 0;
+        }
+        &.arrow {
+          &.east {
+            background: url('#{$path}/tile_addons.png') 160px 0, url('#{$path}/tiles.png') 160px 0;
+          }
+          &.south {
+            background: url('#{$path}/tile_addons.png') 280px 0, url('#{$path}/tiles.png') 160px 0;
+          }
+          &.west {
+            background: url('#{$path}/tile_addons.png') 240px 0, url('#{$path}/tiles.png') 160px 0;
+          }
+          &.north {
+            background: url('#{$path}/tile_addons.png') 200px 0, url('#{$path}/tiles.png') 160px 0;
+          }
+        }
       }
     }
 

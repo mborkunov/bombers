@@ -7,14 +7,16 @@ export default class Screen {
     this.rendered = false;
     this.keys = [];
     this.listeners = {};
-    //this.game = Game.instance;
   }
 
-  init() {}
+  init() {
+  }
 
   update() {}
 
-  prerender() {}
+  prerender() {
+    this.rendered = true;
+  }
 
   render() {}
 
@@ -28,15 +30,16 @@ export default class Screen {
     this.listeners = {};
   }
 
-/*  static register(name, screen) {
-    if (typeof Screen.items == 'undefined') {
-      Screen.items = {};
+  static register(screens) {
+    Screen._screens = {};
+    for (var screen in screens) {
+      if (!screens.hasOwnProperty(screen)) continue;
+      Screen._screens[screen.toLowerCase()] = screens[screen];
     }
-    Screen.items[name] = screen;
-  }*/
+  }
 
   static getScreen(name) {
-    return Screen.items[name];
+    return Screen._screens[name];
   }
 
   static getCurrent() {

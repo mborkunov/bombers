@@ -5,11 +5,11 @@ import * as tiles from 'babel!../tiles';
 
 export default class Explosion extends GameObject {
 
-  constructor(location, bomber, power) {
+  constructor(location, bomber) {
     super('explosion');
     this.lifetime = 500;
     this.location = location;
-    this.power = power;
+    this.power = bomber.getPower();
     this.rendered = false;
     this.start = now();
     this.triggers.push(
@@ -176,8 +176,8 @@ export default class Explosion extends GameObject {
   }
 
   dispatch() {
-    this._arena.remove(this);
     this.element.remove();
+    this._arena.remove(this);
   }
 
   update(delay) {

@@ -67,6 +67,14 @@ export default class Point {
     return point;
   }
 
+  distance(location) {
+    return Math.sqrt(Math.pow(Math.abs(this._x - location.x), 2) + Math.pow(Math.abs(this._y - location.y), 2));
+  }
+
+  near(location, delta) {
+    return this.distance(location) < delta;
+  }
+
   round() {
     return new Point(Math.round(this._x), Math.round(this._y));
   }

@@ -25,7 +25,7 @@ export default class Box extends Tile {
 
   destroy() {
     this.next = new Ground(this.getLocation().clone());
-    this.next.spawnExtra();
+    this.next.spawnExtra(0.25);
     super.destroy();
   }
 

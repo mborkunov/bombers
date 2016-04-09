@@ -9,10 +9,12 @@ class Worker {
     this.timeout = 0;
     this.lastCall = 0;
     this.retries = 0;
+
+    this.closure = this.loop.bind(this);
   }
 
   start() {
-    this.loop();
+    this.closure();
   }
 
   loop() {
@@ -32,7 +34,8 @@ class Worker {
     this.lastCallEnd = now();
     var fps = typeof this.fps === 'object' ? this.fps.getValue() : this.fps;
     this.timeout = Math.abs(1000 / fps - (now() - this.lastCall));
-    setTimeout(this.loop.bind(this), this.timeout);
+
+    setTimeout(this.closure, this.timeout);
   }
 }
 

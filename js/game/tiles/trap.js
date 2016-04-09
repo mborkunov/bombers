@@ -12,9 +12,9 @@ export default class Trap extends Ground {
 
     function callback(tile, bomb) {
       if (tile instanceof Trap) {
-        var sources = this._map.findTilesByType(Trap);
+        var sources = tile._map.findTilesByType(Trap);
         var randomSource = sources[Math.floor(Math.random() * sources.length)];
-        var targets = this._map.findTilesByType(Ground);
+        var targets = tile._map.findTilesByType(Ground);
         var randomTarget = targets[Math.floor(Math.random() * targets.length)];
 
         if (randomSource === randomTarget) {

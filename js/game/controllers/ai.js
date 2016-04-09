@@ -1,6 +1,7 @@
 import Controller from 'babel!./controller';
 
 export default class extends Controller {
+
   constructor() {
     super();
     this.direction = 0;

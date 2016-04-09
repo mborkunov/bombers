@@ -78,9 +78,9 @@ export default class Bomb extends GameObject {
 
   explode() {
     this._arena.add(new Explosion(this.location.clone().round(), this.bomber));
+    this._arena.shakeIt(this.location);
     this.removeBomb();
     this.bomber.bombs--;
-    this._arena.shakeIt();
     Sound.play('explode');
   }
 }

@@ -1,6 +1,5 @@
 import Sound from 'babel!../../sound';
 import Config from 'babel!../../config';
-import * as objects from 'babel!../objects';
 import Actor from 'babel!../scene';
 
 export default class Tile extends Actor {
@@ -79,10 +78,11 @@ export default class Tile extends Actor {
     return this._arena.getBomb(this.location);
   }
 
-  shake(shake) {
-    if (shake > 0) {
-      if (Math.random() > 0) {
-        var offset = Math.round(Math.random() * 10) % 2 == 0 ? 1 : 2;
+  shake(epicenter) {
+    if (epicenter && epicenter.near(this.location, 2.5)) {
+      if (Math.random() > 0.5) {
+        //var intensity = this.location.distance(epicenter);
+        var offset = (Math.round(Math.random() * 10) % 2 == 0 ? 1 : 2); // intensity;
 
         var top = Math.round(Math.random() * 10) % 2 == 0 ? - offset : offset;
         var left = Math.round(Math.random() * 10) % 2 == 0 ? - offset : offset;
@@ -117,17 +117,16 @@ export default class Tile extends Actor {
             this.element.stopObserving('click', this.clickHandler);
         break;
         case 1:
-            this.spawnBomb();
+          this.spawnBomb();
           break;
         case 2:
-          console.log('spawn extra');
-          this.spawnExtra();
+          this.spawnExtra(1);
           break;
       }
     }.bind(this);
 
     if (Config.getValue('debug')) {
-      this.element.observe('click', this.clickHandler);
+      this.element.observe('mousedown', this.clickHandler);
     }
     container.appendChild(this.element);
   }
@@ -147,56 +146,6 @@ export default class Tile extends Actor {
     }
   }
 
-  spawnExtra() {
-    if (Math.random() > .25) {
-      return;
-    }
-    var extras = [];
-
-    if (Config.getProperty('diseases').getValue()) {
-      if (Config.getProperty('diseases.joint').getValue()) {
-        extras.push(objects.extras.Joint);
-      }
-      if (Config.getProperty('diseases.viagra').getValue()) {
-        extras.push(objects.extras.Viagra);
-      }
-      if (Config.getProperty('diseases.cocaine').getValue()) {
-        extras.push(objects.extras.Cocaine);
-      }
-    }
-    if (Config.getProperty('extras.bombs').getValue()) {
-      extras.push(objects.extras.Bomb);
-    }
-    if (Config.getProperty('extras.power').getValue()) {
-      extras.push(objects.extras.Power);
-    }
-    if (Config.getProperty('extras.skateboard').getValue()) {
-      extras.push(objects.extras.Skateboard);
-    }
-    if (Config.getProperty('extras.kick').getValue()) {
-      extras.push(objects.extras.Kick);
-    }
-    if (Config.getProperty('extras.bombs').getValue()) {
-      extras.push(objects.extras.Glove);
-    }
-    var extra = extras[Math.floor(Math.random() * extras.length)];
-
-    this.extra = new extra(this.location.clone());
-    console.log(this.extra);
-    this.extra.tile = this;
-    this._arena.add(this.extra);
-  }
-
-  spawnBomb(bomber) {
-    var screen = this._arena;
-    if (screen.hasBomb(this.getLocation())) return null;
-
-    var bomb = new objects.Bomb(this.getLocation().clone(), bomber || screen.objects.bombers[1]);
-    screen.add(bomb);
-    Sound.play('putbomb');
-    return bomb;
-  }
-
   render(container) {
     if (this.nextCoordinates.x != this.currentCoordinates.x || this.nextCoordinates.y != this.currentCoordinates.y) {
       this.currentCoordinates.x = this.nextCoordinates.x;// = {x: this.element.style.left, y: this.element.style.top}
@@ -206,7 +155,7 @@ export default class Tile extends Actor {
       this.element.style.left = this.currentCoordinates.x + 'px';
     }
 
-    if (this.isVanishing()) {
+    if (this.isVanishing() && this.element) {
       this.element.scale(this.vanishing);
       this.element.style.opacity = this.vanishing;
     }

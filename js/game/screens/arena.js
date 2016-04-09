@@ -9,7 +9,7 @@ import Point from 'babel!../../util/point';
 
 export default class Arena extends Screen {
 
-  constructor(container, callback) {
+  constructor(container, callback, args) {
     super('arena', container);
     this.callback = callback;
     this.checkBomberFilter = function(bomber) {return !bomber.isDead()};
@@ -34,11 +34,8 @@ export default class Arena extends Screen {
     this.add(new objects.Arbiter());
     this.paused = false;
     this.shakyExplosions = Config.getProperty('graphic.shaky_explosions');
-    this.shake = 0;
+    this.shake = null;
     this.listeners = {
-      mousemove: function(e) {
-        this.mouse = e;
-      }.bind(this),
       keydown: function(e) {
         if (this.keys.indexOf(e.keyCode) === -1) {
           this.keys.push(e.keyCode);
@@ -80,7 +77,12 @@ export default class Arena extends Screen {
       }
     }.bind(this);
 
-    tiles.Map.getNextMap(function(map) {
+    var name = "random";
+    if (args.length) {
+      name = args[0];
+    }
+
+    tiles.Map.load(name, function(map) {
       this.map = map;
       this.map.entry.each(function(tile) {
         tile.arena = this;
@@ -108,7 +110,7 @@ export default class Arena extends Screen {
         }
         var position = positions[i % positions.length];
         var bomber = new objects.Bomber(controller, i + 1, defaultLocation.clone(), player.getConfig());
-        bomber.flyTo(this.map.entry.tiles[position.point.x][position.point.y]);
+        bomber.flyTo(this.map.getTile(position.point.x, position.point.y));
         this.add(bomber);
       }
       this.prerender();
@@ -199,7 +201,7 @@ export default class Arena extends Screen {
     if (this.map == null) return;
     if (this.paused) return;
     if (Config.getValue('debug') && this.keys.indexOf(Event.KEY_HOME) != -1) {
-      this.shakeIt();
+      this.shakeIt(this.objects.bombers[1].location);
     }
 
     this.objects.each(this.updateObjectsHandler);
@@ -207,21 +209,21 @@ export default class Arena extends Screen {
     this.killBombers();
   }
 
-  shakeIt() {
+  shakeIt(location) {
     if (!this.shakyExplosions.getValue()) return;
     if (!Object.isUndefined(this.timeout)) {
       clearTimeout(this.timeout);
     }
-    this.shake = 1;
+    this.shake = location;
     this.timeout = setTimeout(function() {
-      this.shake = -1;
+      this.shake = null;
     }.bind(this), 300);
   }
 
   render(time) {
     if (!this.rendered) return;
     if (!this.paused) {
-      this.map.render(this.battleField);
+      this.map.render(this.battleField, this.objects.bombers);
       this.objects.each(this.renderObjectsHandler);
     }
 

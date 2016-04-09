@@ -41,48 +41,6 @@
 import Config from "babel!./config";
 import Game from "babel!./game";
 
-// document.observe("dom:loaded", function() {
-//     var controllers = ['mouse', 'keyboard', 'ai'].map(function(controller) {
-//         return 'controllers/' + controller;
-//     });
-//     var screens = ['intro', 'menu', 'arena', 'help', 'credits', 'editor', 'players','score','levels'].map(function(screen) {
-//         return 'screens/' + screen;
-//     });
-//     var objects = ['arbiter', 'bomber', 'corpse', 'bomb', 'explosion', 'extras'].map(function(object) {
-//         return 'objects/' + object;
-//     });
-//     var tiles = ['ground', 'box', 'arrow', 'ice', 'none', 'trap', 'wall', 'map'].map(function(tile) {
-//         return 'tiles/' + tile;
-//     });
-//
-//     var dependencies = [
-//         'js/util/common.js', 'js/util/point.js', 'js/util/square.js', 'js/util/trigger.js',
-//         'js/worker.js', 'js/sound.js', 'js/game.js', 'js/config.js'
-//     ].concat(screens).concat(tiles).concat(objects).concat(controllers);
-//
-//     require({
-//         baseUrl: 'js/game',
-//         waitSeconds: 15
-//     }, dependencies, function() {
-//         Config.initialize({
-//             onSuccess: function() {
-//                 console.info('config was successfully loaded');
-//
-//                 if (!Config.getValue('debug')) {
-//                     document.onmousedown = function() {return false}; // disable text selection - chromium
-//                     document.oncontextmenu = function() {return false}; // disable context menu
-//                 }
-//
-//                 new Game().start();
-//             },
-//             onFailure: function() {
-//                 console.error('cannot load config file');
-//             }
-//         });
-//     });
-// });
-
-
 document.addEventListener('DOMContentLoaded', () => {
   Config.initialize({
     onSuccess: function () {

@@ -1,17 +1,8 @@
 import Point from 'babel!../../util/point';
+import Config from 'babel!../../config';
 import * as tiles from 'babel!../tiles';
 
 export default class Map {
-  /*name: null,
-  entry: null,
-  author: null,
-  maxPlayers: -1,*/
-
-  eachHandler(bomber) {
-    if (bomber.isDead()) return;
-    this.entry.highlightTile(bomber.location.x, bomber.location.y);
-  }
-
 
   constructor(name, author, maxPlayers, data) {
     this.name = name;
@@ -19,6 +10,12 @@ export default class Map {
     this.maxPlayers = maxPlayers;
     if (data)
     this.entry = new Entry(data, this);
+  }
+
+
+  eachHandler(bomber) {
+    if (bomber.isDead()) return;
+    this.entry.highlightTile(bomber.location.x, bomber.location.y);
   }
 
   getAuthor() {
@@ -30,8 +27,8 @@ export default class Map {
   }
 
   highlight(bombers) {
-    //this.entry.clearHighlights();
-    bombers.each(this.eachHandler);
+    this.entry.clearHighlights();
+    bombers.each(this.eachHandler.bind(this));
   }
 
   getPlayerStartupPositions() {
@@ -68,17 +65,35 @@ export default class Map {
     container.appendChild(new Element("span").addClassName("map-name").update(this.getName().replace("_", " ")));
   }
 
-  render(container) {
+  render(container, bombers) {
+    if (Config.getValue('debug')) {
+      this.highlight(bombers);
+    }
     this.entry.render(container);
   }
 
   static load(name, callback) {
-    console.log('loading', 'maps/' + name + '.map');
-    new Ajax.Request('maps/' + name + '.map', {
+    if (name == "random") {
+      return Map.getRandomMap(callback);
+    }
+    var location = 'maps/' + name + '.map';
+    if (!Map._cache) Map._cache = {};
+    var cachedMap = Map._cache[location];
+    if (cachedMap) {
+      if (callback) {
+        callback(cachedMap);
+        return;
+      } else {
+        return cachedMap;
+      }
+    }
+    console.log('loading', location);
+    new Ajax.Request(location, {
       method: 'get',
       onSuccess: function(r) {
         var content = r.responseText;
         var map = Map.parse(name, content);
+        Map._cache[location] = map;
         if (callback) callback(map);
       },
       onFailure: function() {
@@ -122,7 +137,7 @@ export default class Map {
      'Sixty_Nine','Small_Standard','Snake_Race','Tiny_Standard','Whole_Mess']);
   }
 
-  static getNextMap(callback) {
+  static getRandomMap(callback) {
     var maps = Map.list();
     var id = Math.floor(Math.random() * maps.length);
 
@@ -209,7 +224,7 @@ class Entry  {
 
   clearHighlights() {
     this.each(function(tile) {
-      if (tile/* && tile.element*/)
+      if (tile && tile.element)
         tile.element.removeClassName("highlight");
     });
   }

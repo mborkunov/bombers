@@ -9,8 +9,7 @@ export default class Menu extends Screen {
 
     this.menu = new Item('Root', Type.Inner, this)
       .addChild(new Item('New Game', Type.Inner, this)
-        .addChild(new Item('Start Game', Type.Screen, screens.Arena, callback))
-        .addChild(new Item('Map Selection', Type.Screen, screens.Levels, callback))
+        .addChild(new Item('Choose Level', Type.Screen, screens.Levels, callback))
         .addChild(new Item('Player setup', Type.Screen, screens.Players, callback))
         .addChild(new Item(null, Type.Settings, 'game.random_bombers_positions'))
         .addChild(new Item(null, Type.Settings, 'game.random_maps'))
@@ -335,6 +334,7 @@ class Item {
 const Type = {
   Screen: function(item, direct, args) {
     Sound.play('clear');
+    console.log(arguments);
     args[1](args[0]);
   },
   Inner: function(item, direct, args) {

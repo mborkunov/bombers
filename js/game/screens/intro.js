@@ -69,10 +69,10 @@ export default class Intro extends Screen {
         this.drawText = true;
       }
       if (this.timeout) {
-        this.logo.style.setProperty('padding-bottom', this.padding + 'px', null);
-        this.logo.style.setProperty('opacity', Math.max(0, 1 - this.padding * .01), null);
-        this.textElement.style.setProperty('padding-top', this.padding + 'px', null);
-        this.textElement.style.setProperty('opacity', Math.max(0, 1 - this.padding * .01), null);
+        this.logo.style.setProperty('padding-bottom', this.padding + 'px', '');
+        this.logo.style.setProperty('opacity', Math.max(0, 1 - this.padding * .01).toFixed(2), '');
+        this.textElement.style.setProperty('padding-top', this.padding + 'px', '');
+        this.textElement.style.setProperty('opacity', Math.max(0, 1 - this.padding * .01).toFixed(2), '');
         this.padding += 5;
       }
       this.opacity += 0.015;

@@ -1,11 +1,14 @@
 import Config from 'babel!./config';
 import {Graphics, State} from 'babel!./worker';
 import Sound from 'babel!./sound';
+import Screen from 'babel!./game/screens/screen';
+import * as screens from 'babel!./game/screens';
 import Intro from 'babel!./game/screens/intro';
 
 export default class Game {
 
   constructor() {
+    Screen.register(screens);
     this.overlay = new Overlay();
     this.container = $('container');
     this.setTheme(Config.getProperty("graphic.theme").getValue());
@@ -46,22 +49,13 @@ export default class Game {
   }
 
   getStartScreen() {
-    var screen = Intro;
-    // if (location.hash.length > 0) {
-    //   var _screen = location.hash.substr(1).toLowerCase();
-    //   _screen = _screen.substr(0, 1).toUpperCase() + _screen.substr(1);
-    //   screen = this.getScreenByName(_screen.toLowerCase());
-    // }
-    return screen;
-  }
-
-  getScreenByName(name) {
-    try {
-      return Screen.getScreen(name);
-    } catch (e) {
-      console.error("Screen doesn't exists: " + name);
+    var screen;
+    if (location.hash.length > 0) {
+      var _screen = location.hash.substr(1).toLowerCase();
+      _screen = _screen.substr(0, 1).toUpperCase() + _screen.substr(1);
+      screen = Screen.getScreen(_screen.toLowerCase());
     }
-    return null;
+    return screen || Intro;
   }
 
   start() {
@@ -80,6 +74,7 @@ export default class Game {
   }
 
   setScreen(screen) {
+    let args = arguments;
     var appear = function() {
       if (this.screen) {
         this.screen.setSleeping(false);
@@ -87,11 +82,13 @@ export default class Game {
       }
       var _screen;
 
+      _screen = new screen(this.container, this.setScreen.bind(this), $A(args).slice(1));
+      _screen.instance = _screen;
       if (Object.isUndefined(screen.instance)) {
-        _screen = new screen(this.container, this.setScreen.bind(this));
+
       } else {
-        _screen = screen.instance;
-        _screen.prerender();
+        //_screen = screen.instance;
+        //_screen.prerender();
       }
       var listeners = _screen.listeners;
       for (var event in listeners) {
@@ -105,7 +102,7 @@ export default class Game {
 
       this.container.removeClassName(this.screen ? this.screen.name.toLowerCase() : null).addClassName(_screen.name.toLowerCase());
 
-      history.pushState({}, _screen.name + ' | Happy Bombers', "#" + _screen.name);
+      history.pushState({}, _screen.name + ' | Bombers', "#" + _screen.name);
       this.screen = _screen;
       this.screen.setSleeping(true);
 
@@ -204,7 +201,7 @@ class Overlay {
 
   update() {
     if (this.working != 0 && this.element) {
-      this.element.style.setProperty('opacity', Math.max(0, this.opacity += this.working / 25), null);
+      this.element.style.setProperty('opacity', Math.max(0, this.opacity += this.working / 25).toFixed(2), '');
       this.working *= 1.1;
       if (this.working < 0 && this.opacity <= 0) {
         this.stop();
