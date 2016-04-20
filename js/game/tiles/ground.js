@@ -4,9 +4,11 @@ import * as objects from 'babel!../objects';
 import Sound from 'babel!../../sound';
 
 export default class Ground extends Tile {
+
   constructor(location) {
     super('ground', location);
     this.passable = true;
+    this._vanishing = null;
   }
 
   hasExtra() {
@@ -15,6 +17,17 @@ export default class Ground extends Tile {
 
   getExtra() {
     return this.extra;
+  }
+
+  get vanishing() {
+    return this._vanishing !== null && this._vanishing >= 0;
+  }
+
+  vanish() {
+    Sound.play('crunch');
+    this.element.addClassName('fall');
+    this.element.addEventListener('animationend', this.destroy.bind(this), false);
+    this._vanishing = 1;
   }
 
   spawnExtra(chance) {
@@ -56,11 +69,24 @@ export default class Ground extends Tile {
     this._arena.add(this.extra);
   }
 
+  canPass(location) {
+    var bomb;
+    return super.canPass() && (!(bomb = this.getBomb()) || bomb.location.equals(location.round())) ;
+  }
+
+  hasBomb() {
+    return this._arena.hasBomb(this.location);
+  }
+
+  getBomb() {
+    return this._arena.getBomb(this.location);
+  }
+
   spawnBomb(bomber) {
     var screen = this._arena;
-    if (screen.hasBomb(this.getLocation())) return null;
+    if (screen.hasBomb(this.location)) return null;
 
-    var bomb = new objects.Bomb(this.getLocation().clone(), bomber || screen.objects.bombers[1]);
+    var bomb = new objects.Bomb(this.location.clone(), bomber || screen.objects.bombers[1]);
     screen.add(bomb);
     Sound.play('putbomb');
     return bomb;

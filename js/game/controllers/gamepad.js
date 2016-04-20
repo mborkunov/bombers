@@ -2,11 +2,10 @@ import Controller from 'babel!./controller';
 
 export default class Gamepad extends Controller {
 
-  constructor(type) {
+  constructor(number) {
     super();
     this.i = 1;
-    this.gamepadIndex = type;
-    this.keys = type;
+    this.gamepadIndex = number;
   }
 
   update(keys, delay) {

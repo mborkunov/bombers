@@ -32,7 +32,7 @@ class Worker {
       console.log('Worker failed ' + [this.name], e);
     }
     this.lastCallEnd = now();
-    var fps = typeof this.fps === 'object' ? this.fps.getValue() : this.fps;
+    var fps = typeof this.fps === 'object' ? this.fps : this.fps;
     this.timeout = Math.abs(1000 / fps - (now() - this.lastCall));
 
     setTimeout(this.closure, this.timeout);
@@ -43,7 +43,9 @@ class Graphics extends Worker {
 
   constructor(screen) {
     super('graphics', screen);
-    this.fps = Config.getProperty('graphic.maxfps');
+    Config.getProperty('graphic.maxfps').addListener(function(fps) {
+      this.fps = fps;
+    }.bind(this));
   }
 
   action(delay) {

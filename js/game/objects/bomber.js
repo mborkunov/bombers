@@ -10,7 +10,6 @@ export default class Bomber extends GameObject {
 
   constructor(controller, number, location, config) {
     super('bomber');
-    //this.backgroundPosition = {x: 0, y: 0};
     this.bombs = 0;
     this.distance = 0;
     this.rollingAngle = 0;
@@ -82,9 +81,9 @@ export default class Bomber extends GameObject {
     if (!this.isFlying()) {
       if (!this.isFalling()) {
         var tile = this._arena.map.getTile(this.location.x, this.location.y);
-        if (tile.getName() == 'none' || tile.isDestroyed()) {
+        if (tile.name == 'none' || tile.destroyed) {
           this.fall();
-        } else if (tile.getName() == 'ice') {
+        } else if (tile.name == 'ice') {
           this.move(this.direction, delay / 2);
         }
       }
@@ -114,13 +113,8 @@ export default class Bomber extends GameObject {
   }
 
   getAngleByDirection(direction) {
-    switch (direction) {
-      case 0: return 90;
-      case 1: return 0;
-      case 2: return 270;
-      case 3: return 180;
-    }
-    return -1;
+    var angles = [90, 0, 270, 180];
+    return angles.length >= direction ? angles[direction] : -1;
   }
 
   getClockWiseDirection(currentAngle, requiredAngle) {
@@ -161,8 +155,10 @@ export default class Bomber extends GameObject {
     this.blown = true;
     this.element.remove();
 
-    for (var i = 0; i < Math.ceil(Math.random() * 2) + 2; i++) {
-      this._arena.add(new CorpsePart(this.getLocation().clone(), i + 1));
+    if (Config.getValue('graphic.corpse_parts')) {
+      for (var i = 0; i < Math.ceil(Math.random() * 10) + 2; i++) {
+        this._arena.add(new CorpsePart(this.location.clone(), i + 1));
+      }
     }
     Sound.play('corpse_explode');
   }
@@ -170,7 +166,7 @@ export default class Bomber extends GameObject {
   spawnBomb() {
     if (this.isFlying() || this.isFalling()) return;
     if (this.bombs >= this.maxBombs) return;
-    if (this.getTile(this.getLocation()).spawnBomb(this)) {
+    if (this.getTile(this.location).spawnBomb(this)) {
       this.bombs++;
     }
   }
@@ -183,11 +179,11 @@ export default class Bomber extends GameObject {
 
   getNextLocation(direction) {
     var speed = this.getSpeed();
-    var offset = .4;
+    var offset = .41;
 
     var tileLocation1 = this.location.clone();
     var tileLocation2 = this.location.clone();
-    var nextLocation = this.location.clone();
+    var nextLocation  = this.location.clone();
 
     var mod = direction % 2 == 0;
 
@@ -206,10 +202,10 @@ export default class Bomber extends GameObject {
     var tile1 = this.getTile(tileLocation1);
     var tile2 = this.getTile(tileLocation2);
 
-
     var argX, argY;
-    if (tile1.isPassable() && !tile1.hasBomb()// || !tile1.getLocation().equals(this.location))
-        && tile2.isPassable() && !tile2.hasBomb()) {// || !tile2.getLocation().equals(this.location))) {
+    
+    if (tile1.canPass(this.location) && tile2.canPass(this.location)) {  // || !tile1.getLocation().equals(this.location))
+                                               // || !tile2.getLocation().equals(this.location))) {
       argX = mod ? 0 : - dynamicDirection * speed;
       argY = mod ? dynamicDirection * speed : 0;
       nextLocation.increase(argX, argY);
@@ -217,12 +213,12 @@ export default class Bomber extends GameObject {
       var dir1 = tileLocation1.x < nextLocation.x ? 3 : 1,
           dir2 = tileLocation1.y < nextLocation.y ? 0 : 2;
       var dir = mod ? dir1 : dir2;
-      if (tile1.isPassable() && !tile1.hasBomb()) {// || !tile1.getLocation().equals(this.location))) {
+      if (tile1.canPass(this.location)) {                   // || !tile1.getLocation().equals(this.location))) {
         argX = mod ? - speed : 0;
         argY = mod ? 0 : - speed;
         nextLocation.increase(argX, argY);
         this.direction = dir;
-      } else if (tile2.isPassable() && !tile2.hasBomb()) { // || !tile2.getLocation().equals(this.location))) {
+      } else if (tile2.canPass(this.location)) {            // || !tile2.getLocation().equals(this.location))) {
         argX = mod ? speed : 0;
         argY = mod ? 0 : speed;
         nextLocation.increase(argX, argY);

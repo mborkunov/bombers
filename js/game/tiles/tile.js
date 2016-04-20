@@ -1,4 +1,3 @@
-import Sound from 'babel!../../sound';
 import Config from 'babel!../../config';
 import Actor from 'babel!../scene';
 
@@ -7,8 +6,8 @@ export default class Tile extends Actor {
   constructor(name, location) {
     super();
     this.name = name;
+    this.element = null;
     this.location = location;
-    this.blocking = false;
     this.destroyed = false;
     this.passable = false;
     this.currentCoordinates = location.clone();
@@ -28,70 +27,37 @@ export default class Tile extends Actor {
     this._arena = arena;
   }
 
-  getType() {
-    return this.type;
-  }
-
-  isDestroyed() {
-    return this.destroyed;
-  }
-
-  isPassable() {
-    return this.passable;
-  }
-
-  isVanishing() {
-    return this.vanishing !== null && this.vanishing >= 0;
-  }
-
-  getLocation() {
-    return this.location;
-  }
-
-  setLocation(location) {
-    this.location = location;
-  }
-
-  getName() {
-    return this.name;
-  }
-
-  vanish() {
-    Sound.play('crunch');
-    this.vanishing = 1;
-  }
-
-  destroy() {
-    if (this.next) {
-      this.next._arena = this._arena;
-      this.next.prerender(this.container);
+  destroy(newTile) {
+    if (newTile && newTile instanceof Tile) {
+      newTile._arena = this._arena;
+      console.log(newTile);
+      newTile.prerender(this.container);
+      this.next = newTile;
     }
     this.element.hide();
     this.destroyed = true;
   }
 
-  hasBomb() {
-    return this._arena.hasBomb(this.location);
+  canPass() {
+    return this.passable;
   }
 
-  getBomb() {
-    return this._arena.getBomb(this.location);
-  }
+  shake(quakes) {
+    if (quakes.length) {
+      for (var i  = 0, length = quakes.length; i < length; i++) {
+        var quake = quakes[i];
+        if (quake && quake[0].near(this.location, quake[1])) {
+          if (Math.random() > 0.5) {
+            // var intensity = this.location.distance(epicenter);
+            var offset = (Math.round(Math.random() * 10) % 2 == 0 ? 1 : 2); // intensity;
 
-  shake(epicenter) {
-    if (epicenter && epicenter.near(this.location, 2.5)) {
-      if (Math.random() > 0.5) {
-        //var intensity = this.location.distance(epicenter);
-        var offset = (Math.round(Math.random() * 10) % 2 == 0 ? 1 : 2); // intensity;
+            var yOffset = Math.round(Math.random() * 10) % 2 == 0 ? - offset : offset;
+            var xOffset = Math.round(Math.random() * 10) % 2 == 0 ? - offset : offset;
 
-        var top = Math.round(Math.random() * 10) % 2 == 0 ? - offset : offset;
-        var left = Math.round(Math.random() * 10) % 2 == 0 ? - offset : offset;
-
-        top += this.top;
-        left += this.left;
-
-        this.nextCoordinates.y = top;
-        this.nextCoordinates.x = left;
+            this.nextCoordinates.y = this.top  + yOffset;
+            this.nextCoordinates.x = this.left + xOffset;
+          }
+        }
       }
     } else {
       this.nextCoordinates.y = this.top;
@@ -100,8 +66,9 @@ export default class Tile extends Actor {
   }
 
   prerender(container) {
+    this.container = container;
     var id = 'tile-' + this.name + '-' + this.location.x + 'x' + this.location.y;
-    var className = this.getName();
+    var className = this.name;
     this.left = this.location.x * 40;
     this.top = this.location.y * 40;
 
@@ -113,8 +80,8 @@ export default class Tile extends Actor {
     this.clickHandler = function(e) {
       switch (e.button) {
         case 0:
-            this.vanish();
-            this.element.stopObserving('click', this.clickHandler);
+          this.element.stopObserving('click', this.clickHandler);
+          this.vanish();
         break;
         case 1:
           this.spawnBomb();
@@ -125,9 +92,13 @@ export default class Tile extends Actor {
       }
     }.bind(this);
 
-    if (Config.getValue('debug')) {
-      this.element.observe('mousedown', this.clickHandler);
-    }
+    Config.getProperty('debug').addListener(function(debug) {
+      if (debug) {
+        this.element.observe('mousedown', this.clickHandler);
+      } else {
+        this.element.stopObserving('mousedown', this.clickHandler);
+      }
+    }.bind(this));
     container.appendChild(this.element);
   }
 
@@ -136,13 +107,13 @@ export default class Tile extends Actor {
       this.element.addClassName("highlight");
   }
 
-  update(delay, shake) {
-    this.shake(shake);
-    if (this.isVanishing() && !this.isDestroyed()) {
-      this.vanishing -= 0.01;
+  update(delay, quakes) {
+    this.shake(quakes);
+    if (this.vanishing && !this.destroyed) {
+      /*this.vanishing -= 0.01;
       if (this.vanishing <= 0) {
         this.destroy();
-      }
+      }*/
     }
   }
 
@@ -153,11 +124,6 @@ export default class Tile extends Actor {
 
       this.element.style.top = this.currentCoordinates.y + 'px';
       this.element.style.left = this.currentCoordinates.x + 'px';
-    }
-
-    if (this.isVanishing() && this.element) {
-      this.element.scale(this.vanishing);
-      this.element.style.opacity = this.vanishing;
     }
   }
 

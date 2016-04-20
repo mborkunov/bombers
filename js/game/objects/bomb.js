@@ -53,7 +53,7 @@ export default class Bomb extends GameObject {
   update(delay) {
     if (!this.isFlying() && !this.isFalling()) {
       var tile = this._arena.map.getTile(this.location.x, this.location.y);
-      if (tile.getName() == 'none' || tile.isDestroyed()) {
+      if (tile.name == 'none' || tile.destroyed) {
         this.fall();
       }
       var time = now();
@@ -78,7 +78,7 @@ export default class Bomb extends GameObject {
 
   explode() {
     this._arena.add(new Explosion(this.location.clone().round(), this.bomber));
-    this._arena.shakeIt(this.location);
+    this._arena.shakeIt(this.location, this.power);
     this.removeBomb();
     this.bomber.bombs--;
     Sound.play('explode');

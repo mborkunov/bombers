@@ -25,7 +25,8 @@ export default class Wall extends Tile {
   }
 
   destroy() {
-    this.next = new Ground(this.getLocation().clone());
+    //this.replaceWith(new Ground(this.location.clone()));
+    this.next = new Ground(this.location.clone());
     super.destroy();
   }
 

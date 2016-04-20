@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<!-- manifest="cache.appcache"-->
+<html lang="en-US">
 <head>
-    <link rel="stylesheet/less" type="text/css" href="styles/explosion.less"/>
+    <meta charset="UTF-8">
+    <title>Explosion</title>
     <link rel="shortcut icon" href="favicon.ico"/>
-    <title>Explosion test</title>
+    <link rel="stylesheet/less" type="text/css" href="styles/explosion.less"/>
 
     <script type="text/javascript">
         var i = 0;
@@ -18,10 +18,7 @@
             setTimeout(change, 100);
         }
 
-
-        window.onload = function () {
-            change();
-        }
+        window.onload = change;
     </script>
     <script type="text/javascript" src="js/vendor/less.js"></script>
 </head>
@@ -32,16 +29,20 @@
     <div id="explosion" class="explosion">
         <div class="epicenter"></div>
         <div class="beam north">
-            <div class="edge"></div><div class="body"></div>
+            <div class="edge"></div>
+            <div class="body"></div>
         </div>
         <div class="beam west">
-            <div class="edge"></div><div class="body"></div>
+            <div class="edge"></div>
+            <div class="body"></div>
         </div>
         <div class="beam east">
-            <div class="body"></div><div class="edge"></div>
+            <div class="body"></div>
+            <div class="edge"></div>
         </div>
         <div class="beam south">
-            <div class="body"></div><div class="edge"></div>
+            <div class="body"></div>
+            <div class="edge"></div>
         </div>
     </div>
 </div>

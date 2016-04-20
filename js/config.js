@@ -27,22 +27,6 @@ const Config = {
       onSuccess: function(t) {
         var xml = t.responseXML;
 
-        /*var nodeToObject = function(node) {
-          var data = {};
-          for (var x = 0, length = node.childNodes.length; x < length; x++) {
-            var child = node.childNodes[x];
-            console.log(child);
-            if (child.nodeType == 1) {
-              if (child.childNodes.length == 1) {
-                data[child.nodeName] = child.firstChild.nodeValue;
-              } else {
-                data[child.nodeName] = nodeToObject(child);
-              }
-            }
-          }
-          return data;
-        };*/
-
         var gui = new dat.GUI();
         var properties = xml.getElementsByTagName('property');
         for (var i = 0; i < properties.length; i++) {
@@ -79,6 +63,7 @@ class Property {
     this.id = xmlConfig.getAttribute('id');
     this.name = xmlConfig.getElementsByTagName('name')[0].firstChild.nodeValue;
     this.immutable = xmlConfig.hasAttribute('immutable') && xmlConfig.getAttribute('immutable').toLowerCase() == 'true';
+    this.listeners = [];
 
     var split = this.id.split('.');
     this.propertyName = split[split.length - 1];
@@ -90,6 +75,11 @@ class Property {
     this.__defineSetter__(this.propertyName, function(value) {
       this.value = value;
       window['localStorage'].setItem(this.id, value);
+
+      console.log('Config', this.id, value);
+      this.listeners.forEach(function(listener) {
+        listener(value);
+      })
     }.bind(this));
   }
 
@@ -126,6 +116,13 @@ class Property {
 
   getScreenValue() {
     return this.value;
+  }
+
+  addListener(listener, fire) {
+    this.listeners.push(listener);
+    if (typeof fire === 'undefined' || fire) {
+      listener(this.value);
+    }
   }
 
   setValue() {
@@ -335,12 +332,12 @@ class NumberProperty extends Property {
   constructor(xmlConfig) {
     super('number', xmlConfig);
 
-    this.value = parseInt(xmlConfig.getAttribute('default'));
+    this.value = parseFloat(xmlConfig.getAttribute('default'));
 
     var range = xmlConfig.getElementsByTagName('range')[0];
-    this.step = parseInt(range.getAttribute('step'));
-    this.min = parseInt(range.getAttribute('min'));
-    this.max = parseInt(range.getAttribute('max'));
+    this.step = parseFloat(range.getAttribute('step'));
+    this.min = parseFloat(range.getAttribute('min'));
+    this.max = parseFloat(range.getAttribute('max'));
 
     if (this.min > this.max) {
       var temp = this.max;
@@ -370,7 +367,7 @@ class NumberProperty extends Property {
         this.value = this.max;
       }
     } else {
-      this.setValue(parseInt(value));
+      this.setValue(parseFloat(value));
     }
     super.setValue();
   }

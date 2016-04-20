@@ -5,6 +5,7 @@ import * as objects from 'babel!../objects';
 import * as tiles from 'babel!../tiles';
 import AiController from 'babel!../controllers/ai';
 import KeyboardController from 'babel!../controllers/keyboard';
+import GamepadController from 'babel!../controllers/gamepad';
 import Point from 'babel!../../util/point';
 
 export default class Arena extends Screen {
@@ -34,18 +35,14 @@ export default class Arena extends Screen {
     this.add(new objects.Arbiter());
     this.paused = false;
     this.shakyExplosions = Config.getProperty('graphic.shaky_explosions');
-    this.shake = null;
+    this.quakes = [];
     this.listeners = {
       keydown: function(e) {
         if (this.keys.indexOf(e.keyCode) === -1) {
           this.keys.push(e.keyCode);
         }
         if (e.keyCode == 83 && e.hasModifiers()) {
-          if (Config.change('graphic.shadows')) {
-            container.addClassName('shadows');
-          } else {
-            container.removeClassName('shadows');
-          }
+          Config.change('graphic.shadows');
         }
       }.bind(this),
       keyup: function(e) {
@@ -102,6 +99,9 @@ export default class Arena extends Screen {
         switch (player.getValue('controller')) {
           case 'ai':
             controller = new AiController();
+            break;
+          case 'gamepad':
+            controller = new GamepadController(0);
             break;
           default:
             var type = KeyboardController.Type[player.getValue('controller').toUpperCase()];
@@ -162,7 +162,7 @@ export default class Arena extends Screen {
   getBomb(location) {
     for (var i = 0; i < this.objects.bombs.length; i++) {
       var bomb = this.objects.bombs[i];
-      if (bomb.getLocation().equals(location)) {
+      if (bomb.location.equals(location)) {
         return bomb;
       }
     }
@@ -201,22 +201,19 @@ export default class Arena extends Screen {
     if (this.map == null) return;
     if (this.paused) return;
     if (Config.getValue('debug') && this.keys.indexOf(Event.KEY_HOME) != -1) {
-      this.shakeIt(this.objects.bombers[1].location);
+      this.shakeIt(this.objects.bombers[1].location, 2);
     }
 
     this.objects.each(this.updateObjectsHandler);
-    this.map.update(delay, this.shake);
+    this.map.update(delay, this.quakes);
     this.killBombers();
   }
 
-  shakeIt(location) {
+  shakeIt(location, power) {
     if (!this.shakyExplosions.getValue()) return;
-    if (!Object.isUndefined(this.timeout)) {
-      clearTimeout(this.timeout);
-    }
-    this.shake = location;
-    this.timeout = setTimeout(function() {
-      this.shake = null;
+    this.quakes.push([location, power + 1.5]);
+    setTimeout(function() {
+      this.quakes.pop();
     }.bind(this), 300);
   }
 
@@ -243,7 +240,7 @@ export default class Arena extends Screen {
       this.container.appendChild(this.overlay);
       this.container.appendChild(this.dialog);
     } else if (!this.paused && this.dialog) {
-      $('field').removeClassName('filter');
+      $('field').classList.remove('filter');
       this.dialog.remove();
       try {
         this.overlay.remove();
@@ -254,14 +251,8 @@ export default class Arena extends Screen {
 
   dispatch() {
     this.rendered = false;
-    try {
-      this.container.removeChild(this.battleField);
-      if (this.overlay) {
-        this.container.removeChild(this.dialog);
-        try {
-          this.container.removeChild(this.overlay);
-        } catch (ignored) {}
-      }
-    } catch (ignored) {}
+    this.battleField && this.container.removeChild(this.battleField);
+    this.dialog     && this.container.removeChild(this.dialog);
+    this.overlay     && this.container.removeChild(this.overlay);
   }
 }

@@ -26,14 +26,6 @@ export default class GameObject extends Actor {
     this.location = (this.direction % 2 == 0) ? this.location.roundX() : this.location.roundY();
   }
 
-  setLocation(location) {
-    this.location = location;
-  }
-
-  getLocation() {
-    return this.location;
-  }
-
   getSpeed() {
     return this.speed;
   }
@@ -90,7 +82,7 @@ export default class GameObject extends Actor {
   }
 
   flyTo(tile, callback) {
-    this.destination = tile.getLocation();
+    this.destination = tile.location;
     this.departure = this.location.clone();
     this.flyCallback = callback;
   }
@@ -141,7 +133,7 @@ export default class GameObject extends Actor {
           x = this.location.y - offset;
         }
         var progress = x / Math.abs(x1 - x2);
-        this.scaleFactor = 2 + Math.sin(progress * Math.PI) * 3;
+        this.scaleFactor = 1 + Math.sin(progress * Math.PI) * 3;
       }
       if (!this.isFlying() && this instanceof objects.Arbiter) {
         if (this.destination) {
@@ -174,7 +166,7 @@ export default class GameObject extends Actor {
       }
 
       if (this.scaleFactor >= 1 && this.scaleFactor != this.lastScaleFactor) {
-        this.element.style.setProperty('z-index', String(Math.round(this.scaleFactor * 100)), '');
+        this.element.style.setProperty('z-index', String(Math.round((this.scaleFactor + 1) * 100)), '');
         this.element.scale(this.scaleFactor);
         this.lastScaleFactor = this.scaleFactor
       }

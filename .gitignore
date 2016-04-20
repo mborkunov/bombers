@@ -1,2 +1,7 @@
 .idea/
 *.iml
+node_modules/
+js/bundle.js
+styles/.sass-cache
+styles/styles.css
+styles/styles.css.map

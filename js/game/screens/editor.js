@@ -1,4 +1,5 @@
 import Screen from 'babel!./screen';
+import Arena from 'babel!./arena';
 import Menu from 'babel!./menu';
 import Config from 'babel!../../config';
 
@@ -6,6 +7,7 @@ export default class Editor extends Screen {
 
   constructor(container, callback) {
     super('editor', container);
+    this.callback = callback;
     this.keys = [];
     this.listeners = {
       click: function() {
@@ -31,7 +33,7 @@ export default class Editor extends Screen {
     this.selected = null;
     this.mapName = '_';
     this.author = 'Guest';
-    this.playersNumber = 4;
+    this.playersNumber = 0;
     this.spawnedPlayers = 0;
     this.initData(16, 12);
   }
@@ -124,28 +126,28 @@ export default class Editor extends Screen {
 
     this.tilesBox.appendChild(new Element('h2').addClassName('title').update('Tiles'));
 
-    this.tiles = $A();
-    this.tiles.push('wall');
-    this.tiles.push('box');
-    this.tiles.push('ice');
-    this.tiles.push('trap');
-    this.tiles.push('arrow north');
-    this.tiles.push('ground');
-    this.tiles.push('arrow west');
-    this.tiles.push('arrow south');
-    this.tiles.push('arrow east');
-    this.tiles.push('none');
-    this.tiles.push('ground spawn');
+    this.tiles = [];
+    this.tiles.push(['*', 'wall']);
+    this.tiles.push(['+', 'box']);
+    this.tiles.push(['S', 'ice']);
+    this.tiles.push(['o', 'trap']);
+    this.tiles.push([' ', 'ground']);
+    this.tiles.push(['^', 'arrow north']);
+    this.tiles.push(['<', 'arrow west']);
+    this.tiles.push(['v', 'arrow south']);
+    this.tiles.push(['>', 'arrow east']);
+    this.tiles.push(['-', 'none']);
+    this.tiles.push(['1', 'ground spawn']);
 
-    this.tiles.each(function(item) {
-      var element = new Element('div').addClassName('tile').addClassName(item);
+    this.tiles.forEach(function(item) {
+      var element = new Element('div', {'data-character': item[0]}).addClassName('tile').addClassName(item[1]);
       element.observe('mousedown', function(e) {
         if (this.selected !== null) {
-          if (this.selected.indexOf(' ') >= 0) {
-            var classes = this.selected.split(' ').join('.');
-            this.tilesBox.select('.' + classes)[0].removeClassName('selected');
+          if (this.selected[1].indexOf(' ') >= 0) {
+            var classes = this.selected[1].split(' ').join('.');
+            this.tilesBox.select('.' + classes)[0].classList.remove('selected');
           } else {
-            this.tilesBox.select('.' + this.selected)[0].removeClassName('selected');
+            this.tilesBox.select('.' + this.selected[1])[0].classList.remove('selected');
           }
         }
         this.selected = item;
@@ -175,8 +177,9 @@ export default class Editor extends Screen {
     this.actionsBox  = new Element('div').addClassName('actions');
     this.actionsBox.appendChild(new Element('h2').addClassName('title').update('Actions'));
 
-    /*this.actionsBox.appendChild(new Element('button').addClassName('action').update('todo:').observe('click', this.save.bind(this)));*/
+    this.actionsBox.appendChild(new Element('button').addClassName('action').update('Save').observe('click', this.save.bind(this)));
     this.actionsBox.appendChild(new Element('button').addClassName('action').update('Download').observe('click', this.download.bind(this)));
+    this.actionsBox.appendChild(new Element('button').addClassName('action').update('Play').observe('click', this.play.bind(this)));
     /*this.actionsBox.appendChild(new Element('button').addClassName('action').update('todo:').observe('click', this.upload.bind(this)));
     this.actionsBox.appendChild(new Element('button').addClassName('action').update('Email').observe('click', this.email.bind(this)));*/
 
@@ -232,26 +235,12 @@ export default class Editor extends Screen {
     var id = x + 'x' + y;
     var element = $(id);
     element.className = 'tile';
-    element.addClassName(tile);
+    element.addClassName(tile[1]);
+    this.data[y][x] = tile[0];
+/*
 
-    if (tile.indexOf('arrow') == 0) {
-      switch (tile.split(' ')[1]) {
-        case 'west':
-          this.data[y][x] = '<';
-          break;
-        case 'east':
-          this.data[y][x] = '>';
-          break;
-        case 'north':
-          this.data[y][x] = '^';
-          break;
-        case 'south':
-          this.data[y][x] = 'v';
-          break;
-      }
-    } else {
       var currentValue = this.data[y][x];
-      var newValue = tile.charAt(0);
+      var newValue = this.tileNameToChar(tile);
       if (parseInt(currentValue) == 0) {
         if (parseInt(newValue) > 0) {
           this.spawnedPlayers++;
@@ -262,7 +251,7 @@ export default class Editor extends Screen {
         }
       }
       this.data[y][x] = newValue;
-    }
+    }*/
   }
 
   onPropertyChanged() {
@@ -302,44 +291,9 @@ export default class Editor extends Screen {
   drawData() {
     for (var i = 0; i < this.size.y; i++) {
       for (var j = 0; j < this.size.x; j++) {
-        this.setTile(j, i, this.charToClassName(this.data[i][j]));
+        //this.setTile(j, i, this.data[i][j]);
       }
     }
-  }
-
-  charToClassName(character) {
-    switch (character.toLowerCase()) {
-      case '+':
-      case 'b':
-        return 'box';
-        break;
-      case 'w':
-      case '*':
-        return 'wall';
-        break;
-      case ' ':
-        return 'ground';
-        break;
-      case 'o':
-        return 'trap';
-        break;
-      case 's':
-        return 'ice';
-        break;
-
-      case '1': case '2': case '3': case '4':
-      case '5': case '6': case '7': case '0':
-      return 'ground player-' + character;
-      break;
-
-      case '<':
-      case '>':
-      case 'v':
-      case '^':
-        return 'arrow';
-        break;
-    }
-    return 'none';
   }
 
   alignArea() {
@@ -367,7 +321,7 @@ export default class Editor extends Screen {
     if (this.selected) {
       this.initData(this.size.x, this.size.y);
       this.eachTile(function(element) {
-        element.className = 'tile ' + this.selected;
+        element.className = 'tile ' + this.selected[1];
         console.log('tile ' + this.selected);
       }.bind(this));
     }
@@ -381,14 +335,9 @@ export default class Editor extends Screen {
     }
   }
 
-  undo() {
-  }
-
-  redo() {
-  }
-
-  upload() {
-    console.log('upload');
+  play() {
+    this.save();
+    this.callback(Arena, 'map.' + this.getMapName());
   }
 
   download() {
@@ -405,14 +354,6 @@ export default class Editor extends Screen {
   getAuthor() {
     this.author = this.authorElement.value;
     return this.author;
-  }
-
-  email() {
-    if (this.validate()) {
-      window.location.href = 'mailto:Maxim Borkunov&lt;maxim.borkunov@gmail.com&gt;?subject=Please add this map&body=' + this.serialize();
-    } else {
-      alert('The map isn\'t valid');
-    }
   }
 
   serialize() {
@@ -432,11 +373,17 @@ export default class Editor extends Screen {
   }
 
   save() {
-    console.log('save');
-    localStorage.setItem('map.' + this.getMapName(), this.serialize());
-  }
-
-  play() {
+    var key = 'map.' + this.getMapName();
+    localStorage.setItem(key, JSON.stringify(this.serialize()));
+    let maps = [];
+    var list = localStorage.getItem('maps');
+    if (list) {
+      maps = JSON.parse(list);
+    }
+    if (maps.indexOf(key) < 0) {
+      maps.push(key);
+    }
+    localStorage.setItem('maps', JSON.stringify(maps));
   }
 
   validate() {

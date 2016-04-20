@@ -18,14 +18,6 @@ export default class Map {
     this.entry.highlightTile(bomber.location.x, bomber.location.y);
   }
 
-  getAuthor() {
-    return this.author;
-  }
-
-  getName() {
-    return this.name;
-  }
-
   highlight(bombers) {
     this.entry.clearHighlights();
     bombers.each(this.eachHandler.bind(this));
@@ -56,13 +48,13 @@ export default class Map {
     return this.maxPlayers;
   }
 
-  update(delay, shake) {
-    this.entry.update(delay, shake);
+  update(delay, quakes) {
+    this.entry.update(delay, quakes);
   }
 
   prerender(container) {
     this.entry.prerender(container);
-    container.appendChild(new Element("span").addClassName("map-name").update(this.getName().replace("_", " ")));
+    container.appendChild(new Element("span").addClassName("map-name").update(this.name.replace("_", " ")));
   }
 
   render(container, bombers) {
@@ -87,6 +79,13 @@ export default class Map {
         return cachedMap;
       }
     }
+
+    if (localStorage.getItem(name)) {
+      Map._cache[location] = Map.parse(name, JSON.parse(localStorage.getItem(name)));
+      callback && callback(Map._cache[location]);
+      return;
+    }
+
     console.log('loading', location);
     new Ajax.Request(location, {
       method: 'get',
@@ -129,12 +128,19 @@ export default class Map {
   }
 
   static list() {
-    return $A(['Bomb_Attack', 'Big_Standard','Blast_Matrix','Bloody_Ring','Boiling_Egg','Bomb_Attack',
-     'Broken_Heart','Crammed','Death_Corridor','Dilemma','FearCircle',
-     'FearCircle_Remix','FireWheels','Football','Four_Instance','GhostBear',
-     'Hard_Work','Hole_Run','Huge_Standard','Juicy_Lucy','Kitchen','Meeting',
-     'MungoBane','Obstacle_Race','Overkill','Prison_Cells','Redirection',
-     'Sixty_Nine','Small_Standard','Snake_Race','Tiny_Standard','Whole_Mess']);
+    var maps = $A(['Bomb_Attack', 'Big_Standard','Blast_Matrix','Bloody_Ring','Boiling_Egg','Bomb_Attack',
+      'Broken_Heart','Crammed','Death_Corridor','Dilemma','FearCircle',
+      'FearCircle_Remix','FireWheels','Football','Four_Instance','GhostBear',
+      'Hard_Work','Hole_Run','Huge_Standard','Juicy_Lucy','Kitchen','Meeting',
+      'MungoBane','Obstacle_Race','Overkill','Prison_Cells','Redirection',
+      'Sixty_Nine','Small_Standard','Snake_Race','Tiny_Standard','Whole_Mess']);
+    var userMaps = localStorage.getItem('maps');
+    if (userMaps) {
+      JSON.parse(userMaps).forEach(function(userMap) {
+        maps.push(userMap);
+      });
+    }
+    return maps;
   }
 
   static getRandomMap(callback) {
@@ -150,16 +156,6 @@ class Entry  {
     this.data = data;
     this.tiles = [];
     this.playerPositions = [];
-    this.renderHandler = function(tile, container) {
-      try {
-        if (tile.next != null) {
-          tile = tile.next;
-        }
-        tile.render(container);
-      } catch (e) {
-        console.error(e);
-      }
-    }.bind(this);
 
     var x = 0, y;
     this.size = {
@@ -201,8 +197,7 @@ class Entry  {
           case '+':
             tile = new tiles.Box(point);
             break;
-          case 'S':
-            tile = new tiles.Ice(point);
+          case 'S': tile = new tiles.Ice(point);
             break;
           case 'o':
             tile = new tiles.Trap(point);
@@ -225,7 +220,7 @@ class Entry  {
   clearHighlights() {
     this.each(function(tile) {
       if (tile && tile.element)
-        tile.element.removeClassName("highlight");
+        tile.element.classList.remove("highlight");
     });
   }
 
@@ -240,7 +235,7 @@ class Entry  {
     if (Object.isUndefined(tile)) {
       tile = new tiles.None(new Point(_x, _y));
     }
-    return tile.next ? tile.next : tile;
+    return tile;
   }
 
   highlightTile(x, y) {
@@ -250,7 +245,7 @@ class Entry  {
   findTilesByType(type) {
     var tiles = [];
     this.each(function(tile) {
-        if (tile instanceof type && !tile.isDestroyed()) {
+        if (tile instanceof type && !tile.destroyed) {
           tiles.push(tile);
         }
     }.bind(this));
@@ -263,7 +258,7 @@ class Entry  {
 
     try {
       var tile = this.getTile(x, y);
-      return (tile.isVanishing() || tile.isDestroyed() || tile.getName() == 'none') ? this.getRandomTile() : tile;
+      return (tile.vanishing || tile.destroyed || tile.name == 'none') ? this.getRandomTile() : tile;
     } catch (e) {
       if (this.hasTiles()) {
         return this.getRandomTile();
@@ -280,8 +275,7 @@ class Entry  {
     for (var y = 0, yLength = this.tiles.length; y < yLength; y++)  {
       for (var x = 0, xLength = this.tiles[y].length; x < xLength; x++)  {
         var tile = this.tiles[y][x];
-        tile = tile.next ? tile.next : tile;
-        if (tile.getName() != 'none' && !tile.isDestroyed() && !tile.isVanishing()) {
+        if (tile.name != 'none' && !tile.destroyed && !tile.vanishing) {
           return true;
         }
       }
@@ -298,16 +292,26 @@ class Entry  {
     }
   }
 
-  static updateHandler(tile, options) {
-    if (tile == null) return;
-    if (tile.next != null) {
-      tile = tile.next;
+  static renderHandler(tile, container) {
+    try {
+      tile.render(container);
+    } catch (e) {
+      console.error(e);
     }
-    tile.update(options.delay, options.shake);
   }
 
-  update(delay, shake) {
-    var options = {shake: shake, delay: delay};
+  static updateHandler(tile, options) {
+    if (tile == null) return;
+    if (tile.next) {
+//      console.log('replace ', tile, ' with ', tile.next);
+      tile._arena.map.entry.tiles[tile.location.x][tile.location.y] = tile.next;
+      tile = tile.next;
+    }
+    tile.update(options.delay, options.quakes);
+  }
+
+  update(delay, quakes) {
+    var options = {quakes: quakes, delay: delay};
     this.each(Entry.updateHandler, options);
   }
 
@@ -318,6 +322,6 @@ class Entry  {
   }
 
   render() {
-    this.each(this.renderHandler);
+    this.each(Entry.renderHandler);
   }
 }

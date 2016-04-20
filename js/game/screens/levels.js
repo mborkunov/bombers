@@ -4,6 +4,7 @@ import Menu from 'babel!./menu';
 import Map from 'babel!../tiles/map';
 
 export default class Level extends Screen {
+
   constructor(container, callback) {
     super('levels', container);
     this.callback = callback;

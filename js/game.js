@@ -11,20 +11,27 @@ export default class Game {
     Screen.register(screens);
     this.overlay = new Overlay();
     this.container = $('container');
-    this.setTheme(Config.getProperty("graphic.theme").getValue());
-    Sound.enabled = Config.getProperty("sounds").getValue();
-    Sound.volume = Config.getProperty('volume').getValue();
+
+    Config.getProperty("graphic.theme").addListener(function(theme) {
+      this.setTheme(theme);
+    }.bind(this));
+    Sound.initialize();
     Game.instance = this;
     this.setScreen(this.getStartScreen());
     this.graphics = new Graphics(this.getScreen.bind(this));
     this.state = new State(this.getScreen.bind(this));
-    if (Config.getProperty("graphic.shadows").getValue()) {
-      this.container.addClassName('shadows');
-    }
+    Config.getProperty("graphic.shadows").addListener(function(shadows) {
+      this.container.classList.toggle('shadows', shadows);
+    }.bind(this));
 
-    if (Config.getValue('debug')) {
-      this.drawThemesSwitcher()
-    }
+    Config.getProperty('debug').addListener(function(debug) {
+      if (debug) {
+        this.drawThemesSwitcher();
+      } else {
+        var switcher = document.getElementById('theme-switcher');
+        switcher.parentNode.removeChild(switcher);
+      }
+    }.bind(this));
   }
 
   drawThemesSwitcher() {

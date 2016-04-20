@@ -4,6 +4,7 @@ import Config from 'babel!../../config';
 import * as screens from 'babel!../screens';
 
 export default class Menu extends Screen {
+
   constructor(container, callback) {
     super('menu', container);
 
@@ -41,32 +42,14 @@ export default class Menu extends Screen {
           .addChild(new Item(null, Type.Settings, 'timing.bombs.chain_reaction'))
           .addChild(new Item(null, Type.Settings, 'timing.bombs.moving_speed')))
         .addChild(new Item('Graphic Options', Type.Inner, this)
-          .addChild(new Item(null, Type.Settings, 'graphic.theme', function(theme) {
-            //Game.instance.setTheme(theme);
-          }))
-          .addChild(new Item(null, Type.Settings, 'graphic.shadows', function(value) {
-            this.toggleClassName('shadows', value);
-          }.bind(this.container)))
-          .addChild(new Item(null, Type.Settings, 'graphic.maxfps', function(fps) {
-            //Game.instance.graphics.fps = fps;
-          }))
+          .addChild(new Item(null, Type.Settings, 'graphic.theme'))
+          .addChild(new Item(null, Type.Settings, 'graphic.shadows'))
+          .addChild(new Item(null, Type.Settings, 'graphic.maxfps'))
           .addChild(new Item(null, Type.Settings, 'graphic.kidz'))
           .addChild(new Item(null, Type.Settings, 'graphic.corpse_parts'))
           .addChild(new Item(null, Type.Settings, 'graphic.shaky_explosions')))
-        .addChild(new Item(null, Type.Settings, 'sounds', function(value) {
-          Sound.enabled = value;
-        }))
-        .addChild(new Item(null, Type.Settings, 'debug', function(value) {
-          if (value) {
-            document.onmousedown = function() {return true}; // disable text selection - chromium
-            document.oncontextmenu = function() {return true}; // disable context menu
-            //Game.instance.drawThemesSwitcher();
-          } else {
-            $('theme-switcher').remove();
-            document.onmousedown = function() {return false}; // disable text selection - chromium
-            document.oncontextmenu = function() {return false}; // disable context menu
-          }
-        })))
+        .addChild(new Item(null, Type.Settings, 'sounds'))
+        .addChild(new Item(null, Type.Settings, 'debug')))
       .addChild(new Item('Editor', Type.Screen, screens.Editor, callback))
       .addChild(new Item('Credits', Type.Screen, screens.Credits, callback))
       .addChild(new Item('Help', Type.Screen, screens.Help, callback))

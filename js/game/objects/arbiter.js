@@ -27,15 +27,22 @@ export default class Arbiter extends GameObject {
       this.timerElement = new Element('div', {id: 'timer'}).addClassName('object');
       this.clockElement = new Element('div', {id: 'clock'});
 
-      if (Config.getValue('debug')) {
-        this.element.observe('click', function() {
-          this.running ? this.stop() : this.run();
-        }.bind(this));
+      var arbiterListener = function() {
+        this.running ? this.stop() : this.run();
+      }.bind(this);
+      var timeListener = function() {
+        this.run();
+      }.bind(this);
 
-        this.clockElement.observe('click', function() {
-          this.run();
-        }.bind(this));
-      }
+      Config.getProperty('debug').addListener(function(debug) {
+        if (debug) {
+          this.clockElement.observe('click', timeListener);
+          this.element.observe('click', arbiterListener);
+        } else {
+          this.clockElement.stopObserving('click', timeListener);
+          this.element.stopObserving('click', arbiterListener);
+        }
+      }.bind(this));
 
       this.counterElement = new Element('div', {id: 'counter'}).update(this.getRemainingTime());
       this.timerElement.appendChild(this.clockElement);

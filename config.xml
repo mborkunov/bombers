@@ -27,9 +27,9 @@
     <name>Sound</name>
   </property>
 
-  <property id="volume" type="number" default=".5">
+  <property id="volume" type="number" default=".25">
     <name>Sound volume</name>
-    <range min="0" max="1" step=".1"/>
+    <range min="0" max="1" step=".05"/>
   </property>
 
   <property id="debug" type="boolean" default="true">
@@ -51,7 +51,7 @@
     <color type="string">#3550f0</color>
     <eyes ref="eyes">cyclope</eyes>
     <active type="boolean">true</active>
-    <controller ref="controller">ai</controller>
+    <controller ref="controller">gamepad</controller>
     <team ref="team">0</team>
   </property>
   <property id="game.player.2" type="complex">

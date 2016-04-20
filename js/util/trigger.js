@@ -10,8 +10,7 @@ export default class {
     if (this.done || !this.condition()) {
       return false;
     }
-    this.done = true;
     this.success();
-    return true;
+    return this.done = true;
   }
 }

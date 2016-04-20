@@ -17,7 +17,7 @@ export default class Explosion extends GameObject {
           return now() - this.start > this.lifetime / 6;
         }.bind(this),
         function () {
-          this.element.removeClassName('small').addClassName('medium');
+          this.element.classList.remove('medium');
         }.bind(this)
       ));
     this.triggers.push(
@@ -25,7 +25,8 @@ export default class Explosion extends GameObject {
           return now() - this.start > this.lifetime - this.lifetime / 3;
         }.bind(this),
         function () {
-          this.element.removeClassName('medium').addClassName('big');
+          this.element.classList.remove('medium');
+          this.element.classList.add('big');
         }.bind(this)
       ));
     this.triggers.push(
@@ -33,7 +34,8 @@ export default class Explosion extends GameObject {
           return now() - this.start > this.lifetime - this.lifetime / 6;
         }.bind(this),
         function () {
-          this.element.removeClassName('big').addClassName('medium');
+          this.element.classList.remove('big');
+          this.element.classList.add('medium');
         }.bind(this)
       ));
     this.triggers.push(
@@ -41,7 +43,8 @@ export default class Explosion extends GameObject {
           return now() - this.start > this.lifetime - this.lifetime / 8;
         }.bind(this),
         function () {
-          this.element.removeClassName('medium').addClassName('small');
+          this.element.classList.remove('medium');
+          this.element.classList.add('small');
         }.bind(this)
       ));
 
@@ -111,9 +114,9 @@ export default class Explosion extends GameObject {
             }
           } else if (tile instanceof tiles.Box) {
             tile.destroy();
-            if (tile.next.hasExtra()) {
+            /*if (tile.next.hasExtra()) {
               this.element.select('.' + cssClasses[i] + ' >.edge').invoke('hide');
-            }
+            }*/
           } else if (tile instanceof tiles.Wall) {
             this.element.select('.' + cssClasses[i] + ' >.edge').invoke('hide');
           }
@@ -156,7 +159,7 @@ export default class Explosion extends GameObject {
           break;
       }
       var tile = this.getTile(location);
-      if (!tile.isPassable() ||
+      if (!tile.passable ||
         (tile instanceof tiles.Ground && (tile.hasExtra() || tile.hasBomb()))) {
         return [tile, i];
       }
@@ -169,7 +172,7 @@ export default class Explosion extends GameObject {
     var bombers = this._arena.objects.bombers;
     Util.iterate(bombers, function (bomber) {
       if (bomber.isFalling()) return;
-      if (bomber.getLocation().round().equals(location)) {
+      if (bomber.location.round().equals(location)) {
         bomber.isDead() ? bomber.blow() : bomber.kill();
       }
     });

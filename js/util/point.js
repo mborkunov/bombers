@@ -93,6 +93,7 @@ export default class Point {
   get changed() {
     return this._changed;
   }
+
   set changed(flag) {
     this._changed = flag;
   }

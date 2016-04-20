@@ -1,5 +1,5 @@
 resources pre-loading
 webkitAudioContext for sound system
 cache reusable screens
-screen layers
+screen layers (scene)
 loading screen functionality

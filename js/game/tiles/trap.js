@@ -20,7 +20,7 @@ export default class Trap extends Ground {
         if (randomSource === randomTarget) {
           callback(tile, bomb);
         } else {
-          bomb.setLocation(randomSource.getLocation().clone());
+          bomb.location = randomSource.location.clone();
           bomb.flyTo(randomTarget, callback);
         }
       }

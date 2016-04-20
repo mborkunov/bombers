@@ -25,7 +25,7 @@ export default class Extra extends GameObject {
   update(delay) {
     if (!this.isFalling()) {
       var tile = this._arena.map.getTile(this.location.x, this.location.y);
-      if (tile.getName() == 'none' || tile.isDestroyed()) {
+      if (tile.name == 'none' || tile.destroyed) {
         this.fall();
       }
     }

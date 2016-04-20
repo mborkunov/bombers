@@ -4,19 +4,19 @@ import Tile from 'babel!./tile';
 import Ground from 'babel!./ground';
 
 export default class Box extends Tile {
+
   constructor(location) {
     super('box', location);
     this.shadows = Config.getProperty('graphic.shadows');
   }
 
   prerender(container) {
-    this.container = container;
     super.prerender(container);
 
     if (Config.getValue('debug')) {
       this.element.stopObserving('click', this.clickHandler);
 
-      this.element.on('click', function () {
+      this.element.on('mousedown', function () {
         Sound.play('crunch');
         this.destroy();
       }.bind(this));
@@ -24,9 +24,9 @@ export default class Box extends Tile {
   }
 
   destroy() {
-    this.next = new Ground(this.getLocation().clone());
-    this.next.spawnExtra(0.25);
-    super.destroy();
+    // this.ground = ;
+    // ground.spawnExtra(0.25);
+    super.destroy(new Ground(this.location.clone()));
   }
 
   vanish() {

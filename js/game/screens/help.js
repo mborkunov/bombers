@@ -18,17 +18,17 @@ export default class Help extends Screen {
     this.container.appendChild(this.helpContainer);
 
     this.drawHelp('Extras', [
-      {name: 'Bomb', text: 'You can place an additional bomb'},
-      {name: 'Power', text: 'Explosions grow one field in each direction'},
+      {name: 'Bomb',       text: 'You can place an additional bomb'},
+      {name: 'Power',      text: 'Explosions grow one field in each direction'},
       {name: 'Skateboard', text: 'Lets you move faster'},
-      {name: 'Kick', text: 'Kick bombs if you walk against one'},
-      {name: 'Glove', text: 'Throw Bombs if you press the button twice without moving'}
+      {name: 'Kick',       text: 'Kick bombs if you walk against one'},
+      {name: 'Glove',      text: 'Throw Bombs if you press the button twice without moving'}
     ], 'extras');
 
     this.drawHelp('Drugs', [
-      {name: 'Joint', text: 'Controller will be reversed'},
-      {name: 'Viagra', text: 'AutoFire, this can be very dangerous!'},
-      {name: 'Cocaine', text: 'Lets you move very fast!! (too fast)'}
+      {name: 'Joint',      text: 'Controller will be reversed'},
+      {name: 'Viagra',     text: 'AutoFire, this can be very dangerous!'},
+      {name: 'Cocaine',    text: 'Lets you move very fast!! (too fast)'}
     ], 'drugs');
 
     var anyKey = new Element("span").addClassName("anykey").update("Press enter or escape to exit");

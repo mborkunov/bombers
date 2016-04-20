@@ -18,6 +18,18 @@ export default class Sound {
     return Sound._volume;
   }
 
+  static initialize() {
+    if (!this._initialized) {
+      this._initialized = true;
+      Config.getProperty('sounds').addListener(function(value) {
+        Sound.enabled = value;
+      });
+      Config.getProperty('volume').addListener(function(volume) {
+        Sound.volume = volume;
+      });
+    }
+  }
+
   static play(name) {
     if (!(Sound._enabled && Config.getProperty('sounds').getValue())) {
       return;

@@ -80,7 +80,7 @@ export default class Score extends Screen {
       Map.getRandomMap(function(next, map) {
         var preview = next.select('.preview')[0];
         map.prerender(preview);
-        next.select('.sign')[0].update('Next Map: ' +  map.getName().replace("_", " "));
+        next.select('.sign')[0].update('Next Map: ' +  map.name.replace("_", " "));
         preview.removeClassName('loading');
       }.bind(this, next));
 
